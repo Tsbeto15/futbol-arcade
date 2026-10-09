@@ -218,14 +218,15 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
 /* ---------- Fichas: alineación ---------- */
 .fa-eq{display:flex;align-items:center;gap:8px;font-weight:700;justify-content:center}
 .fa-eq svg{width:34px;height:34px}
-.fa-forms{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fa-forms{display:grid;grid-template-columns:repeat(auto-fill,minmax(98px,1fr));gap:8px}
 .fa-form{display:grid;justify-items:center;gap:4px;padding:8px 4px;border-radius:14px;background:var(--noche);border:2px solid transparent;text-align:center}
 .fa-form.on{border-color:var(--amarillo)}
 .fa-form b{font-family:var(--f-num);font-size:17px;letter-spacing:.04em;text-transform:uppercase}
 .fa-form.on b{color:var(--amarillo)}
 .fa-form small{font-size:11.5px;color:var(--tenue);line-height:1.25}
 .fa-form svg{width:100%;max-width:92px;height:auto;display:block}
-.fa-nums{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.metas-tam{grid-template-columns:repeat(5,1fr)}
+.metas-tam button{font-size:15px;padding:10px 0;line-height:1.1}
 .fa-num{display:grid;justify-items:center;padding:7px 0;border-radius:12px;background:var(--noche);border:2px solid transparent}
 .fa-num b{font-family:var(--f-disp);font-weight:400;font-size:24px;line-height:1}
 .fa-num span{font-size:11px;font-weight:700;color:var(--tenue)}
@@ -527,6 +528,8 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
     <div class="metas" id="fxModos" style="grid-template-columns:1fr 1fr"><button data-m="cpu">Contra la compu</button><button data-m="2p">2 jugadores</button></div>
     <div class="etq">Goles para ganar</div>
     <div class="metas" id="fxGoles"><button data-g="1">1</button><button data-g="2">2</button><button data-g="3">3</button></div>
+    <div class="etq">Jugadores por equipo</div>
+    <div class="metas metas-tam" id="fxTam"><button data-t="2">2 vs 2</button><button data-t="3">3 vs 3</button><button data-t="4">4 vs 4</button><button data-t="5">Fútbol 5</button><button data-t="7">Fútbol 7</button></div>
     <button class="btn btn-1" id="fxJugar">Jugar</button>
     <p class="ayuda">En tu turno tienes 15 segundos: arrastra una ficha hacia atrás y suelta para tirar. A tu portero (1) lo puedes acomodar en tu área las veces que quieras. Si se acaba el tiempo, el turno pasa al otro.</p>
   </div>
@@ -549,9 +552,6 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
     <div class="fa-eq" id="faEq"></div>
     <div class="etq">¿Cómo quieres jugar?</div>
     <div class="fa-forms" id="faForms"></div>
-    <div class="etq">Elige a tus 4 jugadores de campo <span id="faCuenta"></span></div>
-    <p class="ayuda" style="text-align:left">El 1 siempre es tu portero. Los defensas van atrás, los medios en medio y los delanteros adelante.</p>
-    <div class="fa-nums" id="faNums"></div>
     <button class="btn btn-1" id="faListo">¡A jugar!</button>
     <button class="btn btn-2" id="faSaltar">Saltar (automático)</button>
   </div>
@@ -571,6 +571,8 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
     <div id="foHostOpc">
       <div class="etq" style="margin-bottom:8px">Goles para ganar</div>
       <div class="metas" id="foGoles"><button data-g="1">1</button><button data-g="2">2</button><button data-g="3">3</button></div>
+      <div class="etq" style="margin:10px 0 8px">Jugadores por equipo</div>
+      <div class="metas metas-tam" id="foTam"><button data-t="2">2 vs 2</button><button data-t="3">3 vs 3</button><button data-t="4">4 vs 4</button><button data-t="5">Fútbol 5</button><button data-t="7">Fútbol 7</button></div>
     </div>
     <button class="miequipo" id="foAlinBtn" style="margin:0"></button>
     <button class="btn btn-1" id="foEmpezar">Empezar partido</button>
@@ -582,7 +584,7 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
 <!-- FICHAS: PARTIDO -->
 <section id="fxJuego" class="screen" hidden>
   <div class="fx-top">
-    <button class="x" id="fxSalir" aria-label="Salir">✕</button>
+    <button class="x" id="fxPausa" aria-label="Pausa">⏸</button>
     <div class="fx-marcador"><span class="fx-eq" id="fxE0"></span><b id="fxS">0-0</b><span class="fx-eq" id="fxE1"></span></div>
     <button class="x btn-son" id="fxSon" aria-label="Sonido">🔊</button>
   </div>
@@ -760,6 +762,17 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
     <div class="stats"><div><b id="mtPts">0</b><span class="etq">Puntos</span></div><div><b id="mtLin">0</b><span class="etq">Pases</span></div><div><b id="mtTar">0</b><span class="etq">Tarjetas</span></div></div>
     <p class="ayuda">El vestidor te da un bono para el segundo tiempo.</p>
     <button class="btn btn-1" id="bSegundo">Segundo tiempo +100</button>
+  </div>
+</div>
+
+<!-- FICHAS: PAUSA -->
+<div class="capa" id="capaPausa" hidden>
+  <div class="caja">
+    <p class="grande">Pausa</p>
+    <p class="ayuda" id="pzNota"></p>
+    <button class="btn btn-1" id="pzSeguir">Continuar</button>
+    <button class="btn btn-2" id="pzForm">Cambiar formación</button>
+    <button class="volver" id="fxSalir" style="margin:0">Salir del partido</button>
   </div>
 </div>
 
@@ -1144,27 +1157,52 @@ medir();
 /* ================= FICHAS GOL ================= */
 const FW=600,FH=960,FGW=220,FD=56,FRD=34,FRB=20,FMAXV=30,FRIC=.978,FOX=20,FOY=FD+12,FLW=FW+FOX*2,FLH=FH+FOY*2;
 const FPOS=[[300,880,1],[150,770,4],[450,770,3],[215,620,10],[385,620,9]];
-const FX_FORMS={
+const FX_TAMS={
+ 2:{equi:{n:'Equilibrada',d:'Tu jugador a la mitad de tu cancha.',pos:[[300,680]],nums:[10]},
+    muralla:{n:'Todos atrás',d:'Se queda cuidando la portería.',pos:[[300,780]],nums:[4]},
+    todos:{n:'Todos al ataque',d:'Pegado a media cancha, listo para tirar.',pos:[[300,545]],nums:[9]}},
+ 3:{equi:{n:'Equilibrada',d:'Uno atrás y uno adelante.',pos:[[300,770],[300,580]],nums:[4,9]},
+    muralla:{n:'Todos atrás',d:'Los 2 cuidando el área.',pos:[[200,780],[400,780]],nums:[2,4]},
+    bandas:{n:'Por las bandas',d:'Uno por cada lado.',pos:[[130,640],[470,640]],nums:[7,11]},
+    todos:{n:'Todos al ataque',d:'Los 2 arriba. Solo el portero atrás.',pos:[[210,550],[390,550]],nums:[10,9]}},
+ 4:{equi:{n:'Equilibrada',d:'2 atrás y 1 adelante.',pos:[[180,770],[420,770],[300,580]],nums:[4,3,9]},
+    muralla:{n:'Todos atrás',d:'3 defensas frente a tu portero.',pos:[[160,790],[300,760],[440,790]],nums:[2,4,3]},
+    tri:{n:'Triángulo',d:'1 atrás y 2 en medio.',pos:[[300,775],[170,630],[430,630]],nums:[4,8,10]},
+    todos:{n:'Todos al ataque',d:'Los 3 arriba.',pos:[[140,570],[460,570],[300,545]],nums:[7,11,9]}},
+ 5:{
+  muralla:{n:'Todos atrás',d:'4 defensas frente a tu portero. Una muralla.',pos:[[120,790],[240,770],[360,770],[480,790]],nums:[2,4,3,5]},
   def:{n:'Defensiva',d:'3 atrás y 1 adelante. Difícil que te metan gol.',pos:[[165,775],[300,745],[435,775],[300,590]],nums:[2,4,3,9]},
   equi:{n:'Equilibrada',d:'2 atrás y 2 en medio. Para todo.',pos:[[150,770],[450,770],[215,620],[385,620]],nums:[4,3,10,9]},
-  ata:{n:'Ataque',d:'1 atrás y 3 arriba, con un delantero pegado a media cancha.',pos:[[300,775],[150,580],[450,580],[300,540]],nums:[4,7,11,9]}};
+  rombo:{n:'Rombo',d:'1 atrás, 2 medios abiertos y 1 punta.',pos:[[300,785],[165,670],[435,670],[300,560]],nums:[4,6,8,9]},
+  bandas:{n:'Por las bandas',d:'2 centrales y 2 extremos pegados a la raya.',pos:[[215,780],[385,780],[85,590],[515,590]],nums:[4,3,7,11]},
+  ata:{n:'Ataque',d:'1 atrás y 3 arriba, con un delantero pegado a media cancha.',pos:[[300,775],[150,580],[450,580],[300,540]],nums:[4,7,11,9]},
+  todos:{n:'Todos al ataque',d:'Los 4 arriba. Solo tu portero se queda atrás.',pos:[[105,560],[495,560],[230,545],[370,545]],nums:[10,7,11,9]}},
+ 7:{equi:{n:'Equilibrada 2-3-1',d:'2 atrás, 3 en medio y 1 punta.',pos:[[200,785],[400,785],[110,650],[300,665],[490,650],[300,555]],nums:[4,3,7,10,11,9]},
+    muralla:{n:'Todos atrás 4-2',d:'4 defensas y 2 medios cuidando.',pos:[[90,790],[230,770],[370,770],[510,790],[210,650],[390,650]],nums:[2,4,3,5,6,8]},
+    def:{n:'Defensiva 3-2-1',d:'3 atrás, 2 medios y 1 delantero.',pos:[[150,785],[300,760],[450,785],[200,645],[400,645],[300,555]],nums:[2,4,3,6,8,9]},
+    cuad:{n:'Cuadrado 2-2-2',d:'Parejas en cada zona.',pos:[[200,785],[400,785],[200,665],[400,665],[200,555],[400,555]],nums:[4,3,6,8,10,9]},
+    ata:{n:'Ofensiva 1-2-3',d:'1 atrás, 2 medios y 3 arriba.',pos:[[300,785],[180,650],[420,650],[110,560],[300,545],[490,560]],nums:[4,6,8,7,9,11]},
+    todos:{n:'Todos al ataque',d:'Los 6 arriba. Solo el portero atrás.',pos:[[70,585],[185,552],[300,545],[415,552],[530,585],[300,645]],nums:[7,10,9,8,11,6]}}};
+let fxTamAct=5;
+const FXF=()=>FX_TAMS[fxTamAct]||FX_TAMS[5];
+const TAM_TXT={2:'2 vs 2',3:'3 vs 3',4:'4 vs 4',5:'Fútbol 5',7:'Fútbol 7'};
 const FX_ROL={2:'DEF',3:'DEF',4:'DEF',5:'DEF',6:'MED',8:'MED',10:'MED',7:'DEL',9:'DEL',11:'DEL'};
 const FX_ORD={DEF:0,MED:1,DEL:2};
-const formDef=()=>({f:'equi',nums:FX_FORMS.equi.nums.slice()});
+const formDef=()=>({f:'equi'});
 let fxFormsAct=[formDef(),formDef()];
-function fxPosDe(form){const F=FX_FORMS[form&&form.f]||FX_FORMS.equi,nums=(form&&form.nums&&form.nums.length===4?form.nums:F.nums).slice().sort((a,b)=>FX_ORD[FX_ROL[a]]-FX_ORD[FX_ROL[b]]||a-b);
+function fxPosDe(form){const F=FXF()[form&&form.f]||FXF().equi,nums=F.nums.slice().sort((a,b)=>FX_ORD[FX_ROL[a]]-FX_ORD[FX_ROL[b]]||a-b);
   const pos=F.pos.map((p,k)=>({p,k})).sort((a,b)=>b.p[1]-a.p[1]||a.p[0]-b.p[0]);const out=[[300,880,1]];pos.forEach((q,k)=>out.push([q.p[0],q.p[1],nums[k]]));return out}
 const G0=FW/2-FGW/2,G1=FW/2+FGW/2,POSTES=[[G0,0],[G1,0],[G0,FH],[G1,FH]];
-let fx=null,fxCfg={modo:ls.get('fx_modo','cpu'),goles:+ls.get('fx_goles',2)};
+let fx=null,fxCfg={modo:ls.get('fx_modo','cpu'),goles:+ls.get('fx_goles',2),tam:+ls.get('fx_tam',5)||5};
 function rgb(h){return[1,3,5].map(i=>parseInt(h.slice(i,i+2),16))}
 const lum=h=>{const[r,g,b]=rgb(h);return .299*r+.587*g+.114*b};
 const colDist=(a,b)=>{const x=rgb(a),y=rgb(b);return Math.hypot(x[0]-y[0],x[1]-y[1],x[2]-y[2])};
 function fxRival(){const tipo=(GRUPOS.find(g=>g.n===miEq.g)||{}).t;
   const pool=EQUIPOS.filter(e=>e.id!==miEq.id&&(GRUPOS.find(g=>g.n===e.g)||{}).t===tipo&&colDist(e.a,miEq.a)>150&&lum(e.a)>40);
   return pool[Math.floor(Math.random()*pool.length)]||EQUIPOS.find(e=>e.id!==miEq.id)}
-function fxCuerpos(forms){forms=forms||fxFormsAct;const B=[];
-  fxPosDe(forms[0]).forEach(([x,y,n])=>B.push({x,y,vx:0,vy:0,r:FRD,m:1,t:0,n}));
-  fxPosDe(forms[1]).forEach(([x,y,n])=>B.push({x:FW-x,y:FH-y,vx:0,vy:0,r:FRD,m:1,t:1,n}));
+function fxCuerpos(forms){forms=forms||fxFormsAct;const B=[],r=fxTamAct>=7?29:FRD;
+  fxPosDe(forms[0]).forEach(([x,y,n])=>B.push({x,y,vx:0,vy:0,r,m:1,t:0,n}));
+  fxPosDe(forms[1]).forEach(([x,y,n])=>B.push({x:FW-x,y:FH-y,vx:0,vy:0,r,m:1,t:1,n}));
   B.push({x:FW/2,y:FH/2,vx:0,vy:0,r:FRB,m:.55,t:-1,rot:0});return B}
 
 function fxPared(b){
@@ -1195,14 +1233,14 @@ function fxFriccion(B){for(const b of B){b.vx*=FRIC;b.vy*=FRIC;if(b.vx*b.vx+b.vy
 const fxQuieto=B=>B.every(b=>!b.vx&&!b.vy);
 function fxGolDe(bl){if(bl.y<-bl.r)return 0;if(bl.y>FH+bl.r)return 1;return -1}
 function fxSim(B0,i,vx,vy){const B=B0.map(b=>({...b}));B[i].vx=vx;B[i].vy=vy;let toco=false;
-  for(let f=0;f<650;f++){for(let s=0;s<2;s++)if(fxPaso(B,2))toco=true;fxFriccion(B);const g=fxGolDe(B[10]);if(g>=0)return{gol:g,B,toco};if(fxQuieto(B))break}
+  for(let f=0;f<650;f++){for(let s=0;s<2;s++)if(fxPaso(B,2))toco=true;fxFriccion(B);const g=fxGolDe(B[B.length-1]);if(g>=0)return{gol:g,B,toco};if(fxQuieto(B))break}
   return{gol:-1,B,toco}}
-function fxCpuTiro(){const B=fx.B,bl=B[10],c=[];
-  for(let i=5;i<10;i++){const d=B[i],base=Math.atan2(bl.y-d.y,bl.x-d.x);
-    for(let k=-6;k<=6;k++){const ang=base+k*.065;for(const p of[.45,.72,1]){const v=FMAXV*p,r=fxSim(B,i,Math.cos(ang)*v,Math.sin(ang)*v);let sc;
+function fxCpuTiro(){const B=fx.B,bl=B[B.length-1],c=[],nA=B.length>12?4:6;
+  for(let i=0;i<B.length-1;i++){if(B[i].t!==1)continue;const d=B[i],base=Math.atan2(bl.y-d.y,bl.x-d.x);
+    for(let k=-nA;k<=nA;k++){const ang=base+k*(.39/nA);for(const p of[.45,.72,1]){const v=FMAXV*p,r=fxSim(B,i,Math.cos(ang)*v,Math.sin(ang)*v);let sc;
       if(r.gol===1)sc=1000+p*10;else if(r.gol===0)sc=-1000;
-      else{const b2=r.B[10];sc=(b2.y-bl.y)*.6-(b2.y<260?(260-b2.y)*1.6:0)-Math.abs(b2.x-FW/2)*.08+(r.toco?0:-90);
-        const gk=r.B[5];sc-=Math.max(0,Math.hypot(gk.x-FW/2,gk.y-90)-160)*.15}
+      else{const b2=r.B[r.B.length-1];sc=(b2.y-bl.y)*.6-(b2.y<260?(260-b2.y)*1.6:0)-Math.abs(b2.x-FW/2)*.08+(r.toco?0:-90);
+        const gk=r.B.find(q=>q.t===1);sc-=Math.max(0,Math.hypot(gk.x-FW/2,gk.y-90)-160)*.15}
       c.push({i,ang,v,sc})}}}
   c.sort((a,b)=>b.sc-a.sc);const top=c.slice(0,4),e=top[Math.random()<.55?0:Math.floor(Math.random()*top.length)];
   const ang=e.ang+(Math.random()-.5)*.05;return{i:e.i,ang,v:e.v}}
@@ -1220,15 +1258,15 @@ function fxEmpezar(){if(fx)fx.activo=false;
   $('fxS').textContent='0-0';$('capaFx').hidden=true;$('fxGol').hidden=true;pantalla('fxJuego');fxMedir();silbato(false);fxTurnoUI();requestAnimationFrame(fxLoop)}
 const FX_SEG=15;
 function fxTurnoUI(){const t=$('fxTurno');fx.t0=performance.now();fx.pasando=false;
-  if(fx.online){t.textContent=fx.turno===fx.yo?'Tu turno: tira o acomoda a tu portero (1)':`Turno de ${fx.nombres[fx.turno]}…`;return}
-  if(fxCfg.modo==='cpu')t.textContent=fx.turno===0?'Tu turno: tira o acomoda a tu portero (1)':'Turno de la compu…';
+  if(fx.online){t.textContent=fx.turno===fx.yo?'Tu turno: arrastra una ficha hacia atrás y suelta':`Turno de ${fx.nombres[fx.turno]}…`;return}
+  if(fxCfg.modo==='cpu')t.textContent=fx.turno===0?'Tu turno: arrastra una ficha hacia atrás y suelta':'Turno de la compu…';
   else t.textContent=`Turno de ${fx.eq[fx.turno].n}`+(fx.turno===1?' (arriba)':' (abajo)');
   if(fxCfg.modo==='cpu'&&fx.turno===1)fxCpuJugar()}
 function fxCpuJugar(){const f=fx;setTimeout(()=>{if(fx!==f||!f.activo||f.mov||f.pausa||f.fin)return;const t=fxCpuTiro();
   f.apunta={i:t.i,ang:t.ang,pow:t.v/FMAXV,k:0};const t0=performance.now();
   (function anima(n){if(fx!==f||!f.activo)return;const k=Math.min(1,(n-t0)/650);f.apunta.k=k;if(k<1)requestAnimationFrame(anima);else{f.apunta=null;fxDisparar(t.i,Math.cos(t.ang)*t.v,Math.sin(t.ang)*t.v)}})(t0)},650)}
 function fxDisparar(i,vx,vy){fx.B[i].vx=vx;fx.B[i].vy=vy;fx.mov=true;patada();vibra(15)}
-function fxReloj(){const r=$('fxReloj'),humano=fx.online||fxCfg.modo==='2p'||fx.turno===0,activo=!fx.mov&&!fx.pausa&&!fx.fin&&!fx.esperando&&!fx.apunta&&humano&&fx.t0;
+function fxReloj(){if(fx.enPausa&&!fx.online)return;const r=$('fxReloj'),humano=fx.online||fxCfg.modo==='2p'||fx.turno===0,activo=!fx.mov&&!fx.pausa&&!fx.fin&&!fx.esperando&&!fx.apunta&&humano&&fx.t0;
   r.hidden=!activo;if(!activo)return;const q=FX_SEG-(performance.now()-fx.t0)/1000,n=Math.max(0,Math.ceil(q));
   $('fxRelojBar').style.width=Math.max(0,q/FX_SEG*100)+'%';r.classList.toggle('poco',q<5);
   const mio=fx.online?fx.turno===fx.yo:true;$('fxRelojN').textContent=mio?`⏱ ${n} s para tirar`:`⏱ Le quedan ${n} s`;
@@ -1238,8 +1276,8 @@ function fxReloj(){const r=$('fxReloj'),humano=fx.online||fxCfg.modo==='2p'||fx.
   else if(q<=0){fx.drag=null;fx.mueve=null;silbato(false);toast('⏱ ¡Se acabó el tiempo! El turno pasa al otro equipo');fx.turno=1-fx.turno;fxTurnoUI()}}
 function tone2(){const a=ac();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.frequency.value=880;g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.13)}
 function fxLoop(){if(!fx||!fx.activo)return;requestAnimationFrame(fxLoop);fx.t++;fxReloj();
-  if(fx.mov&&!fx.pausa){let golpe=false;for(let s=0;s<4;s++)if(fxPaso(fx.B,4))golpe=true;fxFriccion(fx.B);
-    const bl=fx.B[10];bl.rot+=Math.hypot(bl.vx,bl.vy)/bl.r;
+  if(fx.mov&&!fx.pausa&&!(fx.enPausa&&!fx.online)){let golpe=false;for(let s=0;s<4;s++)if(fxPaso(fx.B,4))golpe=true;fxFriccion(fx.B);
+    const bl=fx.B[fx.B.length-1];bl.rot+=Math.hypot(bl.vx,bl.vy)/bl.r;
     if(golpe&&!fx.sonoBalon){fx.sonoBalon=true;patada()}
     const g=fxGolDe(bl);
     if(fx.online){if(g>=0||fxQuieto(fx.B)){fx.mov=false;fx.sonoBalon=false;if(fx.autor){fx.autor=false;foFinTiro(g)}else{fx.esperando=true;foPendiente()}}}
@@ -1278,8 +1316,7 @@ function fxDibujar(){const c=fxCtx,s=fx.s*fx.dpr;c.setTransform(1,0,0,1,0,0);c.c
   for(const b of fx.B){c.fillStyle='rgba(0,0,0,.35)';c.beginPath();c.arc(b.x+3,b.y+5,b.r,0,7);c.fill();
     if(b.t<0){fxBalon(c,b);continue}
     const e=fx.eq[b.t];
-    if(puede&&b.t===fx.turno&&(!fx.online||b.t===fx.yo)){c.strokeStyle=b.n===1?`rgba(94,200,255,${.35+pulso*.5})`:`rgba(255,210,63,${.35+pulso*.5})`;c.lineWidth=5;c.beginPath();c.arc(b.x,b.y,b.r+6,0,7);c.stroke();
-      if(b.n===1){c.save();c.translate(b.x,b.y);if(fx.flip)c.rotate(Math.PI);c.fillStyle='rgba(94,200,255,.95)';c.font='700 15px Arial';c.textAlign='center';c.fillText('↔ mover',0,b.r+22);c.restore()}}
+    if(puede&&b.t===fx.turno&&(!fx.online||b.t===fx.yo)){c.strokeStyle=`rgba(255,210,63,${.35+pulso*.5})`;c.lineWidth=5;c.beginPath();c.arc(b.x,b.y,b.r+6,0,7);c.stroke();}
     c.fillStyle=e.a;c.beginPath();c.arc(b.x,b.y,b.r,0,7);c.fill();
     c.strokeStyle=e.b;c.lineWidth=6;c.beginPath();c.arc(b.x,b.y,b.r-3,0,7);c.stroke();
     const g=c.createRadialGradient(b.x-8,b.y-10,2,b.x,b.y,b.r);g.addColorStop(0,'rgba(255,255,255,.35)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.beginPath();c.arc(b.x,b.y,b.r-6,0,7);c.fill();
@@ -1303,7 +1340,6 @@ function fxPunto(e){const r=fxCv.getBoundingClientRect(),x=(e.clientX-r.left)/fx
 fxCv.addEventListener('pointerdown',e=>{if(!fx||fx.mov||fx.pausa||fx.fin||fx.apunta||fx.esperando)return;if(fx.online?fx.turno!==fx.yo:(fxCfg.modo==='cpu'&&fx.turno===1))return;
   const p=fxPunto(e);let best=-1,bd=1e9;fx.B.forEach((b,i)=>{if(b.t!==fx.turno)return;const d=Math.hypot(b.x-p.x,b.y-p.y);if(d<b.r*1.5&&d<bd){bd=d;best=i}});
   if(best<0)return;e.preventDefault();fxCv.setPointerCapture(e.pointerId);
-  if(fx.B[best].n===1){const b=fx.B[best];fx.mueve={i:best,dx:b.x-p.x,dy:b.y-p.y};return}
   fx.drag={i:best,x:p.x,y:p.y}});
 function fxMoverPortero(i,x,y){const b=fx.B[i],abajo=b.t===0,x0=FW/2-180+b.r,x1=FW/2+180-b.r,y0=abajo?FH-150:b.r,y1=abajo?FH-b.r:150;
   let nx=Math.max(x0,Math.min(x1,x)),ny=Math.max(y0,Math.min(y1,y));
@@ -1318,38 +1354,60 @@ function fxSuelta(e){if(fx&&fx.mueve){const i=fx.mueve.i;fx.mueve=null;if(fx.onl
   if(pow<.08)return;const vx=dx/l*FMAXV*pow,vy=dy/l*FMAXV*pow;if(fx.online)foTirar(d.i,vx,vy);else fxDisparar(d.i,vx,vy)}
 fxCv.addEventListener('pointerup',fxSuelta);fxCv.addEventListener('pointercancel',fxSuelta);
 
+/* ----- pausa ----- */
+function fxQuienCambia(){return fx.online?fx.yo:fxCfg.modo==='cpu'?0:fx.turno}
+function abrirPausa(){if(!fx||fx.fin)return;fx.enPausa=true;fx.pausaT=performance.now();fx.drag=null;
+  const t=fxQuienCambia(),puede=!fx.mov&&!fx.pausa&&(!fx.online||fx.turno===fx.yo);
+  $('pzForm').disabled=!puede;
+  $('pzNota').textContent=fx.online?(puede?'En línea el juego sigue corriendo. Puedes cambiar tu formación porque es tu turno.':'En línea el juego sigue corriendo. Solo puedes cambiar tu formación en tu turno.')
+    :fxCfg.modo==='2p'?`Cambias la formación de ${fx.eq[t].n} (le toca tirar).`:'El partido y el reloj están detenidos.';
+  $('capaPausa').hidden=false}
+function cerrarPausa(){if(!fx)return;$('capaPausa').hidden=true;if(fx.enPausa&&!fx.online&&fx.t0)fx.t0+=performance.now()-fx.pausaT;fx.enPausa=false}
+$('fxPausa').onclick=abrirPausa;$('pzSeguir').onclick=cerrarPausa;
+$('pzForm').onclick=()=>{const t=fxQuienCambia();$('capaPausa').hidden=true;
+  abrirAlin({tit:'Cambiar formación',eq:fx.eq[t],form:fxFormsAct[t],saltar:'Cancelar',
+    listo:f=>{pantalla('fxJuego');fxMedir();if(f!==null)fxCambiarForm(t,f);cerrarPausa()},cancelar:()=>{pantalla('fxJuego');fxMedir();cerrarPausa()}})};
+function fxCambiarForm(t,form){if(!fx||fx.mov)return;fxFormsAct=fxFormsAct.slice();fxFormsAct[t]=form;
+  if(!fx.online&&t===0&&fxCfg.modo==='cpu')ls.set('fx_form_'+fxTamAct,JSON.stringify(form));
+  const P=fxPosDe(form),idx=fx.B.map((b,i)=>i).filter(i=>fx.B[i].t===t).slice(1),libre=(b,x,y)=>fx.B.every(o=>o===b||Math.hypot(x-o.x,y-o.y)>=b.r+o.r+2);
+  idx.forEach((bi,k)=>{const b=fx.B[bi];let[x,y,n]=P[k+1];if(t===1){x=FW-x;y=FH-y}b.n=n;b.vx=b.vy=0;
+    let ok=false;for(let r=0;r<=240&&!ok;r+=20)for(let a=0;a<12&&!ok;a++){const nx=Math.max(b.r,Math.min(FW-b.r,x+Math.cos(a*.5236)*r)),ny=Math.max(b.r,Math.min(FH-b.r,y+Math.sin(a*.5236)*r));
+      if(libre(b,nx,ny)){b.x=nx;b.y=ny;ok=true}if(r===0)break}});
+  toast(`Formación: ${FXF()[form.f].n}`);
+  if(fx.online&&FO){if(FO.meRef)FO.meRef.update({form});const J=FO.J;FO.juegoRef.update({forms:fxFormsAct,B:ser(fx.B),seq:(J.seq||0)+1,turno:fx.turno})}}
+
 /* ----- alineación ----- */
-function fxFormGuardada(){try{const f=JSON.parse(ls.get('fx_form','null'));if(f&&FX_FORMS[f.f]&&f.nums&&f.nums.length===4)return f}catch(e){}return formDef()}
+function fxFormGuardada(){try{const f=JSON.parse(ls.get('fx_form_'+fxTamAct,'null'));if(f&&FXF()[f.f])return{f:f.f}}catch(e){}return formDef()}
 let FA=null;
-function abrirAlin(o){FA={...o,form:{f:o.form.f,nums:o.form.nums.slice()}};pintarAlin();pantalla('fxAlin')}
+function abrirAlin(o){FA={...o,form:{f:FXF()[o.form&&o.form.f]?o.form.f:'equi'}};pintarAlin();pantalla('fxAlin')}
 function miniCancha(form){const P=fxPosDe(form);
   return `<svg viewBox="0 0 120 150"><rect width="120" height="150" rx="8" fill="#1d6337"/><g fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"><rect x="4" y="4" width="112" height="142" rx="4"/><path d="M4 75h112"/><circle cx="60" cy="75" r="14"/><rect x="30" y="122" width="60" height="24"/></g>`+
     P.map(([x,y,n])=>`<circle cx="${x/5}" cy="${y/6.4}" r="7.5" fill="${n===1?'#5ec8ff':'#ffd23f'}" stroke="#111" stroke-width="1"/><text x="${x/5}" y="${y/6.4+3.5}" text-anchor="middle" font-size="9" font-weight="700" font-family="Arial" fill="#111">${n}</text>`).join('')+'</svg>'}
-function pintarAlin(){$('faTit').textContent=FA.tit;$('faEq').innerHTML=FA.eq?camiseta(FA.eq)+`<span>${esc(FA.eq.n)}</span>`:'';
-  $('faForms').innerHTML=Object.entries(FX_FORMS).map(([k,F])=>`<button class="fa-form${FA.form.f===k?' on':''}" data-f="${k}">${miniCancha(k===FA.form.f?FA.form:{f:k,nums:F.nums})}<b>${F.n}</b><small>${F.d}</small></button>`).join('');
-  $('faForms').querySelectorAll('.fa-form').forEach(b=>b.onclick=()=>{const k=b.dataset.f;FA.form={f:k,nums:FX_FORMS[k].nums.slice()};pintarAlin()});
-  $('faNums').innerHTML=Object.keys(FX_ROL).map(Number).sort((a,b)=>FX_ORD[FX_ROL[a]]-FX_ORD[FX_ROL[b]]||a-b).map(n=>`<button class="fa-num${FA.form.nums.includes(n)?' on':''}" data-n="${n}"><b>${n}</b><span>${FX_ROL[n]}</span></button>`).join('');
-  $('faNums').querySelectorAll('.fa-num').forEach(b=>b.onclick=()=>{const n=+b.dataset.n,a=FA.form.nums,i=a.indexOf(n);if(i>=0)a.splice(i,1);else if(a.length<4)a.push(n);else{a.shift();a.push(n)}pintarAlin()});
-  $('faCuenta').textContent=`(${FA.form.nums.length}/4)`;$('faListo').disabled=FA.form.nums.length!==4}
+function pintarAlin(){$('faTit').textContent=FA.tit;$('faSaltar').textContent=FA.saltar||'Saltar (automático)';$('faListo').textContent=FA.saltar?'Usar esta formación':'¡A jugar!';$('faEq').innerHTML=FA.eq?camiseta(FA.eq)+`<span>${esc(FA.eq.n)}</span>`:'';
+  $('faForms').innerHTML=Object.entries(FXF()).map(([k,F])=>`<button class="fa-form${FA.form.f===k?' on':''}" data-f="${k}">${miniCancha({f:k})}<b>${F.n}</b><small>${F.d}</small></button>`).join('');
+  $('faForms').querySelectorAll('.fa-form').forEach(b=>b.onclick=()=>{const k=b.dataset.f;FA.form={f:k};pintarAlin()});
+}
 $('faListo').onclick=()=>{const f=FA.listo,form=FA.form;FA=null;f(form)};
-$('faSaltar').onclick=()=>{const f=FA.listo;FA=null;f(formDef())};
-$('foAlinBtn').onclick=()=>{if(!FO)return;const s=FO.sala||{};abrirAlin({tit:'Mi alineación',eq:miEq,form:(s[FO.yo]&&s[FO.yo].form)||fxFormGuardada(),listo:f=>{ls.set('fx_form',JSON.stringify(f));if(FO)FO.meRef.update({form:f});pantalla('foLobby');foPintarLobby()}})};
+$('faSaltar').onclick=()=>{const o=FA;FA=null;if(o.cancelar)o.cancelar();else o.listo(formDef())};
+$('foAlinBtn').onclick=()=>{if(!FO)return;const s=FO.sala||{};fxTamAct=FO.J.tam||5;abrirAlin({tit:'Mi alineación · '+TAM_TXT[fxTamAct],eq:miEq,form:(s[FO.yo]&&s[FO.yo].form)||fxFormGuardada(),listo:f=>{ls.set('fx_form_'+fxTamAct,JSON.stringify(f));if(FO)FO.meRef.update({form:f});pantalla('foLobby');foPintarLobby()}})};
 
 /* ----- menú de fichas ----- */
 function fxPintarMenu(){$('fxEq').innerHTML=camiseta(miEq)+'<span>'+esc(miEq.n)+' · cambiar</span>';
   document.querySelectorAll('#fxModos button').forEach(b=>b.classList.toggle('on',b.dataset.m===fxCfg.modo));
-  document.querySelectorAll('#fxGoles button').forEach(b=>b.classList.toggle('on',+b.dataset.g===fxCfg.goles))}
+  document.querySelectorAll('#fxGoles button').forEach(b=>b.classList.toggle('on',+b.dataset.g===fxCfg.goles));
+  document.querySelectorAll('#fxTam button').forEach(b=>b.classList.toggle('on',+b.dataset.t===fxCfg.tam))}
 document.querySelectorAll('#fxModos button').forEach(b=>b.onclick=()=>{fxCfg.modo=b.dataset.m;ls.set('fx_modo',fxCfg.modo);fxPintarMenu()});
 document.querySelectorAll('#fxGoles button').forEach(b=>b.onclick=()=>{fxCfg.goles=+b.dataset.g;ls.set('fx_goles',fxCfg.goles);fxPintarMenu()});
+document.querySelectorAll('#fxTam button').forEach(b=>b.onclick=()=>{fxCfg.tam=+b.dataset.t;ls.set('fx_tam',fxCfg.tam);fxPintarMenu()});
 const irFxMenu=()=>{fxPintarMenu();pantalla('fxMenu')};
 $('fxEq').onclick=()=>abrirEquipos(irFxMenu);
-$('fxJugar').onclick=()=>{
+$('fxJugar').onclick=()=>{fxTamAct=fxCfg.tam;
   const mia=fxFormGuardada();
-  abrirAlin({tit:'Tu alineación',eq:miEq,form:mia,listo:f0=>{ls.set('fx_form',JSON.stringify(f0));
-    if(fxCfg.modo==='cpu'){const ks=Object.keys(FX_FORMS),k=ks[Math.floor(Math.random()*ks.length)];fxFormsAct=[f0,{f:k,nums:FX_FORMS[k].nums.slice()}];fxEmpezar()}
+  abrirAlin({tit:'Tu alineación · '+TAM_TXT[fxTamAct],eq:miEq,form:mia,listo:f0=>{ls.set('fx_form_'+fxTamAct,JSON.stringify(f0));
+    if(fxCfg.modo==='cpu'){const ks=Object.keys(FXF()),k=ks[Math.floor(Math.random()*ks.length)];fxFormsAct=[f0,{f:k}];fxEmpezar()}
     else abrirAlin({tit:'Jugador 2 (arriba)',eq:null,form:formDef(),listo:f1=>{fxFormsAct=[f0,f1];fxEmpezar()}})}})};
 $('fxVolver').onclick=()=>pantalla('hub');
-$('fxSalir').onclick=()=>{if(fx)fx.activo=false;if(FO)foSalir();irFxMenu()};
+$('fxSalir').onclick=()=>{$('capaPausa').hidden=true;if(fx){fx.enPausa=false;fx.activo=false}if(FO)foSalir();irFxMenu()};
 $('fxOtra').onclick=()=>{if(FO)foEmpezar();else fxEmpezar()};
 $('fxMenuFin').onclick=()=>{$('capaFx').hidden=true;if(fx)fx.activo=false;if(FO)foSalir();irFxMenu()};
 
@@ -1647,7 +1705,7 @@ function foValor(snap){const sala=snap.val()||{};if(!FO)return;
   const t=J.tiro;
   if(t&&t.n>fx.tiroVisto){fx.tiroVisto=t.n;if(t.por!==FO.yo){fx.B=deser(t.B0);fx.B[t.i].vx=t.vx;fx.B[t.i].vy=t.vy;fx.autor=false;fx.esperando=false;fx.mov=true;patada()}}
   if((J.seq||0)>fx.seqVisto){fx.pend=J;if(!fx.mov&&!fx.pausa)foAplicar()}}
-function foIniciar(J){if(fx)fx.activo=false;fxFormsAct=(J.forms&&J.forms.length===2)?J.forms:[formDef(),formDef()];const e0=eqDe(J.eq[0]);let e1=eqDe(J.eq[1]);
+function foIniciar(J){if(fx)fx.activo=false;fxTamAct=J.tam||5;fxFormsAct=(J.forms&&J.forms.length===2)?J.forms:[formDef(),formDef()];const e0=eqDe(J.eq[0]);let e1=eqDe(J.eq[1]);
   if(colDist(e0.a,e1.a)<130)e1={...e1,a:e1.b,b:e1.a};
   fx={online:true,ronda:J.ronda,yo:J.jug.indexOf(FO.yo),flip:J.jug.indexOf(FO.yo)===1,nombres:J.nombres,B:deser(J.B),eq:[e0,e1],sc:(J.sc||[0,0]).slice(),turno:J.turno||0,
     mov:false,pausa:false,fin:false,drag:null,apunta:null,activo:true,t:0,tiroVisto:J.tiro?J.tiro.n:0,seqVisto:J.seq||0,golVisto:J.gol?J.gol.n:0,pend:null,esperando:false,pmVisto:J.pm?J.pm.n:0};
@@ -1658,7 +1716,7 @@ function foPasar(){const J=FO.J;FO.juegoRef.update({seq:(J.seq||0)+1,B:ser(fx.B)
 function foPortero(i){const J=FO.J,n=Math.max(fx.pmVisto||0,(J.pm&&J.pm.n)||0)+1;fx.pmVisto=n;const b=fx.B[i];FO.juegoRef.update({pm:{n,i,x:Math.round(b.x*100)/100,y:Math.round(b.y*100)/100,por:FO.yo}})}
 function foPendiente(){if(fx.pend)foAplicar()}
 function foAplicar(){const J=fx.pend;if(!J)return;fx.pend=null;fx.seqVisto=J.seq||0;fx.esperando=false;
-  const fin=()=>{fx.B=deser(J.B);fx.sc=(J.sc||[0,0]).slice();fx.turno=J.turno||0;$('fxS').textContent=fx.sc[0]+'-'+fx.sc[1];fx.pausa=false;
+  const fin=()=>{if(J.forms&&J.forms.length===2)fxFormsAct=J.forms;fx.B=deser(J.B);fx.sc=(J.sc||[0,0]).slice();fx.turno=J.turno||0;$('fxS').textContent=fx.sc[0]+'-'+fx.sc[1];fx.pausa=false;
     if(J.estado==='fin'){fxFinal(J.ganador);return}fxTurnoUI();if(fx.pend)foAplicar()};
   if(J.gol&&J.gol.n>fx.golVisto){fx.golVisto=J.gol.n;const t=J.gol.t;fx.pausa=true;ovacion(5);vibra([60,40,120]);
     const g=$('fxGol');g.innerHTML=`<div>¡GOOOL!<small>${esc(fx.nombres[t])}</small></div>`;g.hidden=false;
@@ -1672,17 +1730,19 @@ function foFinTiro(g){const J=FO.J,n={seq:(J.seq||0)+1};
     if(sc[g]>=(J.meta||2)){n.estado='fin';n.ganador=g}fx.pausa=true}
   else{n.B=ser(fx.B);n.turno=1-(J.turno||0)}
   FO.juegoRef.update(n).catch(()=>toast('No se pudo enviar la jugada. Revisa tu internet.'))}
-function foPintarLobby(aviso){if(!FO||!FO.sala)return;const s=FO.sala,meta=FO.J.meta||2,mf=(s[FO.yo]&&s[FO.yo].form)||fxFormGuardada();$('foAlinBtn').innerHTML=`<span>📋</span><span>Mi alineación: ${FX_FORMS[mf.f].n} · cambiar</span>`;
+function foPintarLobby(aviso){if(!FO||!FO.sala)return;fxTamAct=FO.J.tam||5;const s=FO.sala,meta=FO.J.meta||2,mf=(s[FO.yo]&&s[FO.yo].form)||fxFormGuardada();$('foAlinBtn').innerHTML=`<span>📋</span><span>Mi alineación: ${(FXF()[mf.f]||FXF().equi).n} · cambiar</span>`;
   $('foCuantos').textContent=`(${FO.hum.length}/2)`;
   $('foLista').innerHTML=FO.hum.map((id,k)=>`<li><span class="li-izq">${camiseta(eqDe(s[id].equipo))}<span>${esc(s[id].nombre)}${id===FO.yo?' (tú)':''}</span></span>${k===0?'<span class="tag">Anfitrión</span>':''}</li>`).join('');
   $('foLista').querySelectorAll('svg').forEach(v=>{v.style.width='30px';v.style.height='30px'});
   $('foHostOpc').hidden=!FO.host;$('foEmpezar').hidden=!FO.host;$('foEmpezar').disabled=FO.hum.length<2||!!aviso;
   document.querySelectorAll('#foGoles button').forEach(b=>b.classList.toggle('on',+b.dataset.g===meta));
-  $('foEstadoL').textContent=aviso||(FO.host?(FO.hum.length<2?'Esperando a que entre tu amigo…':''):`Esperando a que el anfitrión empiece… Se juega a ${meta} gol${meta>1?'es':''}.`)}
+  fxTamAct=FO.J.tam||5;document.querySelectorAll('#foTam button').forEach(b=>b.classList.toggle('on',+b.dataset.t===fxTamAct));
+  $('foEstadoL').textContent=aviso||(FO.host?(FO.hum.length<2?'Esperando a que entre tu amigo…':''):`Esperando a que el anfitrión empiece… Se juega a ${meta} gol${meta>1?'es':''}, ${TAM_TXT[FO.J.tam||5]}.`)}
 document.querySelectorAll('#foGoles button').forEach(b=>b.onclick=()=>FO&&FO.juegoRef.update({meta:+b.dataset.g}));
-function foEmpezar(){if(!FO||!FO.host||FO.hum.length<2)return;const jug=FO.hum.slice(0,2),s=FO.sala;
+document.querySelectorAll('#foTam button').forEach(b=>b.onclick=()=>FO&&FO.juegoRef.update({tam:+b.dataset.t}));
+function foEmpezar(){if(!FO||!FO.host||FO.hum.length<2)return;fxTamAct=FO.J.tam||5;const jug=FO.hum.slice(0,2),s=FO.sala;
   FO.juegoRef.update({estado:'jugando',ronda:(FO.J.ronda||0)+1,jug,nombres:jug.map(id=>s[id].nombre),eq:jug.map(id=>s[id].equipo||'liga-america'),
-    meta:FO.J.meta||2,forms:jug.map(id=>s[id].form||formDef()),sc:[0,0],turno:0,B:ser(fxCuerpos(jug.map(id=>s[id].form||formDef()))),seq:1,tiro:null,gol:null,ganador:null})}
+    meta:FO.J.meta||2,tam:fxTamAct,forms:jug.map(id=>s[id].form||formDef()),sc:[0,0],turno:0,B:ser(fxCuerpos(jug.map(id=>s[id].form||formDef()))),seq:1,tiro:null,gol:null,ganador:null})}
 $('foEmpezar').onclick=foEmpezar;
 $('foCopiar').onclick=()=>{const t=FO&&FO.code;try{navigator.clipboard.writeText(t).then(()=>toast('Código copiado'),()=>toast('Código: '+t))}catch(e){toast('Código: '+t)}};
 function foSalir(){if(!FO)return;FO.salaRef.off('value',foValor);try{FO.meRef.onDisconnect().cancel()}catch(e){}FO.meRef.remove();
