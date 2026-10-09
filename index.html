@@ -227,6 +227,10 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
 #fxE1{flex-direction:row-reverse;text-align:right}
 .fx-turno{font-family:var(--f-num);font-weight:700;font-size:16px;letter-spacing:.05em;text-transform:uppercase;color:var(--amarillo);min-height:22px;margin-bottom:6px;text-align:center}
 .fx-campo{position:relative}
+.fx-reloj{position:relative;width:min(100%,320px);height:22px;border-radius:99px;background:var(--panel);overflow:hidden;margin:-2px 0 8px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1)}
+.fx-reloj i{position:absolute;left:0;top:0;bottom:0;background:var(--verde-ok);border-radius:99px;transition:width .2s linear}
+.fx-reloj.poco i{background:var(--rojo)}
+.fx-reloj b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-num);font-weight:700;font-size:15px;letter-spacing:.05em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 #fxCanvas{display:block;touch-action:none;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.45)}
 .fx-gol{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;text-align:center}
 .fx-gol div{font-family:var(--f-disp);font-size:72px;color:var(--amarillo);text-shadow:0 4px 0 rgba(0,0,0,.45);animation:late .5s ease-in-out 3;line-height:1}
@@ -506,7 +510,7 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
     <div class="etq">Goles para ganar</div>
     <div class="metas" id="fxGoles"><button data-g="1">1</button><button data-g="2">2</button><button data-g="3">3</button></div>
     <button class="btn btn-1" id="fxJugar">Jugar</button>
-    <p class="ayuda">En tu turno, arrastra una de tus fichas hacia atrás, apunta y suelta para disparar. Gana quien llegue primero a los goles.</p>
+    <p class="ayuda">En tu turno tienes 15 segundos: arrastra una ficha hacia atrás y suelta para tirar. A tu portero (1) lo puedes acomodar en tu área las veces que quieras. Si se acaba el tiempo, el turno pasa al otro.</p>
   </div>
   <div class="card">
     <div class="etq">En línea con un amigo · cada quien en su celular</div>
@@ -548,6 +552,7 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
     <button class="x btn-son" id="fxSon" aria-label="Sonido">🔊</button>
   </div>
   <div class="fx-turno" id="fxTurno"></div>
+  <div class="fx-reloj" id="fxReloj" hidden><i id="fxRelojBar"></i><b id="fxRelojN">15</b></div>
   <div class="fx-campo"><canvas id="fxCanvas"></canvas><div class="fx-gol" id="fxGol" hidden></div></div>
 </section>
 
@@ -1168,16 +1173,26 @@ function fxEmpezar(){if(fx)fx.activo=false;
   fx={B:fxCuerpos(),eq:[miEq,fxRival()],sc:[0,0],turno:0,mov:false,pausa:false,fin:false,drag:null,apunta:null,activo:true,t:0};
   $('fxE0').innerHTML=camiseta(fx.eq[0])+`<span>${esc(fx.eq[0].n)}</span>`;$('fxE1').innerHTML=camiseta(fx.eq[1])+`<span>${esc(fx.eq[1].n)}</span>`;
   $('fxS').textContent='0-0';$('capaFx').hidden=true;$('fxGol').hidden=true;pantalla('fxJuego');fxMedir();silbato(false);fxTurnoUI();requestAnimationFrame(fxLoop)}
-function fxTurnoUI(){const t=$('fxTurno');
-  if(fx.online){t.textContent=fx.turno===fx.yo?'Tu turno: arrastra una ficha hacia atrás y suelta':`Turno de ${fx.nombres[fx.turno]}…`;return}
-  if(fxCfg.modo==='cpu')t.textContent=fx.turno===0?'Tu turno: arrastra una ficha hacia atrás y suelta':'Turno de la compu…';
+const FX_SEG=15;
+function fxTurnoUI(){const t=$('fxTurno');fx.t0=performance.now();fx.pasando=false;
+  if(fx.online){t.textContent=fx.turno===fx.yo?'Tu turno: tira o acomoda a tu portero (1)':`Turno de ${fx.nombres[fx.turno]}…`;return}
+  if(fxCfg.modo==='cpu')t.textContent=fx.turno===0?'Tu turno: tira o acomoda a tu portero (1)':'Turno de la compu…';
   else t.textContent=`Turno de ${fx.eq[fx.turno].n}`+(fx.turno===1?' (arriba)':' (abajo)');
   if(fxCfg.modo==='cpu'&&fx.turno===1)fxCpuJugar()}
 function fxCpuJugar(){const f=fx;setTimeout(()=>{if(fx!==f||!f.activo||f.mov||f.pausa||f.fin)return;const t=fxCpuTiro();
   f.apunta={i:t.i,ang:t.ang,pow:t.v/FMAXV,k:0};const t0=performance.now();
   (function anima(n){if(fx!==f||!f.activo)return;const k=Math.min(1,(n-t0)/650);f.apunta.k=k;if(k<1)requestAnimationFrame(anima);else{f.apunta=null;fxDisparar(t.i,Math.cos(t.ang)*t.v,Math.sin(t.ang)*t.v)}})(t0)},650)}
 function fxDisparar(i,vx,vy){fx.B[i].vx=vx;fx.B[i].vy=vy;fx.mov=true;patada();vibra(15)}
-function fxLoop(){if(!fx||!fx.activo)return;requestAnimationFrame(fxLoop);fx.t++;
+function fxReloj(){const r=$('fxReloj'),humano=fx.online||fxCfg.modo==='2p'||fx.turno===0,activo=!fx.mov&&!fx.pausa&&!fx.fin&&!fx.esperando&&!fx.apunta&&humano&&fx.t0;
+  r.hidden=!activo;if(!activo)return;const q=FX_SEG-(performance.now()-fx.t0)/1000,n=Math.max(0,Math.ceil(q));
+  $('fxRelojBar').style.width=Math.max(0,q/FX_SEG*100)+'%';r.classList.toggle('poco',q<5);
+  const mio=fx.online?fx.turno===fx.yo:true;$('fxRelojN').textContent=mio?`⏱ ${n} s para tirar`:`⏱ Le quedan ${n} s`;
+  if(fx.ultSeg!==n){fx.ultSeg=n;if(mio&&n<=3&&n>0)tone2()}
+  if(fx.pasando)return;
+  if(fx.online){if((fx.turno===fx.yo&&q<=0)||(fx.turno!==fx.yo&&q<=-4)){fx.pasando=true;fx.drag=null;fx.mueve=null;foPasar()}}
+  else if(q<=0){fx.drag=null;fx.mueve=null;silbato(false);toast('⏱ ¡Se acabó el tiempo! El turno pasa al otro equipo');fx.turno=1-fx.turno;fxTurnoUI()}}
+function tone2(){const a=ac();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.frequency.value=880;g.gain.setValueAtTime(.08,t);g.gain.exponentialRampToValueAtTime(.001,t+.12);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.13)}
+function fxLoop(){if(!fx||!fx.activo)return;requestAnimationFrame(fxLoop);fx.t++;fxReloj();
   if(fx.mov&&!fx.pausa){let golpe=false;for(let s=0;s<4;s++)if(fxPaso(fx.B,4))golpe=true;fxFriccion(fx.B);
     const bl=fx.B[10];bl.rot+=Math.hypot(bl.vx,bl.vy)/bl.r;
     if(golpe&&!fx.sonoBalon){fx.sonoBalon=true;patada()}
@@ -1218,7 +1233,8 @@ function fxDibujar(){const c=fxCtx,s=fx.s*fx.dpr;c.setTransform(1,0,0,1,0,0);c.c
   for(const b of fx.B){c.fillStyle='rgba(0,0,0,.35)';c.beginPath();c.arc(b.x+3,b.y+5,b.r,0,7);c.fill();
     if(b.t<0){fxBalon(c,b);continue}
     const e=fx.eq[b.t];
-    if(puede&&b.t===fx.turno){c.strokeStyle=`rgba(255,210,63,${.35+pulso*.5})`;c.lineWidth=5;c.beginPath();c.arc(b.x,b.y,b.r+6,0,7);c.stroke()}
+    if(puede&&b.t===fx.turno&&(!fx.online||b.t===fx.yo)){c.strokeStyle=b.n===1?`rgba(94,200,255,${.35+pulso*.5})`:`rgba(255,210,63,${.35+pulso*.5})`;c.lineWidth=5;c.beginPath();c.arc(b.x,b.y,b.r+6,0,7);c.stroke();
+      if(b.n===1){c.save();c.translate(b.x,b.y);if(fx.flip)c.rotate(Math.PI);c.fillStyle='rgba(94,200,255,.95)';c.font='700 15px Arial';c.textAlign='center';c.fillText('↔ mover',0,b.r+22);c.restore()}}
     c.fillStyle=e.a;c.beginPath();c.arc(b.x,b.y,b.r,0,7);c.fill();
     c.strokeStyle=e.b;c.lineWidth=6;c.beginPath();c.arc(b.x,b.y,b.r-3,0,7);c.stroke();
     const g=c.createRadialGradient(b.x-8,b.y-10,2,b.x,b.y,b.r);g.addColorStop(0,'rgba(255,255,255,.35)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.beginPath();c.arc(b.x,b.y,b.r-6,0,7);c.fill();
@@ -1241,9 +1257,18 @@ function fxBalon(c,b){c.save();c.translate(b.x,b.y);c.rotate(b.rot||0);c.fillSty
 function fxPunto(e){const r=fxCv.getBoundingClientRect(),x=(e.clientX-r.left)/fx.s-FOX,y=(e.clientY-r.top)/fx.s-FOY;return fx.flip?{x:FW-x,y:FH-y}:{x,y}}
 fxCv.addEventListener('pointerdown',e=>{if(!fx||fx.mov||fx.pausa||fx.fin||fx.apunta||fx.esperando)return;if(fx.online?fx.turno!==fx.yo:(fxCfg.modo==='cpu'&&fx.turno===1))return;
   const p=fxPunto(e);let best=-1,bd=1e9;fx.B.forEach((b,i)=>{if(b.t!==fx.turno)return;const d=Math.hypot(b.x-p.x,b.y-p.y);if(d<b.r*1.5&&d<bd){bd=d;best=i}});
-  if(best<0)return;e.preventDefault();fxCv.setPointerCapture(e.pointerId);fx.drag={i:best,x:p.x,y:p.y}});
-fxCv.addEventListener('pointermove',e=>{if(!fx||!fx.drag)return;const p=fxPunto(e);fx.drag.x=p.x;fx.drag.y=p.y});
-function fxSuelta(e){if(!fx||!fx.drag)return;const d=fx.drag;fx.drag=null;if(e.type==='pointercancel')return;
+  if(best<0)return;e.preventDefault();fxCv.setPointerCapture(e.pointerId);
+  if(fx.B[best].n===1){const b=fx.B[best];fx.mueve={i:best,dx:b.x-p.x,dy:b.y-p.y};return}
+  fx.drag={i:best,x:p.x,y:p.y}});
+function fxMoverPortero(i,x,y){const b=fx.B[i],abajo=b.t===0,x0=FW/2-180+b.r,x1=FW/2+180-b.r,y0=abajo?FH-150:b.r,y1=abajo?FH-b.r:150;
+  let nx=Math.max(x0,Math.min(x1,x)),ny=Math.max(y0,Math.min(y1,y));
+  for(let k=0;k<3;k++)for(const o of fx.B){if(o===b)continue;const dx=nx-o.x,dy=ny-o.y,d=Math.hypot(dx,dy),m=b.r+o.r+1;if(d<m){const ux=d?dx/d:0,uy=d?dy/d:1;nx=o.x+ux*m;ny=o.y+uy*m;nx=Math.max(x0,Math.min(x1,nx));ny=Math.max(y0,Math.min(y1,ny))}}
+  if(fx.B.every(o=>o===b||Math.hypot(nx-o.x,ny-o.y)>=b.r+o.r)){b.x=nx;b.y=ny}}
+fxCv.addEventListener('pointermove',e=>{if(!fx)return;const p=fxPunto(e);
+  if(fx.mueve){fxMoverPortero(fx.mueve.i,p.x+fx.mueve.dx,p.y+fx.mueve.dy);return}
+  if(!fx.drag)return;fx.drag.x=p.x;fx.drag.y=p.y});
+function fxSuelta(e){if(fx&&fx.mueve){const i=fx.mueve.i;fx.mueve=null;if(fx.online)foPortero(i);return}
+  if(!fx||!fx.drag)return;const d=fx.drag;fx.drag=null;if(e.type==='pointercancel')return;
   const b=fx.B[d.i],dx=b.x-d.x,dy=b.y-d.y,l=Math.hypot(dx,dy),pow=Math.min(l,190)/190;
   if(pow<.08)return;const vx=dx/l*FMAXV*pow,vy=dy/l*FMAXV*pow;if(fx.online)foTirar(d.i,vx,vy);else fxDisparar(d.i,vx,vy)}
 fxCv.addEventListener('pointerup',fxSuelta);fxCv.addEventListener('pointercancel',fxSuelta);
@@ -1552,16 +1577,19 @@ function foValor(snap){const sala=snap.val()||{};if(!FO)return;
   if(!fx||!fx.online||fx.ronda!==J.ronda)foIniciar(J);
   const rival=jug.find(id=>id!==FO.yo);
   if(rival&&!sala[rival]&&!fx.fin){fx.fin=true;$('fxFinTit').textContent='Tu rival se salió';$('fxFinSc').textContent=fx.sc[0]+'-'+fx.sc[1];$('fxOtra').hidden=true;$('fxFinEspera').hidden=true;$('fxMenuFin').textContent='Salir de la sala';$('capaFx').hidden=false;return}
+  if(J.pm&&J.pm.n>(fx.pmVisto||0)){fx.pmVisto=J.pm.n;if(J.pm.por!==FO.yo&&!fx.mov&&fx.B[J.pm.i]){fx.B[J.pm.i].x=J.pm.x;fx.B[J.pm.i].y=J.pm.y}}
   const t=J.tiro;
   if(t&&t.n>fx.tiroVisto){fx.tiroVisto=t.n;if(t.por!==FO.yo){fx.B=deser(t.B0);fx.B[t.i].vx=t.vx;fx.B[t.i].vy=t.vy;fx.autor=false;fx.esperando=false;fx.mov=true;patada()}}
   if((J.seq||0)>fx.seqVisto){fx.pend=J;if(!fx.mov&&!fx.pausa)foAplicar()}}
 function foIniciar(J){if(fx)fx.activo=false;const e0=eqDe(J.eq[0]);let e1=eqDe(J.eq[1]);
   if(colDist(e0.a,e1.a)<130)e1={...e1,a:e1.b,b:e1.a};
   fx={online:true,ronda:J.ronda,yo:J.jug.indexOf(FO.yo),flip:J.jug.indexOf(FO.yo)===1,nombres:J.nombres,B:deser(J.B),eq:[e0,e1],sc:(J.sc||[0,0]).slice(),turno:J.turno||0,
-    mov:false,pausa:false,fin:false,drag:null,apunta:null,activo:true,t:0,tiroVisto:J.tiro?J.tiro.n:0,seqVisto:J.seq||0,golVisto:J.gol?J.gol.n:0,pend:null,esperando:false};
+    mov:false,pausa:false,fin:false,drag:null,apunta:null,activo:true,t:0,tiroVisto:J.tiro?J.tiro.n:0,seqVisto:J.seq||0,golVisto:J.gol?J.gol.n:0,pend:null,esperando:false,pmVisto:J.pm?J.pm.n:0};
   $('fxE0').innerHTML=camiseta(e0)+`<span>${esc(J.nombres[0])}</span>`;$('fxE1').innerHTML=camiseta(e1)+`<span>${esc(J.nombres[1])}</span>`;
   $('fxS').textContent=fx.sc[0]+'-'+fx.sc[1];$('capaFx').hidden=true;$('fxGol').hidden=true;pantalla('fxJuego');fxMedir();silbato(false);fxTurnoUI();requestAnimationFrame(fxLoop);
   if(J.estado==='fin')fxFinal(J.ganador)}
+function foPasar(){const J=FO.J;FO.juegoRef.update({seq:(J.seq||0)+1,B:ser(fx.B),turno:1-(J.turno||0)});toast(fx.turno===fx.yo?'⏱ ¡Se acabó tu tiempo! El turno pasa a tu rival':'⏱ Tu rival no tiró a tiempo. ¡Te toca!')}
+function foPortero(i){const J=FO.J,n=Math.max(fx.pmVisto||0,(J.pm&&J.pm.n)||0)+1;fx.pmVisto=n;const b=fx.B[i];FO.juegoRef.update({pm:{n,i,x:Math.round(b.x*100)/100,y:Math.round(b.y*100)/100,por:FO.yo}})}
 function foPendiente(){if(fx.pend)foAplicar()}
 function foAplicar(){const J=fx.pend;if(!J)return;fx.pend=null;fx.seqVisto=J.seq||0;fx.esperando=false;
   const fin=()=>{fx.B=deser(J.B);fx.sc=(J.sc||[0,0]).slice();fx.turno=J.turno||0;$('fxS').textContent=fx.sc[0]+'-'+fx.sc[1];fx.pausa=false;
@@ -1644,7 +1672,7 @@ const TUTOS={
   {t:'Completa líneas',x:'Llena una fila o una columna completa y desaparece: cada línea vale 50 puntos.',s:CANCHA+grid(30,22,5,5,[10,11,12,13,14,0,6,21],'#2f6fe4')+`<rect x="27" y="57" width="99" height="23" rx="5" fill="none" stroke="#ffd23f" stroke-width="3"/><text x="180" y="78" text-anchor="middle" font-size="34" font-family="Impact,Arial" fill="#ffd23f" stroke="#111" stroke-width="1">+50</text>`},
   {t:'Tira penales',x:'Con amigos: al llegar a los puntos que eligió el anfitrión tiras un penal. Gana quien meta los goles primero. Solo: aguanta hasta que ya no quepan piezas.',s:CANCHA+`<path d="M60 20h120v55H60z" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="4"/>`+IL.balon(150,40,10)+IL.balon(120,120,9)+`<path d="M120 110 Q135 70 148 48" stroke="#ffd23f" stroke-width="3" fill="none" stroke-dasharray="4 5"/><text x="120" y="100" text-anchor="middle" font-size="22" font-family="Impact,Arial" fill="#ffd23f" stroke="#111" stroke-width=".8">¡GOL!</text>`}],
  fx:[
-  {t:'Elige una ficha',x:'En tu turno brillan tus fichas. Toca una y, sin soltar, arrastra el dedo hacia atrás.',s:CANCHA+`<circle cx="120" cy="60" r="22" fill="#e5383b" stroke="#fff" stroke-width="5"/><text x="120" y="67" text-anchor="middle" font-size="18" font-weight="700" fill="#fff" font-family="Arial">10</text><circle cx="120" cy="60" r="28" fill="none" stroke="#ffd23f" stroke-width="3"/><path d="M120 85 L120 118" stroke="#fff" stroke-width="3" stroke-dasharray="5 5"/>`+IL.dedo(112,112)},
+  {t:'Elige una ficha',x:'En tu turno brillan tus fichas y tienes 15 segundos. Toca una y, sin soltar, arrastra el dedo hacia atrás. A tu portero (1) lo acomodas arrastrándolo en tu área, las veces que quieras.',s:CANCHA+`<circle cx="120" cy="60" r="22" fill="#e5383b" stroke="#fff" stroke-width="5"/><text x="120" y="67" text-anchor="middle" font-size="18" font-weight="700" fill="#fff" font-family="Arial">10</text><circle cx="120" cy="60" r="28" fill="none" stroke="#ffd23f" stroke-width="3"/><path d="M120 85 L120 118" stroke="#fff" stroke-width="3" stroke-dasharray="5 5"/>`+IL.dedo(112,112)},
   {t:'Apunta y suelta',x:'La línea de puntos marca hacia dónde sale. Mientras más arrastras, más fuerte tiras. Suelta para disparar.',s:CANCHA+`<circle cx="120" cy="95" r="22" fill="#e5383b" stroke="#fff" stroke-width="5"/>`+[1,2,3,4,5,6].map(k=>`<circle cx="${120+k*4}" cy="${68-k*10}" r="${5-k*.5}" fill="hsl(${40-k*7},100%,55%)"/>`).join('')+`<path d="M120 95 m0 -30 a30 30 0 1 1 -21 9" fill="none" stroke="#ff8c1a" stroke-width="5"/>`},
   {t:'Mete gol',x:'Pega al balón para meterlo en la portería de enfrente. Los turnos se alternan y gana quien llegue primero a los goles.',s:CANCHA+`<path d="M80 2h80v18H80z" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="4"/>`+IL.balon(125,30,9)+`<circle cx="105" cy="100" r="18" fill="#2f6fe4" stroke="#ffd23f" stroke-width="4"/><path d="M110 85 Q118 55 124 40" stroke="#ffd23f" stroke-width="3" fill="none" stroke-dasharray="4 5"/>`}],
  yv:[
