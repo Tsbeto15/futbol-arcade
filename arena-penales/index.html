@@ -1,0 +1,1703 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Arena Penales &amp; Blackjack</title>
+<style>
+  :root{color-scheme:dark;--bg:#0a1220;--panel:#121c31;--ink:#f3f6fb;--gold:#ffd84a;--bad:#ff5d6c;--ok:#4ee08a;--blue:#5ec8ff}
+  *{box-sizing:border-box}
+  body{margin:0;background-color:#0a1220;background-image:radial-gradient(circle at 50% -10%,#24407a,var(--bg) 60%);color:var(--ink);overflow-x:hidden;
+    font-family:"Trebuchet MS",system-ui,sans-serif;text-align:center;padding:14px;min-height:100vh;
+    -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+  h1{margin:2px 0;font-family:Impact,"Arial Black",sans-serif;letter-spacing:2px;font-size:2rem;color:var(--gold);text-shadow:0 3px 0 #0007,0 0 24px #ffd84a55}
+  .sub{opacity:.75;margin-bottom:10px;min-height:20px}
+  .panel{max-width:820px;margin:0 auto;background:var(--panel);border:1px solid #ffffff1a;border-radius:16px;padding:14px;box-shadow:0 10px 30px #0008;position:relative;z-index:1}
+  .hidden{display:none!important}
+  button{background:linear-gradient(#ffe36e,#ffc21a);color:#2a2000;border:0;border-radius:10px;padding:11px 22px;font-size:1rem;font-weight:800;cursor:pointer;margin:6px;box-shadow:0 3px 0 #a67700;font-family:inherit;touch-action:manipulation;min-height:44px}
+  button:active{transform:translateY(2px);box-shadow:none}
+  button:disabled{opacity:.3;cursor:default}
+  button.alt{background:linear-gradient(#8fdcff,#3aa7e0);box-shadow:0 3px 0 #1f6e99;color:#032}
+  button.red{background:linear-gradient(#ff8a96,#e03a4c);box-shadow:0 3px 0 #8f1f2c;color:#fff}
+  button.grey{background:linear-gradient(#cfd6e4,#8e99b0);box-shadow:0 3px 0 #5c667c;color:#112}
+  input{font:inherit;font-size:1.1rem;padding:10px 12px;border-radius:10px;border:2px solid #ffffff33;background:#0a1220;color:var(--ink);text-align:center;-webkit-user-select:text;user-select:text}
+  .bgfx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+  .bgfx span{position:absolute;bottom:-60px;font-size:2rem;opacity:.18;animation:float linear infinite}
+  @keyframes float{to{transform:translateY(-120vh) rotate(360deg)}}
+  #topbar{max-width:820px;margin:0 auto 8px;display:flex;gap:4px;justify-content:center;flex-wrap:wrap;position:relative;z-index:2}
+  #topbar button{padding:7px 12px;font-size:.85rem;margin:2px;min-height:38px}
+  .games{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:14px 0 6px}
+  .game{width:240px;padding:20px 12px;border-radius:18px;border:3px solid #ffffff22;background:linear-gradient(160deg,#1d3a6d,#0f2142);color:var(--ink);box-shadow:0 8px 0 #060d1c;transition:.15s;display:block}
+  .game:hover{transform:translateY(-6px) rotate(-1deg);border-color:var(--gold)}
+  .game:active{transform:translateY(2px)}
+  .game .ic{font-size:3.4rem;display:block;animation:bob 2s ease-in-out infinite}
+  .game b{display:block;font-family:Impact,sans-serif;font-size:1.6rem;letter-spacing:2px;color:var(--gold);margin:4px 0}
+  .game i{opacity:.8;font-size:.85rem;font-style:normal}
+  @keyframes bob{50%{transform:translateY(-8px) rotate(6deg)}}
+  /* selección */
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding:6px 2px;justify-content:flex-start;-webkit-overflow-scrolling:touch}
+  .tab{flex:none;margin:0;padding:8px 14px;font-size:.85rem;background:#1b2b4d;color:var(--ink);box-shadow:none;min-height:38px}
+  .tab.on{background:linear-gradient(#ffe36e,#ffc21a);color:#2a2000}
+  .teams{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .team{width:140px;background:#0006;border:3px solid transparent;border-radius:14px;padding:8px;cursor:pointer;transition:.15s;color:var(--ink);box-shadow:none;margin:0}
+  .team:hover{transform:translateY(-5px);border-color:var(--gold);background:#0009}
+  .team .av{width:76px;margin:0 auto}
+  .team b{display:block;font-size:.85rem;margin-top:4px}
+  .chosen{display:inline-block;background:#ffd84a33;border-radius:10px;padding:3px 10px;margin:2px;font-weight:700}
+  .pl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:10px 0}
+  .pchip{position:relative;margin:0;padding:9px 14px;font-size:.9rem;background:#1b2b4d;color:var(--ink);box-shadow:none}
+  .pchip.on{background:linear-gradient(#ffe36e,#ffc21a);color:#2a2000}
+  .pchip b{display:inline-block;background:#111;color:var(--gold);border-radius:50%;width:20px;height:20px;line-height:20px;margin-right:6px;font-size:.75rem}
+  /* amigos */
+  .code{font-family:Impact,sans-serif;font-size:3.4rem;letter-spacing:10px;color:var(--gold);background:#0008;border-radius:14px;padding:6px 20px;display:inline-block;margin:6px}
+  .plist{display:flex;flex-direction:column;gap:6px;margin:10px auto;max-width:420px}
+  .prow{display:flex;justify-content:space-between;align-items:center;background:#0007;border-radius:10px;padding:8px 12px;text-align:left}
+  .note{opacity:.75;font-size:.85rem;margin:6px 0}
+  /* penales */
+  .sb{display:flex;align-items:center;justify-content:space-between;background:#0007;border-radius:12px;padding:8px 12px;margin-bottom:8px}
+  .side{display:flex;align-items:center;gap:8px;text-align:left;width:38%}
+  .side.r{flex-direction:row-reverse;text-align:right}
+  .side .av{width:46px;flex:none}
+  .side b{font-size:.9rem}
+  .big{font-family:Impact,sans-serif;font-size:2.2rem;color:var(--gold)}
+  .dots span{display:inline-block;width:14px;height:14px;border-radius:50%;background:#fff2;margin:2px;border:2px solid #fff5}
+  .dots span.g{background:var(--ok);border-color:var(--ok)} .dots span.m{background:var(--bad);border-color:var(--bad)}
+  canvas{width:100%;max-width:720px;border-radius:12px;touch-action:none;cursor:crosshair;display:block;margin:0 auto}
+  #role{margin:8px auto 0;max-width:720px;padding:9px;border-radius:10px;font-weight:800;font-size:1.1rem;background:#0006}
+  #role.shoot{background:#ffd84a33;color:var(--gold)} #role.keep{background:#5ec8ff33;color:var(--blue)}
+  #hint{min-height:24px;margin-top:6px;color:#ff9aa4;font-weight:700}
+  .msg{min-height:28px;font-size:1.1rem;margin:8px 0;font-weight:700}
+  /* blackjack */
+  .hud{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#0007;border-radius:10px;padding:8px 14px;font-weight:700;flex-wrap:wrap}
+  .hud b{color:var(--gold)}
+  .evt{flex:1 1 100%;font-size:.9rem;color:#fff;border-radius:8px;padding:3px 8px}
+  .evt.doble{background:#b8860b}.evt.seguro{background:#1f6e99}.evt.suerte{background:#1c8a46}
+  .table{background:linear-gradient(#5a3418,#3b210e);padding:14px;border-radius:50% / 14%;box-shadow:0 8px 24px #000a,inset 0 0 0 3px #8a5a2d;margin-top:8px}
+  .felt{background:radial-gradient(ellipse at 50% 40%,#1f8f4e,#0e5a30 75%);border-radius:50% / 12%;padding:14px 10px 0;overflow:hidden;box-shadow:inset 0 0 40px #000a;position:relative}
+  .felt::before{content:"BLACKJACK PAGA 3 A 2 · DEALER SE PLANTA EN 17";position:absolute;left:0;right:0;top:40%;font-family:Impact,sans-serif;letter-spacing:3px;color:#ffffff22;font-size:1.05rem;pointer-events:none}
+  .dealer{display:flex;flex-direction:column;align-items:center;position:relative}
+  .dealer .av{width:84px}
+  .dsay{position:absolute;left:62%;top:22px;background:#fff;color:#222;border-radius:12px;padding:4px 10px;font-size:.78rem;font-weight:700;max-width:170px;box-shadow:0 2px 6px #0006}
+  .dsay:empty{display:none}
+  .seats{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 6px;margin-top:10px;align-items:flex-end}
+  .seat{flex:1 1 150px;max-width:230px;display:flex;flex-direction:column;align-items:center;border-radius:12px;padding-top:4px;transition:.2s;position:relative}
+  .seat.active{background:#ffe36e22;box-shadow:0 0 0 2px var(--gold)}
+  .nm{font-size:.78rem;font-weight:700;background:#0007;border-radius:8px;padding:2px 8px}
+  .style{font-size:.7rem;opacity:.85}
+  .chipline{font-size:.8rem;font-weight:700;color:#ffe9a0;margin-top:3px}
+  .seat .av{width:84px;margin-bottom:-12px}
+  .bubble{position:absolute;top:-6px;right:2px;font-size:1.6rem;z-index:3;animation:pop .4s}
+  @keyframes pop{from{transform:scale(0)}}
+  .seat.win .av{animation:hop .5s 3}.seat.lose .av{animation:shake .4s 3}
+  @keyframes hop{50%{transform:translateY(-14px)}}
+  @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+  .hands{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:4px 0}
+  .hand{padding:3px;border-radius:8px}.hand.cur{outline:2px solid var(--gold)}
+  .cards{display:flex;justify-content:center;flex-wrap:wrap;gap:4px;margin:4px 0 2px;min-height:58px;max-width:150px}
+  .dealer .cards{max-width:260px}
+  .c{width:38px;height:56px;background:#fff;color:#111;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;box-shadow:0 2px 4px #0008}
+  .c.new{animation:deal .35s ease-out}
+  .c.r{color:#d11} .c.back{background:repeating-linear-gradient(45deg,#2a5db0,#2a5db0 5px,#1d4688 5px,#1d4688 10px);color:transparent}
+  @keyframes deal{from{transform:translateY(-70px) rotate(-14deg);opacity:0}}
+  .tot{font-weight:800;min-height:20px;background:#0008;border-radius:8px;padding:1px 8px;font-size:.75rem;display:inline-block}
+  .tot.win{background:#1c8a46}.tot.lose{background:#a02535}.tot.push{background:#7a6a1c}
+  .betbox{background:#0009;border-radius:12px;padding:10px;margin-top:10px}
+  .betbox .v{font-family:Impact,sans-serif;font-size:2.2rem;color:var(--gold)}
+  .betbox button{padding:7px 12px;font-size:.9rem;margin:3px}
+  #tmr{color:var(--gold);font-weight:800}
+  /* ligas */
+  #liga{text-align:left}
+  #liga h2,#liga h3{text-align:center}
+  #liga .row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin:8px 0}
+  #liga label{display:flex;flex-direction:column;gap:4px;font-size:.8rem;opacity:.9}
+  #liga input[type=number],#liga input[type=text],#liga select{width:110px;font-size:1rem;padding:8px}
+  #liga select{background:#0a1220;color:var(--ink);border:2px solid #ffffff33;border-radius:10px}
+  #liga .sec{background:#0004;border-radius:12px;padding:10px;margin:10px 0}
+  #liga .sec h3{margin:0 0 6px}
+  .tbl{width:100%;border-collapse:collapse;font-size:.85rem}
+  .tbl th,.tbl td{padding:5px 6px;border-bottom:1px solid #fff2;text-align:center}
+  .tbl td:nth-child(2),.tbl th:nth-child(2){text-align:left}
+  .tbl tr.me td{background:#ffd84a22}
+  .tblw{overflow-x:auto}
+  .champ{background:linear-gradient(135deg,#7a5b00,#ffd84a33);border:2px solid var(--gold);border-radius:14px;padding:10px;text-align:center;margin:8px 0}
+  .podium{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:6px}
+  .podium div{background:#0006;border-radius:10px;padding:6px 12px;font-weight:800}
+  .chip{display:inline-block;border-radius:8px;padding:2px 8px;font-size:.75rem;font-weight:700;background:#1b2b4d;margin:0 3px}
+  #liga .prow button{padding:6px 10px;font-size:.8rem;margin:2px;min-height:34px}
+  #liga .prow{gap:6px;flex-wrap:wrap}
+  #final table{margin:10px auto;border-collapse:collapse}#final td,#final th{padding:6px 14px;border-bottom:1px solid #fff2}
+  #final .av{width:40px;display:inline-block;vertical-align:middle}
+  @media(max-width:560px){body{padding:8px}h1{font-size:1.4rem}.panel{padding:8px}.big{font-size:1.6rem}.side b{font-size:.75rem}
+    #acts button{flex:1 1 40%;margin:4px 2%}.betbox button{min-width:60px}.msg{font-size:1rem}.table{padding:8px}.felt{padding:10px 4px 0}
+    .seat{flex:1 1 30%}.seat .av{width:64px}.c{width:28px;height:42px;font-size:.72rem}.cards{max-width:100px;min-height:44px}.team{width:46%}.team .av{width:64px}
+    .felt::before{font-size:.7rem}.game{width:100%}.dsay{left:58%;font-size:.7rem}.code{font-size:2.4rem;letter-spacing:6px}}
+
+  @media (max-width:560px){
+  /* ===== VERSIÓN CELULAR ===== */
+  body{padding:6px 6px 10px}
+  h1{font-size:.98rem;letter-spacing:.5px;margin:0;white-space:nowrap}
+  .sub{font-size:.8rem;margin-bottom:4px;min-height:16px}
+  #topbar{flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;gap:2px;margin-bottom:6px;-webkit-overflow-scrolling:touch}
+  #topbar button{flex:none;padding:5px 10px;font-size:.78rem;min-height:34px;margin:1px}
+  .panel{padding:8px;border-radius:12px}
+  .games{gap:10px;margin:8px 0}
+  .game{width:100%;padding:12px 10px;display:flex;align-items:center;gap:12px;text-align:left}
+  .game .ic{font-size:2.4rem}
+  .game b{font-size:1.25rem;margin:0}
+  .game i{font-size:.78rem}
+  .team{width:47%}.team .av{width:60px}
+  /* penales */
+  .sb{padding:4px 8px;margin-bottom:6px}
+  .av svg{width:100%;height:auto;display:block}
+  .side .av{width:34px;overflow:hidden}.side b{font-size:.7rem;line-height:1.1}.side{gap:4px}
+  .big{font-size:1.5rem}
+  .dots span{width:10px;height:10px;margin:1px}
+  #role{font-size:.95rem;padding:6px;margin-top:6px}
+  #hint{min-height:18px;font-size:.85rem}
+  .msg{font-size:.95rem;margin:4px 0;min-height:22px}
+  /* blackjack */
+  .hud{padding:6px 10px;font-size:.85rem}
+  .table{padding:6px;margin-top:4px}
+  .felt{padding:8px 4px 0}
+  .felt::before{font-size:.6rem;letter-spacing:1px}
+  .dealer .av{width:52px}
+  .dsay{left:56%;top:14px;font-size:.68rem;max-width:130px}
+  .seats{gap:4px 2px;margin-top:4px}
+  .seat{flex:1 1 30%}
+  .seat .av{width:46px;margin-bottom:-6px}
+  .nm{font-size:.68rem}.style{font-size:.6rem}.chipline{font-size:.7rem}
+  .c{width:26px;height:38px;font-size:.68rem;border-radius:4px}
+  .cards{max-width:96px;min-height:40px;gap:3px}
+  .dealer .cards{max-width:200px}
+  /* botones siempre a la mano */
+  #acts,#betbox{position:sticky;bottom:6px;z-index:6;background:#0d1628f2;border-radius:12px;padding:6px;box-shadow:0 -4px 16px #0009}
+  #acts:not(.hidden){display:flex;flex-wrap:wrap;justify-content:center}
+  #acts button{flex:1 1 44%;margin:3px;padding:10px 6px;font-size:.95rem}
+  .betbox .v{font-size:1.6rem}
+  .betbox button{padding:6px 8px;font-size:.85rem;margin:2px;min-height:40px;min-width:54px}
+
+  }
+</style>
+
+<div class="bgfx" id="bgfx"></div>
+<h1>⚽ ARENA PENALES &amp; BLACKJACK 🃏</h1>
+<div class="sub" id="phase"></div>
+<div id="topbar" class="hidden">
+  <button class="grey" data-go="menu">🏠 Menú</button>
+  <button data-go="pen">⚽ Penales</button>
+  <button class="alt" data-go="bj">🃏 Blackjack</button>
+  <button class="red" data-go="net">👥 Amigos</button>
+  <button class="alt" data-go="liga">🏆 Ligas</button>
+  <button class="grey" data-go="teams">👕 Equipos</button>
+</div>
+
+<!-- MENÚ -->
+<div class="panel" id="menu">
+  <h2 style="margin:4px">¿A qué quieres jugar?</h2>
+  <div class="games">
+    <button class="game" data-g="pen"><span class="ic">⚽</span><b>PENALES</b><i>Tú contra la CPU · 5 y 5<br>Elige tus tiradores y tu portero</i></button>
+    <button class="game" data-g="bj"><span class="ic">🃏</span><b>BLACKJACK</b><i>Tú + 2 CPUs contra el dealer robot<br>Apuesta fichas, dobla y divide</i></button>
+    <button class="game" data-g="net"><span class="ic">👥</span><b>CON AMIGOS</b><i>Crea una sala con un número<br>Penales 1 vs 1 o Blackjack hasta 5</i></button>
+    <button class="game" data-g="liga"><span class="ic">🏆</span><b>LIGAS</b><i>Perfil, ligas con tabla y calendario<br>Partidas oficiales, casuales e invitaciones</i></button>
+  </div>
+  <div style="opacity:.7;font-size:.85rem">Equipos de Liga MX, LaLiga, Premier, Serie A, leyendas y selecciones de todo el mundo.</div>
+</div>
+
+<!-- ELEGIR EQUIPO -->
+<div class="panel hidden" id="sel">
+  <h2 id="selT" style="margin:4px"></h2>
+  <div id="selS"></div>
+  <div class="tabs" id="tabs"></div>
+  <div class="teams" id="teams"></div>
+</div>
+
+<!-- ALINEACIÓN -->
+<div class="panel hidden" id="lineup">
+  <h2 style="margin:4px">📋 Alineación para los penales</h2>
+  <div id="luTeam"></div>
+  <p>Toca a tus <b>5 tiradores</b> en el orden en que patearán: <b id="luCount">0/5</b></p>
+  <div class="pl" id="luPl"></div>
+  <p>Elige a tu <b>portero</b></p>
+  <div class="pl" id="luGk"></div>
+  <div class="note">Plantillas aproximadas de la temporada actual; pueden variar con los fichajes.</div>
+  <button id="luOk">✅ Confirmar</button>
+  <button id="luSkip" class="grey">⏭ Saltar (que elija el juego)</button>
+</div>
+
+<!-- AMIGOS -->
+<div class="panel hidden" id="net">
+  <div id="netHome">
+    <h2 style="margin:4px">👥 Jugar con amigos</h2>
+    <div class="note" id="netWarn"></div>
+    <div class="games">
+      <button class="game" id="mkPen"><span class="ic">🥅</span><b>CREAR SALA</b><i>Penales 1 contra 1</i></button>
+      <button class="game" id="mkBj"><span class="ic">🎰</span><b>CREAR SALA</b><i>Blackjack hasta 5 jugadores contra el dealer</i></button>
+    </div>
+    <h3>¿Ya tienes un número de sala?</h3>
+    <input id="joinCode" inputmode="numeric" maxlength="4" placeholder="0000" style="width:130px;font-size:1.6rem;letter-spacing:6px">
+    <button id="joinBtn" class="alt">Unirme</button>
+    <div class="msg" id="netMsg"></div>
+  </div>
+  <div id="netLobby" class="hidden">
+    <div>Número de sala</div>
+    <div class="code" id="roomCode">0000</div>
+    <div class="note">Tus amigos abren el mismo enlace, entran a «Con amigos», escriben este número y tocan «Unirme».</div>
+    <div id="gameSel"></div>
+    <div id="mtRow" class="note hidden"></div>
+    <div style="margin:10px 0">
+      <input id="myName" maxlength="12" placeholder="Tu nombre" style="width:190px">
+      <button id="pickTeam" class="alt">👕 Elegir mi equipo</button>
+    </div>
+    <div class="plist" id="plist"></div>
+    <div class="msg" id="lobMsg"></div>
+    <button id="startNet" class="hidden">▶ Empezar partida</button>
+    <button id="leaveNet" class="grey">Salir de la sala</button>
+  </div>
+</div>
+
+<!-- LIGAS -->
+<div class="panel hidden" id="liga"></div>
+
+<!-- PENALES -->
+<div class="panel hidden" id="pen">
+  <div class="sb">
+    <div class="side"><div class="av" id="avMe"></div><div><b id="nMe"></b><div class="dots" id="dP"></div></div></div>
+    <div class="big"><span id="sP">0</span> : <span id="sC">0</span></div>
+    <div class="side r"><div class="av" id="avCpu"></div><div><b id="nCpu"></b><div class="dots" id="dC"></div></div></div>
+  </div>
+  <canvas id="cv" width="700" height="480"></canvas>
+  <div id="role"></div>
+  <div id="hint"></div>
+  <div class="msg" id="pmsg"></div>
+  <button id="toBJ" class="hidden">🃏 Ir al Blackjack ➜</button>
+  <button id="toRetry" class="hidden alt">⚽ Repetir penales</button>
+  <button id="toMenu" class="hidden grey">🏠 Menú</button>
+</div>
+
+<!-- BLACKJACK -->
+<div class="panel hidden" id="bj">
+  <div class="hud"><span>💰 Tus fichas: <b id="chipsP">500</b></span><span id="roundLbl"></span><span id="tmr"></span><div class="evt" id="evt"></div></div>
+  <div class="msg" id="bmsg"></div>
+  <div class="table"><div class="felt">
+    <div class="dealer">
+      <span class="nm">🎩 Dealer · Máquina</span>
+      <div class="av" id="avD"></div><div class="dsay" id="dsay"></div>
+      <div class="cards" id="hD"></div><div class="tot" id="tD"></div>
+    </div>
+    <div class="seats" id="seats"></div>
+  </div></div>
+  <div class="betbox hidden" id="betbox">
+    <div>¿Cuánto quieres apostar? <small>(mínimo 10)</small></div>
+    <div class="v">💰 <span id="betV">50</span></div>
+    <div>
+      <button data-bet="-50" class="alt">−50</button><button data-bet="-10" class="alt">−10</button>
+      <button data-bet="10" class="alt">+10</button><button data-bet="50" class="alt">+50</button>
+      <button data-bet="min" class="alt">Mínimo</button><button data-bet="all" class="red">TODO</button>
+    </div>
+    <button id="dealBtn">🃏 Apostar</button>
+  </div>
+  <div id="acts" class="hidden" style="margin-top:10px">
+    <button id="hit">Pedir</button><button id="stand">Plantarse</button>
+    <button id="dbl" class="alt">Doblar</button><button id="spl" class="alt">Dividir (cartas iguales)</button>
+  </div>
+  <div id="final" class="hidden"></div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id), sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const rnd=n=>Math.floor(Math.random()*n), pick=a=>a[rnd(a.length)];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let SESSION=0;
+async function zz(ms){const s=SESSION;await sleep(ms);if(s!==SESSION)throw new Error('cancel')}
+const run=f=>{try{return Promise.resolve(f()).catch(e=>{if(!e||e.message!=='cancel')console.error(e)})}catch(e){console.error(e)}};
+$('bgfx').innerHTML=Array.from({length:14},(_,i)=>`<span style="left:${rnd(96)}%;animation-duration:${12+rnd(14)}s;animation-delay:-${rnd(20)}s">${['⚽','🃏','🧤','♠','♥','♦','♣','🏆'][i%8]}</span>`).join('');
+
+/* ---------- sonido ---------- */
+let AC;
+function tone(f,d=.15,type='sine',v=.07,delay=0){
+  try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime+delay;
+    o.type=type;o.frequency.value=f;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d)}catch(e){}
+}
+const sfx={whistle:()=>{tone(1900,.35,'square',.04);tone(2100,.25,'square',.04,.1)},
+  goal:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.25,'triangle',.09,i*.1)),
+  save:()=>{tone(180,.2,'sawtooth',.08);tone(120,.25,'sawtooth',.08,.1)},
+  miss:()=>tone(240,.4,'sine',.08), card:()=>tone(900,.05,'square',.03), click:()=>tone(600,.06),
+  coin:()=>{tone(988,.08,'square',.05);tone(1319,.2,'square',.05,.08)}};
+
+/* ================= EQUIPOS ================= */
+const KP=['#18a558','#ff3d8b','#ff8a00','#7a3cff','#e6e600','#00c2a8'];
+const hx=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const darken=h=>'#'+hx(h).map(v=>Math.round(v*.5).toString(16).padStart(2,'0')).join('');
+const near=(a,b)=>{const x=hx(a),y=hx(b);return Math.abs(x[0]-y[0])+Math.abs(x[1]-y[1])+Math.abs(x[2]-y[2])<170};
+const TEAMS={},GROUPS=[];
+/* fila: id, nombre, camiseta, acento, patrón (s=lisa, k=mangas de acento, v=rayas), short, calcetas, "tiradores|porteros" */
+function addGroup(g,label,rows){
+  GROUPS.push({g,label});
+  for(const [id,name,shirt,acc,pat,shorts,sock,sq] of rows){
+    const [f,k]=sq.split('|');let ki=(id.length+id.charCodeAt(0))%6,n=0;
+    while((near(KP[ki],shirt)||near(KP[ki],shorts))&&n++<6)ki=(ki+1)%6;
+    TEAMS[id]={id,name,g,shirt,stripes:pat==='v'?acc:null,sleeve:pat==='s'?shirt:acc,trim:acc,shorts,sock,
+      keeper:KP[ki],keeper2:darken(KP[ki]),cols:[shirt,acc],pl:f.split(','),gk:k.split(',')};
+  }
+}
+addGroup('mx','⚽ Liga MX',[
+ ['america','Club América','#ffd400','#0a2a6e','k','#0a2a6e','#ffd400','Henry Martín,Brian Rodríguez,Alejandro Zendejas,Álvaro Fidalgo,Diego Valdés,Israel Reyes,Víctor Dávila,Erick Sánchez|Luis Malagón,Rodolfo Cota'],
+ ['chivas','Chivas','#ffffff','#c8102e','v','#0a2a6e','#c8102e','Armando González,Roberto Alvarado,Fernando Beltrán,Cade Cowell,Omar Govea,Luis Romo,Gilberto Sepúlveda,Javier Hernández|Raúl Rangel'],
+ ['cruzazul','Cruz Azul','#1c3f94','#ffffff','s','#1c3f94','#1c3f94','Ángel Sepúlveda,Gabriel Fernández,Carlos Rodríguez,Erik Lira,Willer Ditta,Ignacio Rivero,Mateusz Bogusz,Lorenzo Faravelli|Kevin Mier'],
+ ['pumas','Pumas UNAM','#0b2a5b','#c9a227','s','#0b2a5b','#0b2a5b','Guillermo Martínez,Piero Quispe,Adalberto Carrasquilla,Leonel López,Efraín Velarde,Jorge Ruvalcaba,Alan Medina,Pablo Bennevendo|Keylor Navas'],
+ ['tigres','Tigres UANL','#f7b500','#0a2a6e','s','#0a2a6e','#f7b500','André-Pierre Gignac,Juan Brunetta,Sebastián Córdova,Fernando Gorriarán,Marcelo Flores,Diego Lainez,Jesús Angulo,Rafael Carioca|Nahuel Guzmán'],
+ ['monterrey','Monterrey','#0a2a6e','#ffffff','v','#0a2a6e','#0a2a6e','Sergio Canales,Lucas Ocampos,Jesús Gallardo,Germán Berterame,Oliver Torres,Brandon Vázquez,Jordi Cortizo,Stefan Medina|Esteban Andrada'],
+ ['toluca','Toluca','#c8102e','#ffffff','s','#ffffff','#c8102e','Alexis Vega,Paulinho,Marcel Ruiz,Jean Meneses,Helinho,Robert Morales,Federico Pereira,Brian García|Luis García'],
+]);
+addGroup('es','🏆 LaLiga',[
+ ['madrid','Real Madrid','#ffffff','#c9a227','s','#ffffff','#ffffff','Kylian Mbappé,Vinícius Jr.,Jude Bellingham,Federico Valverde,Rodrygo,Aurélien Tchouaméni,Arda Güler,Eduardo Camavinga|Thibaut Courtois,Andriy Lunin'],
+ ['barca','FC Barcelona','#a50044','#004d98','v','#004d98','#a50044','Lamine Yamal,Raphinha,Pedri,Gavi,Robert Lewandowski,Frenkie de Jong,Ferran Torres,Fermín López|Marc-André ter Stegen,Joan García'],
+ ['atleti','Atlético de Madrid','#ffffff','#c8102e','v','#1c3f94','#c8102e','Antoine Griezmann,Julián Álvarez,Alexander Sørloth,Koke,Rodrigo De Paul,Marcos Llorente,Conor Gallagher,Giuliano Simeone|Jan Oblak'],
+ ['sevilla','Sevilla','#ffffff','#c8102e','s','#ffffff','#ffffff','Isaac Romero,Dodi Lukébakio,Alexis Sánchez,Joan Jordán,Djibril Sow,Lucien Agoumé,Kike Salas,Akor Adams|Ørjan Nyland'],
+ ['valencia','Valencia','#ffffff','#111111','s','#111111','#ffffff','Hugo Duro,Luis Rioja,Diego López,Javi Guerra,Pepelu,André Almeida,Rafa Mir,Sergi Canós|Stole Dimitrievski'],
+ ['villarreal','Villarreal','#f7e000','#0a4a9e','s','#0a4a9e','#f7e000','Gerard Moreno,Ayoze Pérez,Álex Baena,Yéremy Pino,Thierno Barry,Santi Comesaña,Dani Parejo,Logan Costa|Luiz Júnior'],
+ ['athletic','Athletic Club','#ffffff','#c8102e','v','#111111','#111111','Nico Williams,Iñaki Williams,Oihan Sancet,Gorka Guruzeta,Mikel Jauregizar,Unai Gómez,Álex Berenguer,Iñigo Ruiz de Galarreta|Unai Simón'],
+]);
+addGroup('en','🦁 Premier League',[
+ ['city','Manchester City','#6cabdd','#ffffff','s','#ffffff','#6cabdd','Erling Haaland,Phil Foden,Rodri,Bernardo Silva,Jérémy Doku,Savinho,Rayan Cherki,Tijjani Reijnders|Gianluigi Donnarumma'],
+ ['liverpool','Liverpool','#c8102e','#f6eb61','s','#c8102e','#c8102e','Mohamed Salah,Florian Wirtz,Alexander Isak,Virgil van Dijk,Dominik Szoboszlai,Cody Gakpo,Alexis Mac Allister,Ryan Gravenberch|Alisson Becker'],
+ ['arsenal','Arsenal','#ef0107','#ffffff','k','#ffffff','#ef0107','Bukayo Saka,Martin Ødegaard,Declan Rice,Viktor Gyökeres,Gabriel Martinelli,Kai Havertz,Eberechi Eze,Leandro Trossard|David Raya'],
+ ['chelsea','Chelsea','#034694','#ffffff','s','#034694','#034694','Cole Palmer,Enzo Fernández,Pedro Neto,Moisés Caicedo,João Pedro,Reece James,Estêvão,Nicolas Jackson|Robert Sánchez'],
+ ['manutd','Manchester United','#da291c','#111111','s','#ffffff','#111111','Bruno Fernandes,Matheus Cunha,Bryan Mbeumo,Benjamin Šeško,Casemiro,Kobbie Mainoo,Amad Diallo,Lisandro Martínez|André Onana,Senne Lammens'],
+ ['spurs','Tottenham','#ffffff','#132257','s','#132257','#ffffff','Mohammed Kudus,Dominic Solanke,James Maddison,Richarlison,Pedro Porro,Cristian Romero,Xavi Simons,Dejan Kulusevski|Guglielmo Vicario'],
+ ['newcastle','Newcastle','#ffffff','#111111','v','#111111','#111111','Anthony Gordon,Bruno Guimarães,Sandro Tonali,Harvey Barnes,Joelinton,Nick Woltemade,Jacob Murphy,Lewis Hall|Nick Pope'],
+]);
+addGroup('it','🍕 Serie A',[
+ ['juve','Juventus','#ffffff','#111111','v','#111111','#111111','Dušan Vlahović,Kenan Yıldız,Jonathan David,Teun Koopmeiners,Khéphren Thuram,Manuel Locatelli,Andrea Cambiaso,Federico Gatti|Michele Di Gregorio'],
+ ['milan','AC Milan','#c8102e','#111111','v','#ffffff','#111111','Rafael Leão,Christian Pulisic,Luka Modrić,Christopher Nkunku,Adrien Rabiot,Alexis Saelemaekers,Strahinja Pavlović,Youssouf Fofana|Mike Maignan'],
+ ['inter','Inter de Milán','#0a5ea8','#111111','v','#111111','#0a5ea8','Lautaro Martínez,Marcus Thuram,Nicolò Barella,Hakan Çalhanoğlu,Federico Dimarco,Henrikh Mkhitaryan,Alessandro Bastoni,Piotr Zieliński|Yann Sommer'],
+ ['napoli','Napoli','#12a0d7','#ffffff','s','#ffffff','#12a0d7','Kevin De Bruyne,Scott McTominay,Romelu Lukaku,Stanislav Lobotka,Alessandro Buongiorno,David Neres,Matteo Politano,Giovanni Di Lorenzo|Alex Meret'],
+ ['roma','AS Roma','#8e1f2f','#f0bc42','s','#8e1f2f','#8e1f2f','Paulo Dybala,Lorenzo Pellegrini,Matías Soulé,Artem Dovbyk,Manu Koné,Evan Ferguson,Gianluca Mancini,Angeliño|Mile Svilar'],
+ ['lazio','Lazio','#87d8f7','#ffffff','s','#ffffff','#87d8f7','Mattia Zaccagni,Pedro,Matías Vecino,Nicolò Rovella,Gustav Isaksen,Boulaye Dia,Mario Gila,Luca Pellegrini|Ivan Provedel'],
+]);
+addGroup('ley','⭐ Leyendas',[
+ ['ley_mad','Leyendas Real Madrid','#ffffff','#c9a227','k','#ffffff','#ffffff','Alfredo Di Stéfano,Ferenc Puskás,Paco Gento,Raúl,Zinedine Zidane,Roberto Carlos,Fernando Hierro,Cristiano Ronaldo|Iker Casillas'],
+ ['ley_bar','Leyendas Barcelona','#a50044','#004d98','v','#004d98','#a50044','Johan Cruyff,Xavi,Andrés Iniesta,Ronaldinho,Lionel Messi,Carles Puyol,Rivaldo,Luis Suárez|Víctor Valdés'],
+ ['ley_mil','Leyendas AC Milan','#c8102e','#111111','v','#ffffff','#111111','Paolo Maldini,Franco Baresi,Marco van Basten,Ruud Gullit,Kaká,Andrea Pirlo,Andriy Shevchenko,Clarence Seedorf|Dida'],
+ ['ley_mex','Leyendas de México','#0b7a3b','#ffffff','s','#ffffff','#c8102e','Hugo Sánchez,Cuauhtémoc Blanco,Rafael Márquez,Luis García,Jared Borgetti,Luis Hernández,Claudio Suárez,Ramón Ramírez|Jorge Campos'],
+ ['ley_mun','Leyendas Mundiales','#e8c14d','#111111','k','#111111','#e8c14d','Pelé,Diego Maradona,Zinedine Zidane,Johan Cruyff,Ronaldo Nazário,Ronaldinho,Franz Beckenbauer,Michel Platini|Lev Yashin,Gianluigi Buffon'],
+]);
+addGroup('uefa','🌍 UEFA (Europa)',[
+ ['sel_esp','España','#c8102e','#f7d117','s','#1c3f94','#c8102e','Lamine Yamal,Pedri,Rodri,Nico Williams,Dani Olmo,Fabián Ruiz,Mikel Oyarzabal,Gavi|Unai Simón'],
+ ['sel_ale','Alemania','#ffffff','#111111','s','#111111','#ffffff','Jamal Musiala,Florian Wirtz,Kai Havertz,Joshua Kimmich,Leroy Sané,Niclas Füllkrug,Antonio Rüdiger,Leon Goretzka|Manuel Neuer,Marc-André ter Stegen'],
+ ['sel_fra','Francia','#1c3f94','#ffffff','s','#ffffff','#c8102e','Kylian Mbappé,Ousmane Dembélé,Antoine Griezmann,Aurélien Tchouaméni,Eduardo Camavinga,William Saliba,Marcus Thuram,Michael Olise|Mike Maignan'],
+ ['sel_ing','Inglaterra','#ffffff','#1c3f94','s','#1c3f94','#ffffff','Harry Kane,Jude Bellingham,Bukayo Saka,Phil Foden,Declan Rice,Cole Palmer,Kobbie Mainoo,Anthony Gordon|Jordan Pickford'],
+ ['sel_ita','Italia','#1c5fb4','#ffffff','s','#ffffff','#1c5fb4','Nicolò Barella,Sandro Tonali,Mateo Retegui,Federico Dimarco,Alessandro Bastoni,Giacomo Raspadori,Gianluca Scamacca,Lorenzo Pellegrini|Gianluigi Donnarumma'],
+ ['sel_por','Portugal','#c8102e','#0b7a3b','k','#c8102e','#0b7a3b','Cristiano Ronaldo,Bruno Fernandes,Bernardo Silva,Rafael Leão,Vitinha,João Neves,Rúben Dias,Nuno Mendes|Diogo Costa'],
+ ['sel_ned','Países Bajos','#ff7a00','#111111','s','#ffffff','#ff7a00','Virgil van Dijk,Cody Gakpo,Frenkie de Jong,Denzel Dumfries,Tijjani Reijnders,Xavi Simons,Memphis Depay,Teun Koopmeiners|Bart Verbruggen'],
+ ['sel_isr','Israel','#ffffff','#1c6fd1','s','#1c6fd1','#ffffff','Manor Solomon,Eran Zahavi,Oscar Gloukh,Dor Peretz,Liel Abada,Mohammad Abu Fani,Dor Turgeman,Tai Baribo|Daniel Peretz'],
+ ['sel_cro','Croacia','#ffffff','#c8102e','v','#ffffff','#1c3f94','Luka Modrić,Mateo Kovačić,Joško Gvardiol,Andrej Kramarić,Ivan Perišić,Mario Pašalić,Martin Baturina,Lovro Majer|Dominik Livaković'],
+]);
+addGroup('conmebol','🌎 CONMEBOL (Sudamérica)',[
+ ['sel_bra','Brasil','#f7d117','#0b7a3b','k','#1c3f94','#ffffff','Vinícius Jr.,Rodrygo,Raphinha,Casemiro,Bruno Guimarães,Marquinhos,Endrick,Lucas Paquetá|Alisson Becker,Ederson'],
+ ['sel_arg','Argentina','#75aadb','#ffffff','v','#111111','#ffffff','Lionel Messi,Julián Álvarez,Lautaro Martínez,Enzo Fernández,Alexis Mac Allister,Rodrigo De Paul,Nico González,Cristian Romero|Emiliano Martínez'],
+ ['sel_uru','Uruguay','#6cabdd','#111111','s','#111111','#111111','Federico Valverde,Darwin Núñez,Rodrigo Bentancur,Ronald Araújo,José Giménez,Giorgian De Arrascaeta,Manuel Ugarte,Facundo Pellistri|Sergio Rochet'],
+ ['sel_col','Colombia','#f7d117','#1c3f94','s','#1c3f94','#c8102e','Luis Díaz,James Rodríguez,Jhon Arias,Jefferson Lerma,Jhon Córdoba,Dávinson Sánchez,Richard Ríos,Cucho Hernández|Camilo Vargas'],
+ ['sel_ecu','Ecuador','#f7d117','#1c3f94','s','#1c3f94','#c8102e','Moisés Caicedo,Enner Valencia,Piero Hincapié,Kendry Páez,Willian Pacho,Gonzalo Plata,Pervis Estupiñán,Jeremy Sarmiento|Hernán Galíndez'],
+]);
+addGroup('concacaf','🌎 CONCACAF',[
+ ['sel_mex','México','#0b7a3b','#ffffff','s','#ffffff','#c8102e','Santiago Giménez,Raúl Jiménez,Hirving Lozano,Edson Álvarez,Luis Chávez,César Montes,Orbelín Pineda,Julián Quiñones|Guillermo Ochoa,Luis Malagón'],
+ ['sel_usa','Estados Unidos','#ffffff','#1c3f94','s','#1c3f94','#ffffff','Christian Pulisic,Weston McKennie,Tyler Adams,Folarin Balogun,Timothy Weah,Giovanni Reyna,Sergiño Dest,Antonee Robinson|Matt Turner'],
+ ['sel_can','Canadá','#c8102e','#ffffff','s','#c8102e','#c8102e','Alphonso Davies,Jonathan David,Cyle Larin,Stephen Eustáquio,Tajon Buchanan,Ismaël Koné,Alistair Johnston,Jacob Shaffelburg|Maxime Crépeau'],
+ ['sel_crc','Costa Rica','#c8102e','#1c3f94','s','#1c3f94','#c8102e','Joel Campbell,Francisco Calvo,Brandon Aguilera,Anthony Contreras,Kendall Waston,Orlando Galo,Manfred Ugalde,Alonso Martínez|Keylor Navas'],
+ ['sel_pan','Panamá','#c8102e','#1c3f94','s','#1c3f94','#c8102e','Adalberto Carrasquilla,Aníbal Godoy,José Fajardo,Michael Murillo,César Blackman,Ismael Díaz,Cecilio Waterman,Eric Davis|Orlando Mosquera'],
+]);
+addGroup('caf','🌍 CAF (África)',[
+ ['sel_mar','Marruecos','#c8102e','#0b7a3b','s','#c8102e','#c8102e','Achraf Hakimi,Hakim Ziyech,Brahim Díaz,Youssef En-Nesyri,Sofyan Amrabat,Azzedine Ounahi,Noussair Mazraoui,Ayoub El Kaabi|Yassine Bounou'],
+ ['sel_sen','Senegal','#ffffff','#0b7a3b','s','#ffffff','#0b7a3b','Sadio Mané,Ismaïla Sarr,Nicolas Jackson,Kalidou Koulibaly,Idrissa Gueye,Pape Matar Sarr,Iliman Ndiaye,Habib Diarra|Édouard Mendy'],
+ ['sel_egi','Egipto','#c8102e','#ffffff','s','#ffffff','#111111','Mohamed Salah,Omar Marmoush,Mostafa Mohamed,Trezeguet,Mohamed Elneny,Mohamed Hany,Emam Ashour,Zizo|Mohamed El Shenawy'],
+ ['sel_nig','Nigeria','#0b7a3b','#ffffff','s','#ffffff','#0b7a3b','Victor Osimhen,Ademola Lookman,Alex Iwobi,Wilfred Ndidi,Samuel Chukwueze,Ola Aina,Calvin Bassey,Moses Simon|Stanley Nwabali'],
+]);
+addGroup('afc','🌏 AFC (Asia y Oceanía)',[
+ ['sel_jap','Japón','#1c3f94','#ffffff','s','#ffffff','#1c3f94','Kaoru Mitoma,Takefusa Kubo,Wataru Endo,Ritsu Doan,Takumi Minamino,Daichi Kamada,Junya Ito,Ayase Ueda|Zion Suzuki'],
+ ['sel_cor','Corea del Sur','#c8102e','#ffffff','s','#1c3f94','#c8102e','Son Heung-min,Lee Kang-in,Kim Min-jae,Hwang Hee-chan,Hwang In-beom,Cho Gue-sung,Lee Jae-sung,Oh Hyeon-gyu|Jo Hyeon-woo'],
+ ['sel_ara','Arabia Saudita','#0b7a3b','#ffffff','s','#ffffff','#0b7a3b','Salem Al-Dawsari,Firas Al-Buraikan,Saud Abdulhamid,Mohammed Kanno,Abdulelah Al-Amri,Ali Al-Bulaihi,Saleh Al-Shehri,Nasser Al-Dawsari|Mohammed Al-Owais'],
+ ['sel_ira','Irán','#ffffff','#c8102e','s','#0b7a3b','#ffffff','Mehdi Taremi,Sardar Azmoun,Alireza Jahanbakhsh,Saman Ghoddos,Ehsan Hajsafi,Saeid Ezatolahi,Majid Hosseini,Milad Mohammadi|Alireza Beiranvand'],
+ ['sel_aus','Australia','#f7d117','#0b7a3b','k','#0b7a3b','#f7d117','Mathew Leckie,Harry Souttar,Jackson Irvine,Martin Boyle,Craig Goodwin,Aziz Behich,Ajdin Hrustic,Mitchell Duke|Mathew Ryan'],
+]);
+addGroup('ofc','🌊 OFC (Oceanía)',[
+ ['sel_nzl','Nueva Zelanda','#ffffff','#111111','s','#111111','#ffffff','Chris Wood,Liberato Cacace,Joe Bell,Sarpreet Singh,Marko Stamenic,Ben Waine,Matthew Garbett,Callum McCowatt|Oliver Sail'],
+]);
+
+/* ---------- avatares ---------- */
+const SKIN={me:{skin:'#e0a878',hair:'#2b1b12',style:0},c1:{skin:'#f3d0a6',hair:'#7a4a1d',style:1},c2:{skin:'#8d5524',hair:'#111111',style:3}};
+const SKL=[SKIN.c1,SKIN.me,SKIN.c2,{skin:'#c68642',hair:'#aa3333',style:2},{skin:'#f3d0a6',hair:'#6b6b6b',style:0}];
+const SKINS=['#f3d0a6','#e0a878','#c68642','#8d5524','#5c3a21'],HAIRS=['#111111','#2b1b12','#7a4a1d','#c9a227','#6b6b6b','#a33'];
+const hashS=s=>{let h=0;for(const c of String(s))h=(h*31+c.charCodeAt(0))>>>0;return h};
+const lookFor=n=>{const h=hashS(n);return{skin:SKINS[h%5],hair:HAIRS[(h>>>3)%HAIRS.length],style:(h>>>6)%4,num:1+(h>>>9)%30}};
+let uid=0;
+function hairSVG(h,s){
+  if(s===1)return `<path d="M35 27 Q50 11 65 27 Q50 19 35 27Z" fill="${h}"/>`;
+  if(s===2)return `<path d="M34 30 Q35 12 50 13 Q65 12 66 30 Q60 20 50 21 Q40 20 34 30Z" fill="${h}"/><rect x="32" y="26" width="6" height="24" rx="3" fill="${h}"/><rect x="62" y="26" width="6" height="24" rx="3" fill="${h}"/>`;
+  if(s===3)return [[37,20],[45,14],[55,14],[63,20],[33,29],[67,29]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="6.5" fill="${h}"/>`).join('');
+  return `<path d="M34 30 Q35 12 50 13 Q65 12 66 30 Q60 20 50 21 Q40 20 34 30Z" fill="${h}"/>`;
+}
+function headSVG(cx,skin,hair,style,band){
+  return `<g transform="translate(${cx-50} 0)">
+    <circle cx="34" cy="31" r="3" fill="${skin}"/><circle cx="66" cy="31" r="3" fill="${skin}"/>
+    <circle cx="50" cy="31" r="16" fill="${skin}"/>${hairSVG(hair,style)}
+    ${band?`<rect x="34" y="23" width="32" height="4" rx="2" fill="${band}"/>`:''}
+    <circle cx="44" cy="34" r="1.9" fill="#222"/><circle cx="56" cy="34" r="1.9" fill="#222"/>
+    <path d="M44 41 Q50 46 56 41" stroke="#7a3b2b" stroke-width="1.8" fill="none" stroke-linecap="round"/></g>`;
+}
+function keeperSVG(k,o){
+  const id='kp'+(uid++),skin=o.skin||'#e0a878',hair=o.hair||'#2b1b12',dive=o.pose==='dive',c=k.keeper,a=k.keeper2;
+  const leg=s=>{const X=x=>s<0?x:120-x;
+    return `<line x1="${X(47)}" y1="96" x2="${X(38)}" y2="119" stroke="#0005" stroke-width="18" stroke-linecap="round"/>
+    <line x1="${X(47)}" y1="96" x2="${X(38)}" y2="119" stroke="#1b1b1b" stroke-width="16" stroke-linecap="round"/>
+    <line x1="${X(38)}" y1="119" x2="${X(34)}" y2="130" stroke="${skin}" stroke-width="9" stroke-linecap="round"/>
+    <line x1="${X(34)}" y1="128" x2="${X(30)}" y2="148" stroke="#0005" stroke-width="12.5" stroke-linecap="round"/>
+    <line x1="${X(34)}" y1="128" x2="${X(30)}" y2="148" stroke="${c}" stroke-width="10.5" stroke-linecap="round"/>
+    <ellipse cx="${X(26)}" cy="153" rx="12" ry="5.5" fill="#111"/><ellipse cx="${X(22)}" cy="152" rx="3" ry="2" fill="${a}"/>`};
+  const arm=s=>{const X=x=>s<0?x:120-x;
+    const sh=[X(41),58],el=dive?[X(28),34]:[X(22),76],ha=dive?[X(21),12]:[X(12),98];
+    return `<line x1="${sh[0]}" y1="${sh[1]}" x2="${el[0]}" y2="${el[1]}" stroke="#0005" stroke-width="13.5" stroke-linecap="round"/>
+    <line x1="${sh[0]}" y1="${sh[1]}" x2="${el[0]}" y2="${el[1]}" stroke="${c}" stroke-width="11.5" stroke-linecap="round"/>
+    <line x1="${el[0]}" y1="${el[1]}" x2="${ha[0]}" y2="${ha[1]}" stroke="${c}" stroke-width="10.5" stroke-linecap="round"/>
+    <circle cx="${el[0]}" cy="${el[1]}" r="5.8" fill="${a}"/>
+    <circle cx="${ha[0]}" cy="${ha[1]}" r="9.5" fill="#fff" stroke="#888" stroke-width="1.2"/>
+    <path d="M${ha[0]-4} ${ha[1]-6}v6M${ha[0]} ${ha[1]-7}v7M${ha[0]+4} ${ha[1]-6}v6" stroke="${a}" stroke-width="1.6" stroke-linecap="round"/>
+    <rect x="${ha[0]-6}" y="${ha[1]+4}" width="12" height="3.5" rx="1.5" fill="${a}"/>`};
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160" width="120" height="160">
+    ${leg(-1)}${leg(1)}${arm(-1)}${arm(1)}
+    <rect x="55" y="42" width="10" height="12" fill="${skin}"/>
+    <rect x="38" y="50" width="44" height="50" rx="10" fill="${c}" stroke="#0005"/>
+    <clipPath id="${id}"><rect x="38" y="50" width="44" height="50" rx="10"/></clipPath>
+    <g clip-path="url(#${id})"><rect x="38" y="50" width="8" height="50" fill="${a}"/><rect x="74" y="50" width="8" height="50" fill="${a}"/><rect x="38" y="92" width="44" height="8" fill="${a}"/></g>
+    <path d="M51 50 Q60 62 69 50Z" fill="${a}"/>
+    <circle cx="60" cy="68" r="4.5" fill="#fff" stroke="${a}" stroke-width="1.4"/>
+    <text x="60" y="88" text-anchor="middle" font-family="Impact,Arial" font-size="12" fill="#fff" stroke="${a}" stroke-width=".5">GK</text>
+    ${headSVG(60,skin,hair,o.style||0,a)}
+  </svg>`;
+}
+function avatarSVG(k,o={}){
+  if(o.keeper)return keeperSVG(k,o);
+  const id='cp'+(uid++),skin=o.skin||'#e0a878',hair=o.hair||'#2b1b12',H=o.bust?100:160,t=k;
+  const X=(s,x)=>s<0?x:100-x;
+  const arm=s=>{
+    const sh=[X(s,30),56],el=[X(s,21),74],ha=[X(s,19),88];
+    return `<line x1="${sh[0]}" y1="${sh[1]}" x2="${el[0]}" y2="${el[1]}" stroke="#0004" stroke-width="12.5" stroke-linecap="round"/>
+      <line x1="${sh[0]}" y1="${sh[1]}" x2="${el[0]}" y2="${el[1]}" stroke="${t.sleeve}" stroke-width="10" stroke-linecap="round"/>
+      <line x1="${el[0]}" y1="${el[1]}" x2="${ha[0]}" y2="${ha[1]}" stroke="${skin}" stroke-width="8" stroke-linecap="round"/>
+      <circle cx="${ha[0]}" cy="${ha[1]+3}" r="4.5" fill="${skin}"/>`};
+  const stripes=t.stripes?Array.from({length:6},(_,i)=>i%2?'':`<rect x="${30+i*6.67}" y="50" width="6.67" height="48" fill="${t.stripes}"/>`).join(''):'';
+  const band=t.trim==='#111111'?'#fff':t.trim;
+  const legs=o.bust?'':`
+    <rect x="35" y="116" width="10" height="16" fill="${skin}"/><rect x="55" y="116" width="10" height="16" fill="${skin}"/>
+    <rect x="34" y="128" width="12" height="22" rx="3" fill="${t.sock}" stroke="#0003"/><rect x="54" y="128" width="12" height="22" rx="3" fill="${t.sock}" stroke="#0003"/>
+    <rect x="34" y="132" width="12" height="3" fill="${band}"/><rect x="54" y="132" width="12" height="3" fill="${band}"/>
+    <ellipse cx="38" cy="152" rx="11" ry="5.5" fill="#111"/><ellipse cx="62" cy="152" rx="11" ry="5.5" fill="#111"/>
+    <rect x="31" y="92" width="18" height="28" rx="5" fill="${t.shorts}" stroke="#0003"/><rect x="51" y="92" width="18" height="28" rx="5" fill="${t.shorts}" stroke="#0003"/>`;
+  const num=o.num?`<text x="50" y="90" text-anchor="middle" font-family="Impact,Arial" font-size="16" fill="#1b2a49" stroke="#fff" stroke-width="1">${o.num}</text>`:'';
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 ${H}" width="100" height="${H}">
+    ${legs}${arm(-1)}${arm(1)}
+    <rect x="45" y="42" width="10" height="12" fill="${skin}"/>
+    <rect x="30" y="50" width="40" height="48" rx="9" fill="${t.shirt}" stroke="#0004"/>
+    <clipPath id="${id}"><rect x="30" y="50" width="40" height="48" rx="9"/></clipPath><g clip-path="url(#${id})">${stripes}</g>
+    <path d="M41 50 Q50 61 59 50Z" fill="${t.trim}" stroke="#0003"/>
+    <circle cx="39" cy="65" r="3.4" fill="${t.trim}" stroke="#fff" stroke-width=".8"/>${num}
+    ${headSVG(50,skin,hair,o.style||0,null)}
+  </svg>`;
+}
+function robotSVG(){return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <line x1="50" y1="3" x2="50" y2="15" stroke="#889" stroke-width="3"/><circle cx="50" cy="4" r="4" fill="#ff3b3b"/>
+  <rect x="24" y="52" width="52" height="48" rx="10" fill="#2c3a4d"/><path d="M40 52 L50 72 L60 52Z" fill="#fff"/>
+  <path d="M50 66 L36 58 L36 74Z M50 66 L64 58 L64 74Z" fill="#d11" stroke="#700"/><circle cx="50" cy="66" r="3.5" fill="#a00"/>
+  <rect x="28" y="14" width="44" height="36" rx="9" fill="#b8c4d0" stroke="#6a7a8a" stroke-width="2"/>
+  <circle cx="40" cy="29" r="6" fill="#ff3b3b"/><circle cx="60" cy="29" r="6" fill="#ff3b3b"/>
+  <circle cx="38.5" cy="27" r="2" fill="#fff"/><circle cx="58.5" cy="27" r="2" fill="#fff"/>
+  <rect x="38" y="39" width="24" height="6" rx="2" fill="#334"/><path d="M42 39v6M46 39v6M50 39v6M54 39v6M58 39v6" stroke="#8fa" stroke-width="1"/>
+  <rect x="20" y="26" width="8" height="12" rx="3" fill="#6a7a8a"/><rect x="72" y="26" width="8" height="12" rx="3" fill="#6a7a8a"/></svg>`}
+const imgCache={};
+function getImg(k,o){const key=k.id+JSON.stringify(o);if(!imgCache[key]){const im=new Image();im.src='data:image/svg+xml;utf8,'+encodeURIComponent(avatarSVG(k,o));imgCache[key]=im}return imgCache[key]}
+const avCache={};
+function avHTML(tid,i){const k=tid+'|'+i;return avCache[k]||(avCache[k]=avatarSVG(TEAMS[tid]||TEAMS.america,{...SKL[i%5],bust:true}))}
+
+/* ================= NAVEGACIÓN ================= */
+const S={me:null,c1:null,c2:null};
+let curGame=null,pendingGame=null,selStep=1,selMode='two',selCb=null,selTab='mx';
+const VIEWS=['menu','sel','lineup','net','liga','pen','bj'];
+function go(v){
+  SESSION++;P.active=false;
+  VIEWS.forEach(x=>$(x).classList.toggle('hidden',x!==v));
+  $('topbar').classList.toggle('hidden',v==='menu');
+  $('phase').textContent={menu:'Elige tu juego',sel:'Elige tus equipos',lineup:'Prepara tu equipo',net:'Jugar con amigos',liga:'Ligas en línea',pen:'Penales — 5 y 5',bj:'Blackjack — 3 rondas · el Dealer es la máquina'}[v];
+  if(v==='menu')netLeave();
+  window.scrollTo(0,0);
+}
+function showMenu(){curGame=null;go('menu')}
+function openSel(g,mode,cb){pendingGame=g;selMode=mode||'two';selCb=cb||null;selStep=1;selTab=(S.me&&S.me.g)||'mx';renderSel();go('sel')}
+function startGame(g){
+  netLeave();curGame=g;
+  if(g==='pen'){openLineup(()=>{go('pen');initPenalties()})}
+  else{go('bj');initBJ()}
+}
+function wantGame(g){if(g==='liga'){curGame='liga';go('liga');ligaOpen();return}if(g==='net'){curGame='net';go('net');netHome();return}if(S.me&&S.c1)startGame(g);else openSel(g,'two')}
+document.querySelectorAll('.game[data-g]').forEach(b=>b.onclick=()=>{sfx.click();wantGame(b.dataset.g)});
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{
+  sfx.click();const g=b.dataset.go;
+  if(g==='menu')showMenu();else if(g==='teams')openSel(curGame==='net'?'pen':(curGame||pendingGame||'pen'),'two');else wantGame(g);
+});
+function renderSel(){
+  const t=Object.values(TEAMS).filter(x=>x.g===selTab&&(selStep===1||x!==S.me));
+  $('selT').textContent=selMode==='one'?'👕 Elige tu equipo':(selStep===1?'1️⃣ Elige TU equipo':'2️⃣ Elige el equipo contra el que quieres jugar');
+  $('selS').innerHTML=selStep===2?`<span class="chosen">Tú: ${S.me.name}</span>`:(S.me?`<span class="chosen">Actual: ${S.me.name}</span>`:'');
+  $('tabs').innerHTML=GROUPS.map(g=>`<button class="tab${g.g===selTab?' on':''}" data-g="${g.g}">${g.label}</button>`).join('');
+  $('teams').innerHTML=t.map(x=>`<button class="team" data-id="${x.id}"><div class="av">${avatarSVG(x,{...(selStep===1?SKIN.me:SKIN.c1),num:10})}</div><b>${x.name}</b></button>`).join('');
+  document.querySelectorAll('#tabs .tab').forEach(b=>b.onclick=()=>{selTab=b.dataset.g;renderSel()});
+  document.querySelectorAll('#teams .team').forEach(b=>b.onclick=()=>{
+    sfx.whistle();const tm=TEAMS[b.dataset.id];
+    if(selMode==='one'){S.me=tm;const cb=selCb;selCb=null;if(cb)cb(tm);return}
+    if(selStep===1){S.me=tm;selStep=2;selTab=tm.g;renderSel();window.scrollTo(0,0)}
+    else{S.c1=tm;S.c2=pick(Object.values(TEAMS).filter(x=>x!==S.me&&x!==S.c1));startGame(pendingGame)}
+  });
+}
+
+/* ---------- alineación ---------- */
+let LU=null;
+function openLineup(cb){
+  const t=S.me;LU={sel:[],gk:t.gk[0],cb};
+  $('luTeam').innerHTML=`<span class="chosen">${t.name}</span>`;renderLU();go('lineup');
+}
+function renderLU(){
+  const t=S.me;
+  $('luPl').innerHTML=t.pl.map((n,i)=>{const o=LU.sel.indexOf(i);return `<button class="pchip${o>=0?' on':''}" data-i="${i}">${o>=0?`<b>${o+1}</b>`:''}${esc(n)}</button>`}).join('');
+  $('luGk').innerHTML=t.gk.map((n,i)=>`<button class="pchip${n===LU.gk?' on':''}" data-g="${i}">🧤 ${esc(n)}</button>`).join('');
+  $('luCount').textContent=LU.sel.length+'/5';$('luOk').disabled=LU.sel.length<5;
+  document.querySelectorAll('#luPl .pchip').forEach(b=>b.onclick=()=>{const i=+b.dataset.i,o=LU.sel.indexOf(i);
+    if(o>=0)LU.sel.splice(o,1);else if(LU.sel.length<5)LU.sel.push(i);sfx.click();renderLU()});
+  document.querySelectorAll('#luGk .pchip').forEach(b=>b.onclick=()=>{LU.gk=t.gk[+b.dataset.g];sfx.click();renderLU()});
+}
+function lineDone(auto){
+  const t=S.me;
+  P.lineMe=auto?t.pl.slice(0,5):LU.sel.map(i=>t.pl[i]);P.gkMe=auto?t.gk[0]:LU.gk;
+  const cb=LU.cb;LU=null;cb();
+}
+$('luOk').onclick=()=>lineDone(false);
+$('luSkip').onclick=()=>lineDone(true);
+
+/* ================= PENALES ================= */
+const cv=$('cv'),ctx=cv.getContext('2d');
+const G={x:130,y:80,w:440,h:160},ZW=G.w/3,ZH=G.h/2,SPOT={x:350,y:380};
+const zc=z=>({x:G.x+(z%3)*ZW+ZW/2,y:G.y+Math.floor(z/3)*ZH+ZH/2});
+const col=z=>z%3,row=z=>Math.floor(z/3);
+const P={pg:[],cg:[],turn:0,limit:10,phase:'idle',mine:true,hover:-1,zone:0,power:0,pdir:1,net:false,
+  ball:{x:SPOT.x,y:SPOT.y,r:12,spin:0},keeper:{x:350,y:176,rot:0,pose:'ready'},shooter:{x:250,y:440},
+  kName:'',gName:'',kLook:lookFor('a'),gLook:lookFor('b'),lineMe:[],gkMe:'',lineOpp:[],gkOpp:'',
+  banner:null,confetti:[],shake:0,flash:0,flashC:'255,255,255',celebrate:0,crowd:[],active:false,loopRunning:false,deadline:0,cpuShot:null,hint:null,
+  netT:-1,netR:-1,netEnd:null,oppName:'Rival'};
+const PH={goal:['¡GOLAZO!','¡Qué disparo, señores!','¡Al ángulo, imposible!','¡Y la gente enloquece!'],
+  save:['¡Manos de acero!','¡Qué atajadón!','¡Imposible pasar!','¡Se lució el portero!'],
+  miss:['¡Uyyy, por poco!','¡Lo falló increíblemente!','¡Se le fue!']};
+
+function penCommon(){
+  const pal=[...S.me.cols,...S.c1.cols,'#e33','#fff','#3a6','#fc3'];
+  P.crowd=[];for(let i=0;i<520;i++)P.crowd.push({x:Math.random()*700,y:Math.random()*160,c:pick(pal),p:Math.random()*6});
+  $('avMe').innerHTML=avatarSVG(S.me,{...SKIN.me,bust:true});$('nMe').textContent='Tú · '+S.me.name;
+  $('avCpu').innerHTML=avatarSVG(S.c1,{...SKIN.c1,bust:true});
+  P.pg=[];P.cg=[];P.turn=0;P.limit=10;P.confetti=[];P.celebrate=0;P.banner=null;P.hint=null;P.penRes=null;P.netT=-1;P.netR=-1;P.netEnd=null;P.netDone=false;P.phase='idle';
+  ['toBJ','toRetry','toMenu'].forEach(i=>$(i).classList.add('hidden'));$('hint').textContent='';
+  P.active=true;dots();
+  if(!P.loopRunning){P.loopRunning=true;requestAnimationFrame(loop)}
+}
+function initPenalties(){
+  P.net=false;P.lineOpp=S.c1.pl.slice(0,5);P.gkOpp=S.c1.gk[0];P.oppName='CPU';
+  $('nCpu').textContent='CPU · '+S.c1.name;
+  penCommon();run(startTurn);
+}
+function resetPenalties(){SESSION++;penCommon();run(startTurn)}
+function dots(){
+  const d=(el,a)=>{el.innerHTML='';for(let i=0;i<Math.max(5,a.length);i++){const s=document.createElement('span');
+    if(a[i]===true)s.className='g';else if(a[i]===false)s.className='m';el.appendChild(s)}};
+  d($('dP'),P.pg);d($('dC'),P.cg);
+  $('sP').textContent=P.pg.filter(Boolean).length;$('sC').textContent=P.cg.filter(Boolean).length;
+}
+function drawAvatar(k,o,cx,feetY,scale,rot=0){
+  const im=getImg(k,o);if(!im.complete||!im.naturalWidth)return;
+  const w=im.naturalWidth*scale,h=im.naturalHeight*scale;ctx.save();ctx.translate(cx,feetY-h/2);ctx.rotate(rot);ctx.drawImage(im,-w/2,-h/2,w,h);ctx.restore();
+}
+function tag(txt,x,y,c){
+  ctx.font='bold 13px sans-serif';const w=ctx.measureText(txt).width+14;
+  ctx.fillStyle='#000b';ctx.fillRect(x-w/2,y-12,w,18);ctx.fillStyle=c||'#fff';ctx.textAlign='center';ctx.fillText(txt,x,y+2);
+}
+function loop(){
+  if(!P.active){P.loopRunning=false;return}
+  if(P.phase==='power'){P.power+=P.pdir*.02;if(P.power>=1){P.power=1;P.pdir=-1}if(P.power<=0){P.power=0;P.pdir=1}}
+  if(!P.net&&P.phase==='dive'&&performance.now()>P.deadline){const s=P.cpuShot;run(()=>resolve(s.z,-1,s.power,s.wide))}
+  if(P.net&&['aim','power','dive'].includes(P.phase)&&performance.now()>P.deadline){P.phase='wait';$('pmsg').textContent='⏱ Se acabó tu tiempo…'}
+  draw();requestAnimationFrame(loop);
+}
+function draw(){
+  const t=performance.now()/1000;
+  ctx.save();
+  if(P.shake>0){ctx.translate((Math.random()-.5)*P.shake,(Math.random()-.5)*P.shake);P.shake*=.92;if(P.shake<.4)P.shake=0}
+  let g=ctx.createLinearGradient(0,0,0,170);g.addColorStop(0,'#0b1022');g.addColorStop(1,'#26315a');ctx.fillStyle=g;ctx.fillRect(0,0,700,170);
+  for(const c of P.crowd){const j=P.celebrate>0?Math.abs(Math.sin(t*9+c.p))*7:Math.sin(t*2+c.p)*1;ctx.fillStyle=c.c;ctx.fillRect(c.x,c.y-j,5,6)}
+  ctx.fillStyle='#fff8';[90,350,610].forEach(x=>{ctx.beginPath();ctx.arc(x,12,7,0,7);ctx.fill()});
+  for(let i=0;i<11;i++){ctx.fillStyle=i%2?'#2a8a3c':'#33a047';ctx.fillRect(0,168+i*30,700,30)}
+  ctx.strokeStyle='#ffffffcc';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(0,G.y+G.h);ctx.lineTo(700,G.y+G.h);ctx.stroke();
+  ctx.strokeRect(70,G.y+G.h,560,190);ctx.strokeRect(190,G.y+G.h,320,70);
+  ctx.beginPath();ctx.arc(SPOT.x,SPOT.y-8,80,.65,Math.PI-.65);ctx.stroke();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(SPOT.x,SPOT.y,3.5,0,7);ctx.fill();
+  ctx.fillStyle='#0004';ctx.fillRect(G.x,G.y,G.w,G.h);
+  ctx.strokeStyle='#ffffff40';ctx.lineWidth=1;
+  for(let x=G.x;x<=G.x+G.w;x+=14){ctx.beginPath();ctx.moveTo(x,G.y);ctx.lineTo(x,G.y+G.h);ctx.stroke()}
+  for(let y=G.y;y<=G.y+G.h;y+=14){ctx.beginPath();ctx.moveTo(G.x,y);ctx.lineTo(G.x+G.w,y);ctx.stroke()}
+  if(P.phase==='aim'||P.phase==='dive'){
+    for(let z=0;z<6;z++){const c=zc(z);ctx.strokeStyle='#ffffff25';ctx.lineWidth=1;ctx.strokeRect(c.x-ZW/2,c.y-ZH/2,ZW,ZH)}
+    if(P.hover>=0){const c=zc(P.hover);ctx.fillStyle=P.phase==='aim'?'#ffd84a66':'#5ec8ff66';ctx.fillRect(c.x-ZW/2,c.y-ZH/2,ZW,ZH);
+      if(P.phase==='aim'){ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,18,0,7);ctx.moveTo(c.x-26,c.y);ctx.lineTo(c.x+26,c.y);ctx.moveTo(c.x,c.y-26);ctx.lineTo(c.x,c.y+26);ctx.stroke()}}
+  }
+  if(P.phase==='power'){const c=zc(P.zone);ctx.strokeStyle='#ffd84a';ctx.lineWidth=3;ctx.beginPath();ctx.arc(c.x,c.y,18+Math.sin(t*8)*3,0,7);ctx.stroke()}
+  if(P.phase==='dive'&&P.hint){
+    const c=zc(P.hint.z),pr=30+Math.sin(t*9)*5;
+    ctx.fillStyle='#ff2d4a2e';ctx.beginPath();ctx.arc(c.x,c.y,pr,0,7);ctx.fill();
+    ctx.strokeStyle='#ff2d4a';ctx.lineWidth=4;ctx.beginPath();ctx.arc(c.x,c.y,pr,0,7);ctx.stroke();
+    ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,pr*.45,0,7);ctx.moveTo(c.x-pr-8,c.y);ctx.lineTo(c.x-pr*.45,c.y);ctx.moveTo(c.x+pr*.45,c.y);ctx.lineTo(c.x+pr+8,c.y);
+    ctx.moveTo(c.x,c.y-pr-8);ctx.lineTo(c.x,c.y-pr*.45);ctx.moveTo(c.x,c.y+pr*.45);ctx.lineTo(c.x,c.y+pr+8);ctx.stroke();
+  }
+  const kitK=P.mine?S.c1:S.me;
+  drawAvatar(kitK,{...P.gLook,keeper:true,pose:P.keeper.pose},P.keeper.x,P.keeper.y+64,.78,P.keeper.rot);
+  ctx.strokeStyle='#fff';ctx.lineWidth=8;ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(G.x,G.y+G.h);ctx.lineTo(G.x,G.y);ctx.lineTo(G.x+G.w,G.y);ctx.lineTo(G.x+G.w,G.y+G.h);ctx.stroke();
+  const kitS=P.mine?S.me:S.c1;
+  drawAvatar(kitS,P.kLook,P.shooter.x,P.shooter.y,.78);
+  if(P.gName)tag('🧤 '+P.gName,350,G.y-12,'#9fe8ff');
+  if(P.kName)tag('⚽ '+P.kName,P.shooter.x,P.shooter.y+16,'#ffe36e');
+  const b=P.ball;
+  ctx.fillStyle='#0004';ctx.beginPath();ctx.ellipse(b.x,Math.max(b.y,SPOT.y-30)+b.r*.9,b.r,b.r*.35,0,0,7);ctx.fill();
+  ctx.save();ctx.translate(b.x,b.y);ctx.rotate(b.spin);
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(0,0,b.r,0,7);ctx.fill();ctx.strokeStyle='#222';ctx.lineWidth=1.8;ctx.stroke();
+  ctx.fillStyle='#222';ctx.beginPath();ctx.arc(0,0,b.r*.38,0,7);ctx.fill();
+  for(let i=0;i<5;i++){const a=i*Math.PI*2/5;ctx.beginPath();ctx.arc(Math.cos(a)*b.r*.78,Math.sin(a)*b.r*.78,b.r*.16,0,7);ctx.fill()}
+  ctx.restore();
+  for(const p of P.confetti){p.x+=p.vx;p.y+=p.vy;p.vy+=.25;p.rot+=.2;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.fillStyle=p.c;ctx.fillRect(-4,-2,8,4);ctx.restore()}
+  P.confetti=P.confetti.filter(p=>p.y<500);if(P.celebrate>0)P.celebrate-=.016;
+  ctx.textAlign='center';
+  if(P.phase==='power'){
+    const x=640,y0=250,h=190;
+    ctx.fillStyle='#000a';ctx.fillRect(x-14,y0-34,52,h+48);
+    const seg=(a,b,c)=>{ctx.fillStyle=c;ctx.fillRect(x,y0+h-b*h,24,(b-a)*h)};
+    seg(0,.2,'#d94');seg(.2,.86,'#4c6');seg(.86,1,'#d33');
+    ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';ctx.fillText('FUERZA',x+12,y0-16);
+    const my=y0+h-P.power*h;ctx.fillStyle='#fff';ctx.beginPath();ctx.moveTo(x-10,my-8);ctx.lineTo(x,my);ctx.lineTo(x-10,my+8);ctx.fill();ctx.fillRect(x,my-2,24,4);
+    ctx.fillStyle='#ffd84a';ctx.font='bold 14px sans-serif';ctx.fillText('¡CLIC PARA PATEAR!',350,458);
+  }
+  if(P.phase==='aim'){ctx.fillStyle='#ffd84a';ctx.font='bold 15px sans-serif';ctx.fillText('ELIGE EN QUÉ ZONA DE LA PORTERÍA QUIERES TIRAR',350,458)}
+  if(P.phase==='dive'){ctx.fillStyle='#5ec8ff';ctx.font='bold 15px sans-serif';ctx.fillText('¡CLIC EN LA ZONA A DONDE TE LANZAS!',350,458)}
+  if(['aim','power','dive'].includes(P.phase)&&(P.net||P.phase==='dive')){
+    const tot=P.net?(P.mine?15:9):5,left=Math.max(0,(P.deadline-performance.now())/1000);
+    ctx.fillStyle='#000a';ctx.fillRect(150,36,400,16);ctx.fillStyle=left<2?'#ff5d6c':'#5ec8ff';ctx.fillRect(152,38,396*Math.min(1,left/tot),12);
+    ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';ctx.fillText('⏱ '+left.toFixed(1)+' s'+(P.net?'':' — la CPU patea sin esperarte'),350,30);
+  }
+  if(P.phase==='wait'){ctx.fillStyle='#fff';ctx.font='bold 16px sans-serif';ctx.fillText('Esperando al rival…',350,458)}
+  if(P.banner){
+    const e=Math.min(1,(performance.now()-P.banner.t0)/250),s=.6+.4*(1-Math.pow(1-e,3));
+    ctx.save();ctx.translate(350,235);ctx.scale(s,s);ctx.globalAlpha=e;
+    ctx.fillStyle='#000c';ctx.fillRect(-350,-62,700,124);ctx.fillStyle=P.banner.color;ctx.fillRect(-350,-62,700,6);ctx.fillRect(-350,56,700,6);
+    ctx.font='900 50px Impact,Arial Black,sans-serif';ctx.fillText(P.banner.text,0,8);
+    ctx.font='bold 20px sans-serif';ctx.fillStyle='#fff';ctx.fillText(P.banner.sub,0,40);ctx.restore();
+  }
+  if(P.flash>.02){ctx.fillStyle=`rgba(${P.flashC},${P.flash*.55})`;ctx.fillRect(0,0,700,480);P.flash*=.9}
+  ctx.restore();
+}
+function zoneAt(e){
+  const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)*700/r.width,y=(e.clientY-r.top)*480/r.height;
+  if(x<G.x||x>G.x+G.w||y<G.y||y>G.y+G.h)return -1;
+  return Math.floor((x-G.x)/ZW)+3*Math.floor((y-G.y)/ZH);
+}
+cv.addEventListener('pointermove',e=>{P.hover=zoneAt(e)});
+cv.addEventListener('pointerdown',e=>{
+  const z=zoneAt(e);P.hover=z;
+  if(P.phase==='aim'&&z>=0){P.zone=z;P.phase='power';P.power=0;P.pdir=1;sfx.click()}
+  else if(P.phase==='power'){
+    if(P.net){netPres({c:{t:P.turn,z:P.zone,pw:+P.power.toFixed(2)}});P.phase='wait';$('pmsg').textContent='Tiro enviado…'}
+    else run(()=>resolve(P.zone,rnd(6),P.power,false));
+  }else if(P.phase==='dive'&&z>=0){
+    if(P.net){netPres({c:{t:P.turn,k:z}});P.phase='wait';$('pmsg').textContent='Te lanzaste…'}
+    else{const s=P.cpuShot;run(()=>resolve(s.z,z,s.power,s.wide))}
+  }
+});
+function setRole(){
+  const r=$('role');
+  if(P.mine){r.className='shoot';r.textContent=`⚽ TE TOCA TIRAR — patea ${P.kName}`}
+  else{r.className='keep';r.textContent=`🧤 TE TOCA PARAR — eres ${P.gName}`}
+}
+function calcOutcome(shotZ,keepZ,power,wide){
+  const over=power>.86,weak=power<.2;
+  if(wide||over)return 'miss';
+  if(keepZ<0)return col(shotZ)===1&&Math.random()<.35?'save':'goal';
+  if(weak)return Math.abs(col(shotZ)-col(keepZ))<=1?'save':'goal';
+  if(shotZ===keepZ)return 'save';
+  if(row(shotZ)===row(keepZ)&&Math.abs(col(shotZ)-col(keepZ))===1&&Math.random()<.18)return 'save';
+  return 'goal';
+}
+function prepTurn(){
+  const t=P.turn,mine=P.net?((t%2===0)===NET.host):t%2===0;P.mine=mine;
+  const ki=t>>1;
+  if(P.net){const o=oppPresence();if(o&&o.lu){P.lineOpp=o.lu;P.gkOpp=o.gk}}
+  const line=mine?P.lineMe:P.lineOpp;
+  P.kName=(line[ki%5]||'Jugador');P.gName=mine?P.gkOpp:P.gkMe;
+  P.kLook=lookFor(P.kName);P.gLook=lookFor(P.gName);
+  for(const pose of['ready','dive'])getImg(mine?S.c1:S.me,{...P.gLook,keeper:true,pose});
+  getImg(mine?S.me:S.c1,P.kLook);
+  P.ball={x:SPOT.x,y:SPOT.y,r:12,spin:0};P.keeper={x:350,y:176,rot:0,pose:'ready'};P.shooter={x:250,y:440};P.hover=-1;P.hint=null;
+  setRole();$('hint').textContent='';
+  $('pmsg').textContent=`Penal ${Math.floor(t/2)+1}`+(t>=10?' (muerte súbita)':'');
+}
+async function startTurn(){
+  if(!P.net&&P.turn>=P.limit)return;
+  prepTurn();const mine=P.mine;
+  P.phase='banner';
+  P.banner={text:mine?'¡TE TOCA TIRAR!':'¡TE TOCA PARAR!',
+    sub:mine?`Patea ${P.kName} · mide tu fuerza y dispara`:(P.net?`Adivina el tiro de ${P.kName}`:`${P.kName} patea · mira el círculo rojo`),
+    color:mine?'#ffd84a':'#5ec8ff',t0:performance.now()};
+  sfx.whistle();await zz(1600);P.banner=null;
+  if(P.net){
+    if(P.netR===P.turn)return;
+    P.deadline=performance.now()+(mine?15000:9000);P.phase=mine?'aim':'dive';
+    $('hint').textContent=mine?'Tienes 15 segundos para elegir zona y fuerza.':'Tienes 9 segundos para lanzarte.';
+    return;
+  }
+  if(mine){P.phase='aim'}
+  else{
+    const z=rnd(6);
+    P.cpuShot={z,power:Math.random()<.1?.95:.3+Math.random()*.5,wide:Math.random()<.07};
+    P.hint={z:Math.random()<.75?z:(z+1+rnd(5))%6};
+    $('hint').textContent='🎯 El círculo rojo marca a dónde va el tiro… ¡pero el rival puede cambiar de idea!';
+    P.deadline=performance.now()+5000;P.phase='dive';
+  }
+}
+async function resolve(shotZ,keepZ,power,wide,forced){
+  P.phase='anim';P.hint=null;$('hint').textContent='';
+  const mine=P.mine,over=power>.86,weak=power<.2,timeout=keepZ<0;
+  const out=forced||calcOutcome(shotZ,keepZ,power,wide);
+  const wideAnim=out==='miss'&&!over;
+  const from={x:SPOT.x,y:SPOT.y},to={...zc(shotZ)};
+  if(out==='miss'&&over){to.y=G.y-70}
+  else if(wideAnim){to.x=(col(shotZ)===2?G.x+G.w+50:G.x-50)}
+  const k0={...P.keeper},kc=timeout?{x:k0.x,y:k0.y}:zc(keepZ);
+  const krot=timeout?0:col(keepZ)===0?-1.15:col(keepZ)===2?1.15:0;
+  const kty=timeout?k0.y:row(keepZ)===0?115:185;
+  const s0={x:250,y:440},s1={x:322,y:412};
+  for(let i=1;i<=16;i++){const t=i/16;P.shooter.x=s0.x+(s1.x-s0.x)*t;P.shooter.y=s0.y+(s1.y-s0.y)*t-Math.abs(Math.sin(t*12))*5;await zz(16)}
+  tone(140,.12,'square',.1);
+  const N=weak?54:Math.round(38-power*16);
+  for(let i=1;i<=N;i++){
+    const t=i/N;
+    P.ball.x=from.x+(to.x-from.x)*t;P.ball.y=from.y+(to.y-from.y)*t-Math.sin(t*Math.PI)*(over?10:28);
+    P.ball.r=12-5.5*t;P.ball.spin+=.4;P.shooter.x+=.4;
+    if(!timeout&&i>6){P.keeper.pose='dive';const kt=Math.min(1,(i-6)/(N*.62)),ke=kt*kt*(3-2*kt);
+      P.keeper.x=k0.x+(kc.x-k0.x)*ke;P.keeper.y=k0.y+(kty-k0.y)*ke;P.keeper.rot=krot*ke}
+    await zz(16);
+  }
+  const who=P.kName;
+  let txt;
+  if(out==='goal'){
+    P.ball.y-=8;P.shake=14;P.celebrate=2.2;P.flash=1;P.flashC='255,255,255';sfx.goal();
+    const cols=(mine?S.me:S.c1).cols.concat(['#fff','#ffd84a']);
+    for(let i=0;i<110;i++)P.confetti.push({x:to.x,y:to.y,vx:(Math.random()-.5)*11,vy:-Math.random()*9-2,c:pick(cols),rot:0});
+    txt=`⚽ ${pick(PH.goal)} Gol de ${who}`;
+  }else if(out==='save'){
+    sfx.save();P.shake=6;P.flash=.8;P.flashC='94,200,255';
+    const dx=(Math.random()<.5?-1:1)*(25+Math.random()*25);
+    for(let i=0;i<16;i++){P.ball.x+=dx/16*1.6;P.ball.y+=i<8?5:-1;P.ball.spin+=.5;await zz(16)}
+    txt=`🧤 ${pick(PH.save)} ${P.gName}`;
+  }else{
+    sfx.miss();
+    for(let i=0;i<12;i++){P.ball.x+=(to.x-from.x)*.01;P.ball.y-=over?5:2;await zz(16)}
+    txt=(over?'🚀 Demasiada fuerza. ':'😬 ')+pick(PH.miss);
+  }
+  if(timeout)txt='⏱ ¡Tiempo! El portero se quedó parado. '+txt;
+  (mine?P.pg:P.cg).push(out==='goal');dots();$('pmsg').textContent=txt;
+  if(P.net){await zz(400);P.phase='wait';$('pmsg').textContent=txt;if(P.netEnd)finishNet();return}
+  await zz(1800);
+  P.turn++;endCheck();
+}
+function endCheck(){
+  if(P.turn%2===0&&P.turn>=10){
+    const a=P.pg.filter(Boolean).length,b=P.cg.filter(Boolean).length;
+    if(a!==b){
+      P.limit=P.turn;P.phase='over';P.banner=null;
+      P.penRes=a>b?'Ganaste':'Perdiste';P.score=`${a}-${b}`;
+      $('role').className='';$('role').textContent=a>b?'🏆 ¡GANASTE LA TANDA!':'😢 PERDISTE LA TANDA';
+      $('pmsg').textContent=`Marcador final: ${a} - ${b}`;
+      if(a>b){P.celebrate=5;sfx.goal();for(let i=0;i<200;i++)P.confetti.push({x:Math.random()*700,y:-Math.random()*200,vx:(Math.random()-.5)*3,vy:Math.random()*3,c:pick(S.me.cols.concat(['#ffd84a'])),rot:0})}
+      ['toBJ','toRetry','toMenu'].forEach(i=>$(i).classList.remove('hidden'));return;
+    }
+    P.limit=P.turn+2;$('pmsg').textContent=`Empate ${a}-${b}. ¡Muerte súbita!`;
+  }
+  run(startTurn);
+}
+$('toRetry').onclick=resetPenalties;
+$('toBJ').onclick=()=>wantGame('bj');
+$('toMenu').onclick=showMenu;
+
+/* ================= AMIGOS (SALAS) ================= */
+const NET={on:false,r:null,code:'',host:false,game:'bj',seq:0,lastSeq:{},started:false,unP:null,tm:null,lastV:null,noHostSince:0,ro:[]};
+/* ================= SERVIDOR FIREBASE =================
+   Pega aquí la configuración de tu proyecto de Firebase
+   (Consola de Firebase → ⚙️ Configuración del proyecto → Tus apps → Web → Config).
+   Si se deja vacía, el juego usa las salas de Claude como antes. */
+const FB_CONFIG={apiKey:"AIzaSyCvgnLGvlWUltfb36kusQh1cTCs0pOSWIw",authDomain:"arena-penales.firebaseapp.com",databaseURL:"https://arena-penales-default-rtdb.firebaseio.com",projectId:"arena-penales",storageBucket:"arena-penales.firebasestorage.app",messagingSenderId:"420575177977",appId:"1:420575177977:web:0bad33075c6f9c2e07c628"};
+const LINK_JUEGO="https://tsbeto15.github.io/futbol-arcade/arena-penales/"; // opcional: el enlace donde publicaste el juego (para invitar a ligas)
+const FB_V='10.14.1';
+let FBP=null;
+const loadJS=src=>new Promise((ok,ko)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>ko(new Error('No cargó '+src));document.head.appendChild(s)});
+const withTimeout=(p,ms)=>Promise.race([p,new Promise((_,ko)=>setTimeout(()=>ko(new Error('timeout')),ms))]);
+function fbInit(){
+  if(FBP)return FBP;
+  FBP=(async()=>{
+    if(!FB_CONFIG.apiKey||!FB_CONFIG.databaseURL||!FB_CONFIG.projectId)return null;
+    try{
+      return await withTimeout((async()=>{
+        if(!window.firebase||!firebase.database||!firebase.firestore){
+          const b=`https://cdn.jsdelivr.net/npm/firebase@${FB_V}/`;
+          await loadJS(b+'firebase-app-compat.js');
+          await Promise.all(['auth','database','firestore'].map(n=>loadJS(b+`firebase-${n}-compat.js`)));
+        }
+        const app=firebase.apps.length?firebase.app():firebase.initializeApp(FB_CONFIG);
+        const auth=app.auth();
+        try{await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)}catch(e){try{await auth.setPersistence(firebase.auth.Auth.Persistence.NONE)}catch(_){}}
+        const u=auth.currentUser||(await auth.signInAnonymously()).user;
+        return {uid:u.uid,rt:app.database(),fs:app.firestore()};
+      })(),12000);
+    }catch(e){console.error('firebase',e);return null}
+  })();
+  return FBP;
+}
+/* Sala en tiempo real: cada jugador escribe su estado; al cerrar la página se borra solo. */
+function fbRoom(fb,name){
+  const me=fb.uid.slice(0,10)+'-'+Math.random().toString(36).slice(2,8);
+  const base=fb.rt.ref('salas/'+String(name).replace(/[.#$\[\]\/]/g,'_'));
+  const ref=base.child(me);
+  let mine={},list=[],subs=[],left=false;
+  const emit=()=>subs.forEach(f=>{try{f({peers:list})}catch(e){console.error(e)}});
+  const onVal=snap=>{
+    const v=snap.val()||{};
+    list=Object.keys(v).sort().map(k=>{let pr=null;try{pr=JSON.parse((v[k]&&v[k].j)||'null')}catch(e){}
+      return{peer:k,presence:pr,sameTab:k===me,isMe:k===me,kind:'viewer',guest:false}});
+    emit();
+  };
+  base.on('value',onVal,e=>console.error('sala',e));
+  ref.onDisconnect().remove();
+  const write=()=>left?Promise.resolve():ref.set({j:JSON.stringify(mine),t:firebase.database.ServerValue.TIMESTAMP});
+  write().catch(e=>console.error(e));
+  return {
+    peers:()=>list,
+    presence(patch){for(const k in patch){if(patch[k]===null)delete mine[k];else mine[k]=patch[k]}return write()},
+    onPeers(fn){subs.push(fn);setTimeout(()=>{if(subs.includes(fn))fn({peers:list})},0);return()=>{subs=subs.filter(f=>f!==fn)}},
+    leave(){left=true;subs=[];base.off('value',onVal);try{ref.onDisconnect().cancel()}catch(e){}return ref.remove()}
+  };
+}
+const netApi=async()=>{
+  const fb=await fbInit();if(fb)return{fb:true,join:async n=>fbRoom(fb,n)};
+  try{return window.claude&&window.claude.use?await window.claude.use('room'):null}catch(e){return null}};
+const myId=()=>{const m=NET.r&&NET.r.peers().find(p=>p.sameTab);return m?m.peer:'?'};
+const netPres=p=>{try{NET.r&&NET.r.presence(p).catch(()=>{})}catch(e){}};
+const cleanName=s=>String(s||'').replace(/[^\p{L}\p{N} _.-]/gu,'').trim().slice(0,12)||'Jugador';
+function netLeave(){
+  if(NET.r){try{NET.unP&&NET.unP();NET.r.leave().catch(()=>{})}catch(e){}}
+  NET.on=false;NET.r=null;NET.started=false;NET.unP=null;P.net=false;MYID='me';
+}
+async function netHome(){
+  $('netHome').classList.remove('hidden');$('netLobby').classList.add('hidden');$('netMsg').textContent='';
+  const api=await netApi();
+  $('netWarn').textContent=api&&api.fb?'🟢 Conectado al servidor del juego. Tus amigos abren este mismo enlace, entran a «Con amigos» y cualquiera puede crear o unirse a una sala.':
+    api?'Para jugar juntos, tus amigos deben abrir este mismo enlace con permiso de la página (compártela desde el menú Compartir de Claude).':
+    '⚠️ No se pudo conectar al servidor del juego. Revisa tu internet y vuelve a abrir el enlace. Mientras tanto puedes jugar Penales y Blackjack contra la CPU.';
+}
+async function netEnter(code,host,game){
+  const api=await netApi();if(!api){$('netMsg').textContent='No se pudo conectar. Inicia sesión en Claude, abre el enlace en Safari o Chrome y pide al dueño que te invite con tu correo.';return}
+  $('netMsg').textContent='Conectando…';
+  try{NET.r=await api.join('arena'+code)}catch(e){$('netMsg').textContent='No se pudo conectar a la sala. Intenta de nuevo.';return}
+  Object.assign(NET,{on:true,code,host,game:game||'bj',seq:0,lastSeq:{},started:false,lastV:null,noHostSince:0,ro:[],mt:'c',fx:null});
+  $('myName').value=$('myName').value||('Jugador'+(10+rnd(89)));
+  try{if(typeof ligaInit==='function'&&await ligaInit(true)&&L.me&&L.me.n)$('myName').value=L.me.n}catch(e){}
+  netPres({nm:cleanName($('myName').value),tm:NET.tm,host:host?1:null,game:host?NET.game:null,u:window.UID||null});
+  NET.unP=NET.r.onPeers(onNetPeers);
+  $('netHome').classList.add('hidden');$('netLobby').classList.remove('hidden');$('roomCode').textContent=code;
+  renderLobby();
+  if(!host){await sleep(3500);if(NET.on&&!NET.started&&!NET.r.peers().some(p=>p.presence&&p.presence.host)){
+    netLeave();$('netHome').classList.remove('hidden');$('netLobby').classList.add('hidden');$('netMsg').textContent=`No encontré la sala ${code}. Revisa el número.`}}
+}
+$('mkPen').onclick=()=>netEnter(String(1000+rnd(9000)),true,'pen');
+$('mkBj').onclick=()=>netEnter(String(1000+rnd(9000)),true,'bj');
+$('joinBtn').onclick=()=>{const c=$('joinCode').value.replace(/\D/g,'');if(c.length!==4){$('netMsg').textContent='Escribe los 4 números de la sala.';return}netEnter(c,false,null)};
+$('myName').addEventListener('input',()=>netPres({nm:cleanName($('myName').value)}));
+$('pickTeam').onclick=()=>openSel('pen','one',tm=>{NET.tm=tm.id;netPres({tm:tm.id});go('net');$('netHome').classList.add('hidden');$('netLobby').classList.remove('hidden');renderLobby()});
+$('leaveNet').onclick=()=>{netLeave();go('net');netHome()};
+$('startNet').onclick=()=>hostStart();
+function netPlayers(ps){
+  ps=ps||(NET.r?NET.r.peers():[]);
+  const list=ps.filter(p=>p.presence&&p.presence.nm&&p.kind==='viewer'!==false);
+  return list.sort((a,b)=>(b.presence.host?1:0)-(a.presence.host?1:0)||(a.peer<b.peer?-1:1));
+}
+function renderLobby(ps){
+  if(!NET.r||$('netLobby').classList.contains('hidden'))return;
+  const pl=netPlayers(ps),hp=pl.find(p=>p.presence.host);
+  if(hp)NET.game=hp.presence.game||NET.game;
+  $('gameSel').innerHTML=NET.host?
+    `<button class="${NET.game==='pen'?'':'grey'}" data-gs="pen">⚽ Penales 1 vs 1</button><button class="${NET.game==='bj'?'':'grey'}" data-gs="bj">🃏 Blackjack (hasta 5)</button>`:
+    `<div class="chosen">${NET.game==='pen'?'⚽ Penales 1 vs 1':'🃏 Blackjack hasta 5'}</div>`;
+  document.querySelectorAll('[data-gs]').forEach(b=>b.onclick=()=>{NET.game=b.dataset.gs;netPres({game:NET.game});renderLobby()});
+  $('plist').innerHTML=pl.map(p=>`<div class="prow"><span>${p.presence.host?'👑 ':''}${esc(cleanName(p.presence.nm))}${p.sameTab?' (tú)':''}</span><span>${TEAMS[p.presence.tm]?esc(TEAMS[p.presence.tm].name):'⏳ sin equipo'}</span></div>`).join('')||'<div class="note">Conectando…</div>';
+  const ok=NET.host&&pl.length>=2&&pl.every(p=>TEAMS[p.presence.tm])&&(NET.game==='bj'?pl.length<=5:pl.length===2);
+  $('startNet').classList.toggle('hidden',!NET.host);$('startNet').disabled=!ok;
+  if(typeof ligaLobbyUI==='function')ligaLobbyUI(hp);
+  $('lobMsg').textContent=NET.host?(pl.length<2?'Esperando a tus amigos…':NET.game==='pen'&&pl.length!==2?'Penales es para 2 jugadores.':!pl.every(p=>TEAMS[p.presence.tm])?'Todos deben elegir su equipo.':'¡Todo listo! Toca «Empezar partida».'):
+    (TEAMS[NET.tm]?'Esperando a que el anfitrión empiece…':'Elige tu equipo con el botón azul.');
+}
+function peerPres(id){const p=NET.r&&NET.r.peers().find(x=>x.peer===id);return p?p.presence:null}
+const peerAlive=id=>!!(NET.r&&NET.r.peers().some(x=>x.peer===id));
+function oppPresence(){const me=myId();const p=NET.r.peers().find(x=>x.peer!==me&&x.presence&&x.presence.nm&&NET.ro.includes(x.peer));return p?p.presence:null}
+function hostStart(){
+  NET.t0=Date.now();
+  if(NET.game==='pen'&&NET.mt&&NET.mt!=='c'&&typeof ligaPrecheck==='function'){
+    ligaPrecheck().then(ok=>{if(ok){netPres({mt:NET.mt,fx:NET.fx});hostStart2()}}).catch(()=>{$('lobMsg').textContent='No se pudo validar la liga.'});return;
+  }
+  hostStart2();
+}
+function hostStart2(){
+  const pl=netPlayers();NET.ro=pl.map(p=>p.peer).slice(0,5);
+  netPres({st:NET.game,ro:NET.ro});
+  NET.started=true;beginNetGame(NET.game);
+}
+function onNetPeers(){
+  if(!NET.r)return;
+  const ps=NET.r.peers(),hp=ps.find(p=>p.presence&&p.presence.host);
+  if(!hp){if(NET.started&&!NET.host){NET.noHostSince=NET.noHostSince||Date.now();if(Date.now()-NET.noHostSince>4000)hostGone()}renderLobby(ps);return}
+  NET.noHostSince=0;
+  if(NET.host)ingestActions(ps);
+  const h=hp.presence;
+  if(!NET.started&&!NET.host&&h.st){NET.started=true;NET.game=h.st;NET.ro=h.ro||[];beginNetGame(h.st)}
+  if(NET.started){if(NET.game==='bj')bjClient(h);else penClient(h)}
+  renderLobby(ps);
+}
+function hostGone(){
+  if(!NET.on)return;
+  const msg='El anfitrión salió de la sala.';
+  if(NET.game==='bj')$('bmsg').textContent=msg;else $('pmsg').textContent=msg;
+  NET.noHostSince=Infinity;
+}
+function ingestActions(ps){
+  const me=myId();
+  for(const p of ps){if(p.peer===me||!p.presence)continue;const a=p.presence.a;
+    if(a&&a.s>(NET.lastSeq[p.peer]||0)){NET.lastSeq[p.peer]=a.s;pushAct(p.peer,a)}}
+}
+function beginNetGame(g){
+  if(!TEAMS[NET.tm]){$('lobMsg').textContent='Elige tu equipo primero.';NET.started=false;return}
+  S.me=TEAMS[NET.tm];
+  if(g==='pen'){
+    const o=oppPresence();S.c1=TEAMS[(o&&o.tm)||'america']||TEAMS.america;S.c2=S.c1;
+    openLineup(()=>{go('pen');initPenNet()});
+  }else{
+    go('bj');initBJNet();
+  }
+}
+
+/* ---------- penales en línea ---------- */
+function initPenNet(){
+  P.net=true;P.lineOpp=S.c1.pl.slice(0,5);P.gkOpp=S.c1.gk[0];
+  const o=oppPresence();P.oppName=o?cleanName(o.nm):'Rival';
+  $('nCpu').textContent=P.oppName+' · '+S.c1.name;
+  penCommon();P.phase='wait';
+  $('pmsg').textContent='Esperando a que los dos estén listos…';$('role').className='';$('role').textContent='👥 Partida en línea';
+  netPres({lu:P.lineMe,gk:P.gkMe,rdy:1,c:null});
+  if(NET.host)run(penHost);
+}
+function choiceOf(id,t){const pr=peerPres(id);return pr&&pr.c&&pr.c.t===t?pr.c:null}
+async function penHost(){
+  const [a,b]=NET.ro,hostId=myId(),guestId=NET.ro.find(x=>x!==hostId);
+  while(!(peerPres(hostId)&&peerPres(hostId).rdy&&peerPres(guestId)&&peerPres(guestId).rdy))await zz(300);
+  let hs=0,gs=0;
+  for(let t=0;;t++){
+    netPres({g:{t,ph:'turn'}});
+    const sh=t%2===0?hostId:guestId,kp=t%2===0?guestId:hostId,t0=Date.now();let cs=null,ck=null;
+    for(;;){await zz(150);cs=choiceOf(sh,t);ck=choiceOf(kp,t);if(cs&&ck)break;if(Date.now()-t0>19000)break;if(!peerAlive(guestId)){break}}
+    const z=cs&&cs.z!=null?cs.z:rnd(6),pw=cs&&cs.pw!=null?cs.pw:.5,k=ck&&ck.k!=null?ck.k:-1;
+    const out=calcOutcome(z,k,pw,false);
+    if(out==='goal'){if(sh===hostId)hs++;else gs++}
+    netPres({g:{t,ph:'res',z,k,pw,out,hs,gs}});
+    await zz(5800);
+    if(t%2===1&&t>=9&&hs!==gs){netPres({g:{t,ph:'end',hs,gs}});if(typeof ligaRecord==='function')run(()=>ligaRecord(hs,gs));return}
+    if(!peerAlive(guestId))return;
+  }
+}
+function penClient(h){
+  const g=h.g;if(!g||!P.net)return;
+  if(g.ph==='end'){P.netEnd=g;if(!['anim','banner'].includes(P.phase))finishNet();return}
+  if(g.ph==='turn'&&g.t!==P.netT){P.netT=g.t;P.turn=g.t;run(startTurn)}
+  else if(g.ph==='res'&&P.netR!==g.t){
+    if(P.netT!==g.t){P.netT=g.t;P.turn=g.t;prepTurn()}
+    P.netR=g.t;run(()=>resolve(g.z,g.k,g.pw,false,g.out));
+  }
+}
+function finishNet(){
+  const g=P.netEnd;if(!g||P.netDone)return;P.netDone=true;
+  const mine=NET.host?g.hs:g.gs,opp=NET.host?g.gs:g.hs;
+  P.phase='over';P.celebrate=mine>opp?5:0;if(mine>opp)sfx.goal();
+  $('role').className='';$('role').textContent=mine>opp?'🏆 ¡GANASTE LA TANDA!':'😢 PERDISTE LA TANDA';
+  $('pmsg').textContent=`Marcador final: ${mine} - ${opp}`;$('toMenu').classList.remove('hidden');
+}
+
+/* ================= BLACKJACK ================= */
+const RANKS=['A','2','3','4','5','6','7','8','9','10','J','Q','K'],SUITS=['♠','♥','♦','♣'];
+const cardVal=c=>c.r==='A'?11:['J','Q','K','10'].includes(c.r)?10:+c.r;
+function val(h){let t=0,a=0;for(const c of h){t+=cardVal(c);if(c.r==='A')a++}while(t>21&&a){t-=10;a--}return t}
+const drawCard=()=>({r:pick(RANKS),s:pick(SUITS)});
+const cs=c=>c.r+c.s,dec=s=>({r:s.slice(0,-1),s:s.slice(-1)});
+const EVT={normal:{t:''},
+  doble:{t:'💰 RONDA DORADA — ¡todas las ganancias valen DOBLE!'},
+  seguro:{t:'🛡 RONDA SEGURA — si pierdes, te devuelven la mitad'},
+  suerte:{t:'🍀 RONDA DE LA SUERTE — el Blackjack paga 2 a 1'}};
+const STYLES={cauto:{n:'🐢 Cauto',lim:12},normal:{n:'🙂 Normal',lim:15},osado:{n:'🔥 Osado',lim:17}};
+const DQ={deal:['Hagan sus apuestas...','¡Que ruede la suerte!','Mesa abierta, caballeros.','Beep boop… ¿quién gana hoy?'],
+  bust:['¡Error de sistema! Me pasé…','¡Pum! Volé.','Mis circuitos… ¡21 superado!'],
+  win:['Beep: la casa gana.','Calculado. Ustedes pierden.'],hit:['Otra carta…','Pido carta.']};
+let E=null,Q={},MYID='me',CH={me:500,b1:500,b2:500};
+
+/* --- motor (corre en el aparato del anfitrión, o en el tuyo si juegas solo) --- */
+function newEngine(pl){
+  E={pl:pl.map(p=>({...p,ch:p.ch||500,hs:[],rx:'',st:'',bd:0})),dealer:[],hide:false,rd:0,ev:'normal',ph:'',cur:null,msg:'',say:'',rem:0};Q={};
+}
+function snap(){
+  const e=E;
+  return {rd:e.rd,ev:e.ev,ph:e.ph,mg:e.msg,sy:e.say,dh:e.dealer.map(cs),hd:e.hide?1:0,cu:e.cur,rm:Math.round(e.rem||0),
+    pl:e.pl.map(p=>({i:p.id,n:p.nm,t:p.tm,b:p.bot?1:0,s:p.st||'',c:p.ch,bd:p.bd?1:0,x:p.rx||'',
+      h:p.hs.map(h=>({c:h.c.map(cs),b:h.bet,r:h.res||'',o:h.out||''}))}))};
+}
+function pub(){
+  if(!E)return;const v=snap();
+  if(NET.on&&NET.host)netPres({v});
+  renderBJ(v);
+}
+function pushAct(pid,a){(Q[pid]=Q[pid]||[]).push(a)}
+async function askHuman(p,types,ms){
+  const t0=Date.now();Q[p.id]=[];let lp=0;
+  for(;;){
+    const left=ms-(Date.now()-t0);if(left<=0)return{x:'timeout'};
+    const q=Q[p.id];while(q.length){const a=q.shift();if(types.includes(a.x))return a}
+    if(NET.on&&!p.local&&!peerAlive(p.id))return{x:'timeout'};
+    if(Date.now()-lp>1000){lp=Date.now();E.rem=left;pub()}
+    await zz(100);
+  }
+}
+async function bjLoop(){
+  const e=E;
+  for(e.rd=1;e.rd<=3;e.rd++){
+    await playRound();
+    if(!e.pl.some(p=>!p.bot&&p.ch>0))break;
+  }
+  e.rd=Math.min(e.rd,3);e.ph='end';e.cur=null;e.rem=0;saveCH();pub();
+}
+const saveCH=()=>{if(!NET.on)E.pl.forEach(p=>{CH[p.id]=p.ch})};
+async function dealCard(arr,ms=260){arr.push(drawCard());pub();await zz(ms)}
+async function playRound(){
+  const e=E;
+  e.ph='bet';e.dealer=[];e.hide=true;e.cur=null;e.rem=0;e.ev=pick(['normal','normal','normal','doble','seguro','suerte']);
+  e.pl.forEach(p=>{p.hs=[];p.rx='';p.bd=0;if(p.bot)p.st=pick(['cauto','normal','osado'])});
+  e.msg='Hagan sus apuestas ✋';e.say=pick(DQ.deal);pub();
+  const humans=e.pl.filter(p=>!p.bot&&p.ch>0);
+  await Promise.all(humans.map(async p=>{
+    const a=await askHuman(p,['bet'],25000),min=Math.min(10,p.ch);
+    let v=a.x==='bet'?Math.round(+a.v):min;if(!(v>0))v=min;v=Math.max(min,Math.min(p.ch,v));
+    p.ch-=v;p.hs=[{c:[],bet:v}];p.bd=1;pub();
+  }));
+  for(const p of e.pl.filter(p=>p.bot)){
+    if(p.ch<10)p.ch=500;
+    const b=Math.min(p.ch,pick([20,50,50,100,150,p.st==='osado'?250:50]));p.ch-=b;p.hs=[{c:[],bet:b}];
+  }
+  const rp=e.pl.filter(p=>p.hs.length);
+  e.ph='deal';e.rem=0;e.msg=EVT[e.ev].t||'El Dealer reparte...';pub();
+  for(let i=0;i<2;i++){for(const p of rp)await dealCard(p.hs[0].c);await dealCard(e.dealer)}
+  for(const p of rp){const h=p.hs[0];h.nat=val(h.c)===21}
+  const dNat=val(e.dealer)===21;
+  if(dNat){e.hide=false;e.msg='¡El Dealer tiene Blackjack!';e.say='¡Blackjack! Beep.';pub();await zz(1500)}
+  else{
+    for(const p of rp){
+      e.cur=[e.pl.indexOf(p),0];
+      if(p.bot)await botTurn(p);else await humanTurn(p);
+    }
+    e.cur=null;e.hide=false;e.ph='dealer';e.msg='Juega el Dealer...';e.rem=0;pub();await zz(1100);
+    while(val(e.dealer)<17){e.say=pick(DQ.hit);await dealCard(e.dealer,1000)}
+    if(val(e.dealer)>21)e.say=pick(DQ.bust);
+  }
+  settle(dNat);
+  await zz(6000);
+}
+async function humanTurn(p){
+  const e=E,pi=e.pl.indexOf(p);
+  for(let hi=0;hi<p.hs.length;hi++){
+    const h=p.hs[hi];e.cur=[pi,hi];
+    if(h.c.length===1)await dealCard(h.c,500);
+    while(!h.done){
+      const v=val(h.c);if(v>=21||h.nat)break;
+      e.ph='play';e.msg=`Turno de ${p.nm}`+(p.hs.length>1?` · mano ${hi+1}`:'');pub();
+      const a=await askHuman(p,['hit','stand','double','split'],25000);
+      if(a.x==='hit')await dealCard(h.c,500);
+      else if(a.x==='stand'||a.x==='timeout')h.done=true;
+      else if(a.x==='double'&&h.c.length===2&&p.ch>=h.bet){p.ch-=h.bet;h.bet*=2;h.out='Dobla';await dealCard(h.c,600);h.done=true}
+      else if(a.x==='split'&&h.c.length===2&&h.c[0].r===h.c[1].r&&p.hs.length===1&&p.ch>=h.bet){
+        p.ch-=h.bet;p.hs.splice(hi+1,0,{c:[h.c.pop()],bet:h.bet});pub();await dealCard(h.c,500);
+      }
+    }
+    if(val(h.c)>21){e.msg=`¡${p.nm} voló! (se pasó de 21)`;sfx.miss();pub();await zz(800)}
+  }
+}
+async function botTurn(p){
+  const e=E,h=p.hs[0],lim=STYLES[p.st].lim;
+  e.ph='play';e.msg=`Juega ${p.nm} (${STYLES[p.st].n})...`;e.rem=0;pub();await zz(900);
+  if(h.nat)return;
+  if(h.c.length===2&&[10,11].includes(val(h.c))&&p.ch>=h.bet&&Math.random()<.7){p.ch-=h.bet;h.bet*=2;h.out='Dobla';await dealCard(h.c,700);return}
+  for(;;){
+    const v=val(h.c);let hit=v<=lim;
+    if(v>=19)hit=false;else if(v<=9)hit=true;else if(Math.random()<.1)hit=!hit;
+    if(!hit)break;
+    await dealCard(h.c,850);
+  }
+}
+function settle(dNat){
+  const e=E,d=val(e.dealer),dBust=d>21,ev=e.ev;
+  for(const p of e.pl){
+    let net=0;
+    for(const h of p.hs){
+      const v=val(h.c);let res,profit=0,pay=0,lbl='';
+      if(v>21&&dBust){res='push';pay=h.bet;lbl=' (ambos volaron)'}
+      else if(v>21)res='lose';
+      else if(dNat){if(h.nat){res='push';pay=h.bet}else res='lose'}
+      else if(h.nat){res='win';profit=ev==='suerte'?h.bet*2:Math.floor(h.bet*1.5);lbl=' ¡BLACKJACK!'}
+      else if(dBust||v>d){res='win';profit=h.bet}
+      else if(v===d){res='push';pay=h.bet}
+      else res='lose';
+      if(res==='win'){if(ev==='doble')profit*=2;pay=h.bet+profit}
+      if(res==='lose'&&ev==='seguro')pay=Math.floor(h.bet/2);
+      p.ch+=pay;h.res=res;net+=pay-h.bet;
+      h.out=res==='win'?`✅ +${profit}${lbl}`:res==='push'?`🤝 Empate${lbl}`:`❌ −${h.bet-pay}`;
+    }
+    p.rx=p.hs.length?(net>0?'win':net<0?'lose':''):'';
+  }
+  e.ph='result';e.cur=null;e.rem=0;
+  e.msg=(dBust?'💥 ¡El Dealer voló y paga a todos los que siguen! ':dNat?'Blackjack del Dealer. ':'')+'Mira los resultados en la mesa.';
+  e.say=dBust?pick(DQ.bust):pick(DQ.win);
+  saveCH();pub();
+}
+
+/* --- pantalla (la misma para todos) --- */
+let betSent=-1,BETV=50,seen={},lastRd=-1,BV=null,BVt=0;
+function cardHTML(s,hide,isNew){
+  const c=dec(s),cls=isNew?' new':'';
+  return hide?`<div class="c back${cls}">?</div>`:`<div class="c ${'♥♦'.includes(c.s)?'r':''}${cls}">${c.r}${c.s}</div>`;
+}
+function renderBJ(v){
+  BV=v;BVt=Date.now();
+  const me=v.pl.findIndex(p=>p.i===MYID),mp=me>=0?v.pl[me]:null;
+  if(v.rd!==lastRd||v.ph==='bet'){if(v.ph==='bet')seen={};lastRd=v.rd}
+  if(v.ph!=='bet')betSent=-1;
+  let added=false;
+  const chk=(key,n)=>{const old=seen[key]||0;seen[key]=n;if(n>old)added=true;return old};
+  $('roundLbl').textContent=v.ph==='end'?'Fin de las rondas':`Ronda ${v.rd} de 3`;
+  $('evt').className='evt '+v.ev;$('evt').textContent=(EVT[v.ev]||EVT.normal).t;
+  $('chipsP').textContent=mp?mp.c:'—';
+  $('bmsg').textContent=v.mg||'';$('dsay').textContent=v.sy||'';
+  const dold=chk('D',v.dh.length),dv=val(v.dh.map(dec));
+  $('hD').innerHTML=v.dh.map((s,i)=>cardHTML(s,v.hd&&i===1,i>=dold)).join('');
+  $('tD').textContent=!v.dh.length||v.hd?'':(dv>21?`${dv} — ¡Voló!`:dv);
+  $('seats').innerHTML=v.pl.map((p,i)=>{
+    const cur=v.cu&&v.cu[0]===i,isMe=p.i===MYID;
+    const hands=p.h.map((h,hi)=>{
+      const old=chk(p.i+':'+hi,h.c.length),t=val(h.c.map(dec));
+      return `<div class="hand${cur&&v.cu[1]===hi&&v.ph==='play'?' cur':''}"><div class="cards">${h.c.map((s,ci)=>cardHTML(s,false,ci>=old)).join('')}</div>
+        <div class="tot ${h.r}">${h.c.length?(t>21?t+' voló':t):''}${h.b?` · 💰${h.b}`:''}${h.o?' · '+esc(h.o):''}</div></div>`}).join('');
+    const bub=v.ph==='result'&&p.x?`<div class="bubble">${(p.x==='win'?['😎','🤑','🎉','💪']:['😭','😵','🤬','😩'])[(v.rd+i)%4]}</div>`:'';
+    return `<div class="seat${cur&&v.ph==='play'?' active':''}${v.ph==='result'&&p.x?' '+p.x:''}">${bub}
+      <span class="nm">${p.b?'CPU · ':''}${esc(p.n)}${isMe?' (tú)':''}</span>
+      <span class="style">${TEAMS[p.t]?esc(TEAMS[p.t].name):''}${p.s&&STYLES[p.s]?' · '+STYLES[p.s].n:''}</span>
+      <div class="chipline">💰 ${p.c}${p.bd&&v.ph==='bet'?' ✔':''}</div><div class="hands">${hands}</div><div class="av">${avHTML(p.t,i)}</div></div>`}).join('');
+  if(added)sfx.card();
+  const myTurn=v.ph==='play'&&mp&&v.cu&&v.cu[0]===me;
+  $('acts').classList.toggle('hidden',!myTurn);
+  if(myTurn){
+    const h=mp.h[v.cu[1]];
+    if(h){$('dbl').disabled=!(h.c.length===2&&mp.c>=h.b);
+      $('spl').disabled=!(h.c.length===2&&dec(h.c[0]).r===dec(h.c[1]).r&&mp.h.length===1&&mp.c>=h.b)}
+  }
+  const canBet=v.ph==='bet'&&mp&&mp.c>0&&!mp.bd&&betSent!==v.rd;
+  $('betbox').classList.toggle('hidden',!canBet);
+  if(canBet)updBet(mp.c);
+  $('final').classList.toggle('hidden',v.ph!=='end');
+  if(v.ph==='end')renderFinal(v);
+}
+setInterval(()=>{
+  if(!BV||!BV.rm||!['bet','play'].includes(BV.ph)){$('tmr').textContent='';return}
+  $('tmr').textContent='⏱ '+Math.max(0,Math.ceil((BV.rm-(Date.now()-BVt))/1000))+' s';
+},400);
+function updBet(max){const min=Math.min(10,max);BETV=Math.max(min,Math.min(max,BETV));$('betV').textContent=BETV}
+document.querySelectorAll('[data-bet]').forEach(b=>b.onclick=()=>{
+  const me=BV&&BV.pl.find(p=>p.i===MYID);if(!me)return;
+  const d=b.dataset.bet,max=me.c,min=Math.min(10,max);
+  BETV=d==='all'?max:d==='min'?min:BETV+(+d);updBet(max);sfx.click();
+});
+function sendAct(a){
+  if(NET.on&&!NET.host){NET.seq++;netPres({a:{...a,s:NET.seq}})}
+  else pushAct(MYID,a);
+}
+$('dealBtn').onclick=()=>{betSent=BV?BV.rd:0;$('betbox').classList.add('hidden');sfx.coin();sendAct({x:'bet',v:BETV})};
+$('hit').onclick=()=>sendAct({x:'hit'});$('stand').onclick=()=>sendAct({x:'stand'});
+$('dbl').onclick=()=>sendAct({x:'double'});$('spl').onclick=()=>sendAct({x:'split'});
+function renderFinal(v){
+  const f=$('final'),isHost=!NET.on||NET.host;
+  const rows=v.pl.map((p,i)=>({p,i})).sort((a,b)=>b.p.c-a.p.c);
+  const humans=v.pl.filter(p=>!p.b),meP=v.pl.find(p=>p.i===MYID),broke=!humans.some(p=>p.c>0);
+  f.innerHTML=`<h2>${broke?'💸 Se acabaron las fichas':'🏁 Fin de las 3 rondas'}</h2>
+  <table><tr><th></th><th>Jugador</th><th>Fichas</th></tr>${rows.map(r=>`<tr><td><div class="av">${avHTML(r.p.t,r.i)}</div></td><td>${r.p.b?'CPU · ':''}${esc(r.p.n)}${r.p.i===MYID?' (tú)':''}</td><td>💰 ${r.p.c}</td></tr>`).join('')}</table>
+  <p>${rows[0].p.i===MYID&&!broke?'🏆 ¡Eres el que más fichas tiene!':'¿Quieres seguir jugando?'}</p>
+  ${isHost?`<button id="mAgain">🃏 ${broke?'Reiniciar con 500 fichas':'Seguir con Blackjack (3 rondas más)'}</button>`:'<div class="note">Esperando a que el anfitrión decida…</div>'}
+  ${NET.on?'':'<button id="mPen" class="alt">⚽ Ir a Penales</button>'}
+  <button id="mMenu" class="grey">🏠 Menú</button>`;
+  if($('mAgain'))$('mAgain').onclick=()=>{
+    E.pl.forEach(p=>{if(p.ch<=0||broke)p.ch=500});E.rd=0;betSent=-1;seen={};run(bjLoop);
+  };
+  if($('mPen'))$('mPen').onclick=()=>wantGame('pen');
+  $('mMenu').onclick=showMenu;
+}
+function bjShell(){
+  $('avD').innerHTML=robotSVG();$('final').classList.add('hidden');$('acts').classList.add('hidden');$('betbox').classList.add('hidden');
+  seen={};betSent=-1;lastRd=-1;BV=null;$('seats').innerHTML='';$('hD').innerHTML='';$('tD').textContent='';$('evt').textContent='';
+}
+function initBJ(){
+  netLeave();MYID='me';bjShell();
+  newEngine([{id:'b1',nm:S.c1.name,tm:S.c1.id,bot:1,ch:CH.b1},{id:'me',nm:'Tú',tm:S.me.id,bot:0,local:1,ch:CH.me},{id:'b2',nm:S.c2.name,tm:S.c2.id,bot:1,ch:CH.b2}]);
+  run(bjLoop);
+}
+function initBJNet(){
+  MYID=myId();bjShell();$('bmsg').textContent=NET.host?'Preparando la mesa…':'Esperando al anfitrión…';
+  if(NET.host){
+    const pl=NET.ro.map(id=>{const pr=peerPres(id)||{};return{id,nm:cleanName(pr.nm),tm:TEAMS[pr.tm]?pr.tm:'america',bot:0,local:id===MYID?1:0,ch:500}});
+    newEngine(pl);run(bjLoop);
+  }
+}
+function bjClient(h){
+  if(NET.host||!h.v||h.v===NET.lastV)return;
+  NET.lastV=h.v;MYID=myId();renderBJ(h.v);
+}
+
+/* ================= LIGAS EN LÍNEA (guardado en la base de datos de la página) ================= */
+const ART=LINK_JUEGO||'https://claude.ai/artifact/FNsGJ2xq9VQYUHtgZzw35b';
+const L={ready:false,fail:'',db:null,user:null,room:null,uid:null,me:null,players:{},lg:{},watch:{},online:[],inv:[],casual:[],
+  view:'home',lid:null,tab:'tabla',pf:null,conf:null,msg:'',unsubs:[],dirty:false,editFx:null,joinPre:'',sentSeen:{}};
+const nickOf=u=>(L.players[u]&&L.players[u].n)||'Jugador';
+const txt=s=>String(s==null?'':s).replace(/[<>]/g,'').trim();
+const myLeagues=()=>((L.me&&L.me.lg)||[]).filter(id=>L.lg[id]&&L.lg[id].doc);
+const isAdm=o=>!!(o&&o.doc&&(o.doc.adm||[]).includes(L.uid));
+const fmtD=t=>{const d=new Date(t);return d.toLocaleDateString('es',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'})};
+const genCode=()=>Array.from({length:6},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[rnd(32)]).join('');
+const ligaErr=e=>{console.error(e);L.msg='⚠️ No se pudo guardar: '+(e&&e.code==='invalid_argument'?'tu cuenta no tiene permiso de escritura en esta página.':'intenta de nuevo.');ligaRender()};
+
+async function ligaInit(){
+  if(L.ready)return true;
+  try{
+    const fb=await fbInit();
+    if(fb){
+      L.fb=true;L.db=fb.fs;L.uid=fb.uid;L.user={id:async()=>fb.uid,can:async()=>true};L.room=fbRoom(fb,'lobby');
+      window.UID=L.uid;
+      const ps=await L.db.doc('players/'+L.uid).get();L.me=ps.exists?ps.data():null;
+      L.ready=true;L.fail='';ligaSubs();
+      if(L.me&&L.me.n){try{$('myName').value=L.me.n}catch(e){}}
+      return true;
+    }
+    const c=window.claude;
+    if(!c||!c.use){L.fail='Las ligas necesitan que inicies sesión en Claude, abras el enlace en Safari o Chrome (no dentro de WhatsApp) y que el dueño del juego te haya invitado con tu correo.';return false}
+    L.db=await c.use('db');L.user=await c.use('user');L.room=await c.use('room');
+    if(!L.db||!L.user){L.fail='No se pudo conectar. Inicia sesión en Claude, abre el enlace en Safari o Chrome y pide al dueño que te invite con tu correo.';return false}
+    L.uid=await L.user.id();
+    if(!L.uid){L.fail='Necesitas iniciar sesión en Claude para usar las ligas.';return false}
+    if(await L.user.can('data.write')===false){L.fail='Tu acceso es de solo lectura. Pide al dueño de la página permiso de colaborador.';return false}
+    window.UID=L.uid;
+    const ps=await L.db.doc('players/'+L.uid).get();L.me=ps.exists?ps.data():null;
+    L.ready=true;L.fail='';ligaSubs();
+    if(L.me&&L.me.n){try{$('myName').value=L.me.n}catch(e){}}
+    return true;
+  }catch(e){console.error(e);L.fail='No se pudo conectar con la base de datos.';return false}
+}
+async function ligaOpen(){
+  $('liga').classList.remove('hidden');
+  L.view=(L.view==='nick')?'home':L.view;ligaRender();
+  if(await ligaInit()){
+    if(L.joinPre){const c=L.joinPre;L.joinPre='';L.view='home';ligaRender();joinLeague(c)}
+  }
+  ligaRender();
+}
+function ligaSubs(){
+  const db=L.db,add=u=>L.unsubs.push(u),re=()=>ligaRender(),er=e=>console.error('db',e);
+  add(db.collection('players').onSnapshot(s=>{
+    L.players={};s.docs.forEach(d=>L.players[d.id]=d.data());
+    if(L.players[L.uid])L.me=L.players[L.uid];
+    syncWatches();lobbyPres();re()},er));
+  add(db.collection('invites').where('to','==',L.uid).onSnapshot(s=>{
+    L.inv=s.docs.map(d=>({id:d.id,...d.data()})).filter(i=>i.s==='p'&&Date.now()-i.at<900000);re()},er));
+  add(db.collection('invites').where('from','==',L.uid).onSnapshot(s=>{
+    s.docs.forEach(d=>{const i=d.data();if(i.s==='d'&&!L.sentSeen[d.id]&&Date.now()-i.at<900000){
+      L.msg=`${nickOf(i.to)} rechazó tu invitación.`;try{$('lobMsg').textContent=L.msg}catch(e){}}
+      L.sentSeen[d.id]=i.s});re()},er));
+  add(db.collection('casual').where('p','array-contains',L.uid).onSnapshot(s=>{
+    L.casual=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>b.at-a.at);re()},er));
+  if(L.room){
+    L.room.onPeers(ch=>{
+      const seen={};L.online=ch.peers.filter(p=>p.kind==='viewer'&&!p.isMe&&p.presence&&p.presence.u&&p.presence.u!==L.uid&&!seen[p.presence.u]&&(seen[p.presence.u]=1));
+      re()},er);
+    lobbyPres();
+  }
+}
+function lobbyPres(){if(L.room&&L.me&&L.me.n)L.room.presence({u:L.uid,nm:cleanName(L.me.n),app:1}).catch(()=>{})}
+function syncWatches(){
+  const want=new Set((L.me&&L.me.lg)||[]);
+  for(const id of want)if(!L.watch[id])watchLeague(id);
+  for(const id of Object.keys(L.watch))if(!want.has(id)){L.watch[id].forEach(u=>u());delete L.watch[id];delete L.lg[id]}
+}
+function watchLeague(lid){
+  const db=L.db,re=()=>ligaRender(),er=e=>console.error('db',e);
+  const o=L.lg[lid]={doc:null,mem:{},fx:[],loaded:false};
+  L.watch[lid]=[
+    db.doc('leagues/'+lid).onSnapshot(s=>{o.doc=s.exists?s.data():null;o.loaded=true;
+      if(!s.exists&&!(s.metadata&&s.metadata.fromCache)&&L.me&&(L.me.lg||[]).includes(lid))removeMyLeague(lid);re()},er),
+    db.collection('leagues/'+lid+'/members').onSnapshot(s=>{o.mem={};s.docs.forEach(d=>o.mem[d.id]=d.data());re()},er),
+    db.collection('leagues/'+lid+'/fixtures').onSnapshot(s=>{o.fx=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>a.id<b.id?-1:1);re()},er)];
+}
+async function setMyLeagues(lg){try{await L.db.doc('players/'+L.uid).update({lg})}catch(e){ligaErr(e)}}
+const addMyLeague=lid=>{const lg=[...((L.me&&L.me.lg)||[])];if(!lg.includes(lid)){lg.push(lid);return setMyLeagues(lg)}};
+const removeMyLeague=lid=>setMyLeagues(((L.me&&L.me.lg)||[]).filter(x=>x!==lid));
+
+/* ---------- cálculo de la tabla (siempre desde los partidos guardados) ---------- */
+function standings(o){
+  const d=o.doc,rows={};
+  Object.keys(o.mem).forEach(u=>rows[u]={u,pj:0,g:0,e:0,p:0,gf:0,gc:0,pts:0});
+  o.fx.filter(f=>f.st==='d').forEach(f=>{
+    const A=rows[f.a],B=rows[f.b];if(!A||!B)return;
+    A.pj++;B.pj++;A.gf+=f.ga;A.gc+=f.gb;B.gf+=f.gb;B.gc+=f.ga;
+    if(f.ga>f.gb){A.g++;B.p++;A.pts+=d.pw;B.pts+=d.pl}
+    else if(f.ga<f.gb){B.g++;A.p++;B.pts+=d.pw;A.pts+=d.pl}
+    else{A.e++;B.e++;A.pts+=d.pd;B.pts+=d.pd}});
+  return Object.values(rows).sort((x,y)=>y.pts-x.pts||(y.gf-y.gc)-(x.gf-x.gc)||y.gf-x.gf||nickOf(x.u).localeCompare(nickOf(y.u)));
+}
+function schedule(ids,legs){
+  const a=ids.slice();if(a.length%2)a.push(null);
+  const n=a.length,rounds=[];
+  for(let r=0;r<n-1;r++){
+    const ps=[];for(let i=0;i<n/2;i++){const x=a[i],y=a[n-1-i];if(x&&y)ps.push(r%2?[y,x]:[x,y])}
+    rounds.push(ps);a.splice(1,0,a.pop());
+  }
+  const out=[];rounds.forEach((ps,r)=>ps.forEach(p=>out.push({r:r+1,a:p[0],b:p[1]})));
+  if(legs===2){const m=rounds.length;rounds.forEach((ps,r)=>ps.forEach(p=>out.push({r:m+r+1,a:p[1],b:p[0]})))}
+  return out;
+}
+
+/* ---------- acciones ---------- */
+async function chunked(items,fn,size=8){for(let i=0;i<items.length;i+=size)await Promise.all(items.slice(i,i+size).map(fn))}
+async function saveNick(){
+  const n=cleanName($('nickIn').value);if(txt($('nickIn').value).length<2){L.msg='Escribe un nombre de al menos 2 letras.';ligaRender();return}
+  try{
+    if(L.me&&L.me.n)await L.db.doc('players/'+L.uid).update({n});
+    else await L.db.doc('players/'+L.uid).set({n,lg:[],at:Date.now()});
+    L.me={...(L.me||{lg:[]}),n};L.view='home';L.msg='';try{$('myName').value=n}catch(e){}lobbyPres();ligaRender();
+  }catch(e){ligaErr(e)}
+}
+async function createLeague(){
+  const name=txt($('lgName').value).slice(0,24)||'Mi liga';
+  const num=(id,d,lo,hi)=>{const v=parseInt($(id).value,10);return Math.max(lo,Math.min(hi,isNaN(v)?d:v))};
+  const cfg={name,max:num('lgMax',8,2,16),legs:+$('lgLegs').value===2?2:1,pw:num('lgPw',3,0,20),pd:num('lgPd',1,0,20),pl:num('lgPl',0,0,20)};
+  try{
+    let code;do{code=genCode()}while((await L.db.doc('leagues/'+code).get()).exists);
+    await L.db.doc('leagues/'+code).set({...cfg,adm:[L.uid],st:'o',at:Date.now(),code});
+    await L.db.doc(`leagues/${code}/members/${L.uid}`).set({u:L.uid,at:Date.now()});
+    await addMyLeague(code);L.lid=code;L.view='league';L.tab='tabla';L.msg='';ligaRender();
+  }catch(e){ligaErr(e)}
+}
+async function joinLeague(code){
+  code=txt(code).toUpperCase();
+  if(!/^[A-Z0-9]{6}$/.test(code)){L.msg='El código tiene 6 letras o números.';ligaRender();return}
+  try{
+    const s=await L.db.doc('leagues/'+code).get();
+    if(!s.exists){L.msg='No existe una liga con ese código.';ligaRender();return}
+    const d=s.data(),mem=await L.db.collection(`leagues/${code}/members`).get();
+    if(mem.docs.some(m=>m.id===L.uid)){L.lid=code;L.view='league';await addMyLeague(code);ligaRender();return}
+    if(d.st!=='o'){L.msg='Esa liga ya empezó y no acepta más jugadores.';ligaRender();return}
+    if(mem.size>=d.max){L.msg='La liga ya está llena.';ligaRender();return}
+    await L.db.doc(`leagues/${code}/members/${L.uid}`).set({u:L.uid,at:Date.now()});
+    await addMyLeague(code);L.lid=code;L.view='league';L.tab='tabla';L.msg='¡Te uniste a '+txt(d.name)+'!';ligaRender();
+  }catch(e){ligaErr(e)}
+}
+async function claimAdmin(){
+  try{
+    const s=await L.db.doc('leagues/'+L.lid).get();
+    if(!s.exists)return;
+    if((s.data().adm||[]).length){L.msg='Otra persona ya es administradora.';ligaRender();return}
+    await L.db.doc('leagues/'+L.lid).update({adm:[L.uid]});L.msg='Ahora eres el administrador.';ligaRender();
+  }catch(e){ligaErr(e)}
+}
+async function startLeague(){
+  const o=L.lg[L.lid];if(!isAdm(o)||o.doc.st!=='o')return;
+  const ids=Object.keys(o.mem);if(ids.length<2){L.msg='Se necesitan al menos 2 jugadores.';ligaRender();return}
+  ids.sort(()=>Math.random()-.5);
+  const fx=schedule(ids,o.doc.legs);
+  try{
+    await chunked(fx.map((f,i)=>({...f,i})),f=>L.db.doc(`leagues/${L.lid}/fixtures/f${String(f.i).padStart(3,'0')}`).set({r:f.r,a:f.a,b:f.b,st:'p'}));
+    await L.db.doc('leagues/'+L.lid).update({st:'r'});L.tab='cal';L.msg='¡Liga iniciada! Calendario generado.';ligaRender();
+  }catch(e){ligaErr(e)}
+}
+async function delAll(path){const s=await L.db.collection(path).get();await chunked(s.docs,d=>L.db.doc(path+'/'+d.id).delete())}
+async function resetLeague(){
+  const o=L.lg[L.lid];if(!isAdm(o))return;
+  try{await delAll(`leagues/${L.lid}/fixtures`);await L.db.doc('leagues/'+L.lid).update({st:'o'});L.tab='tabla';L.msg='Liga reiniciada: se borraron los resultados y el calendario.';ligaRender()}catch(e){ligaErr(e)}
+}
+async function deleteLeague(){
+  const o=L.lg[L.lid];if(!isAdm(o))return;const id=L.lid;
+  try{await delAll(`leagues/${id}/fixtures`);await delAll(`leagues/${id}/members`);await L.db.doc('leagues/'+id).delete();
+    L.view='home';L.lid=null;L.msg='Liga eliminada.';ligaRender()}catch(e){ligaErr(e)}
+}
+async function saveFix(fid){
+  const o=L.lg[L.lid];if(!isAdm(o))return;
+  const ga=parseInt($('eA').value,10),gb=parseInt($('eB').value,10);
+  if(isNaN(ga)||isNaN(gb)||ga<0||gb<0){L.msg='Escribe goles válidos.';ligaRender();return}
+  const f=o.fx.find(x=>x.id===fid);if(!f)return;
+  try{
+    const {id:_id,...rest}=f;
+    await L.db.doc(`leagues/${L.lid}/fixtures/${fid}`).set({...rest,ga,gb,st:'d',at:f.at||Date.now(),corr:[...(f.corr||[]),{by:L.uid,at:Date.now(),oa:f.ga==null?null:f.ga,ob:f.gb==null?null:f.gb}].slice(-5)});
+    L.editFx=null;L.msg='Resultado corregido.';ligaRender();
+  }catch(e){ligaErr(e)}
+}
+function conf(k,fn){
+  if(L.conf===k){L.conf=null;fn()}
+  else{L.conf=k;ligaRender();setTimeout(()=>{if(L.conf===k){L.conf=null;ligaRender()}},4000)}
+}
+async function sendInvite(to,mt){
+  go('net');
+  await netEnter(String(1000+rnd(9000)),true,'pen');
+  if(!NET.on)return;
+  NET.mt=mt||'c';netPres({mt:NET.mt});
+  try{
+    await L.db.collection('invites').add({from:L.uid,to,code:NET.code,mt:NET.mt,s:'p',at:Date.now()});
+    $('lobMsg').textContent=`Invitación enviada a ${nickOf(to)}. Espera en esta sala; si no está conectado la verá cuando entre.`;
+  }catch(e){$('lobMsg').textContent='No se pudo enviar la invitación.'}
+}
+async function acceptInvite(id){
+  const i=L.inv.find(x=>x.id===id);if(!i)return;
+  try{await L.db.doc('invites/'+id).update({s:'a'})}catch(e){}
+  go('net');await netEnter(i.code,false,null);
+}
+async function declineInvite(id){try{await L.db.doc('invites/'+id).update({s:'d'})}catch(e){ligaErr(e)}}
+async function loadProfile(u){
+  L.pf={u,casual:null,lg:[]};L.view='profile';ligaRender();
+  try{
+    const c=await L.db.collection('casual').where('p','array-contains',u).get();
+    const casual=c.docs.map(d=>d.data()).sort((a,b)=>b.at-a.at);
+    const ps=await L.db.doc('players/'+u).get(),lgs=(ps.exists&&ps.data().lg)||[],out=[];
+    for(const lid of lgs){
+      const ld=await L.db.doc('leagues/'+lid).get();if(!ld.exists)continue;
+      const fx=await L.db.collection(`leagues/${lid}/fixtures`).get(),mem=await L.db.collection(`leagues/${lid}/members`).get();
+      const o={doc:ld.data(),mem:Object.fromEntries(mem.docs.map(m=>[m.id,1])),fx:fx.docs.map(d=>d.data())};
+      const st=standings(o),pos=st.findIndex(r=>r.u===u)+1;
+      out.push({name:o.doc.name,pos,n:st.length,row:st.find(r=>r.u===u)});
+    }
+    L.pf={u,casual,lg:out};ligaRender();
+  }catch(e){console.error(e)}
+}
+
+/* ---------- partidas en línea: tipo (casual / liga) y guardado ---------- */
+function ligaLobbyUI(hp){
+  const row=$('mtRow');if(!row)return;
+  if(NET.game!=='pen'||!L.ready){row.classList.add('hidden');return}
+  row.classList.remove('hidden');
+  const mt=(hp&&hp.presence&&hp.presence.mt)||(NET.host?NET.mt:null)||'c';
+  if(!NET.host)NET.mt=mt;
+  const open=myLeagues().filter(id=>L.lg[id].doc.st==='r');
+  const sig=NET.host?(mt+'|'+open.join(',')):('g'+mt);
+  if(row.dataset.sig===sig)return;row.dataset.sig=sig;
+  if(NET.host){
+    row.innerHTML=`Tipo de partida: <select id="mtSel"><option value="c">⚽ Casual (no afecta ninguna liga)</option>${open.map(id=>`<option value="${id}"${mt===id?' selected':''}>🏆 Liga: ${esc(L.lg[id].doc.name)}</option>`).join('')}</select>`;
+    $('mtSel').onchange=e=>{NET.mt=e.target.value;netPres({mt:NET.mt});row.dataset.sig=''};
+  }else{
+    const nm=mt==='c'?'':((L.lg[mt]&&L.lg[mt].doc&&L.lg[mt].doc.name)||'una liga');
+    row.textContent=mt==='c'?'Tipo de partida: ⚽ Casual (no afecta ninguna liga)':'Tipo de partida: 🏆 OFICIAL de '+nm+'. Ambos deben pertenecer a la liga.';
+  }
+}
+async function ligaPrecheck(){
+  const lid=NET.mt,say=t=>{$('lobMsg').textContent=t;return false};
+  const us=netPlayers().map(p=>p.presence.u);
+  if(us.length!==2||us.some(u=>!u))return say('Para un partido oficial los dos deben abrir «Ligas» con su cuenta antes de entrar a la sala.');
+  const ld=await L.db.doc('leagues/'+lid).get();
+  if(!ld.exists||ld.data().st!=='r')return say('Esa liga no está en juego.');
+  const mem=(await L.db.collection(`leagues/${lid}/members`).get()).docs.map(d=>d.id);
+  if(!us.every(u=>mem.includes(u)))return say('Los dos jugadores deben pertenecer a esa liga para jugar un partido oficial.');
+  const fx=(await L.db.collection(`leagues/${lid}/fixtures`).get()).docs.map(d=>({id:d.id,...d.data()}))
+    .filter(f=>f.st==='p'&&((f.a===us[0]&&f.b===us[1])||(f.a===us[1]&&f.b===us[0]))).sort((a,b)=>a.id<b.id?-1:1);
+  if(!fx.length)return say('No tienen ningún partido pendiente entre ustedes en esa liga.');
+  NET.fx=fx[0].id;return true;
+}
+const recMsg=t=>setTimeout(()=>{const m=$('pmsg');if(m&&!m.textContent.includes(t))m.textContent+=t},6500);
+async function ligaRecord(hs,gs){
+  try{
+    if(!L.ready||!L.db)return;
+    const hostId=myId(),gId=NET.ro.find(x=>x!==hostId),gp=peerPres(gId),gu=gp&&gp.u;
+    if(!gu)return;
+    if(NET.mt&&NET.mt!=='c'&&NET.fx){
+      const ref=L.db.doc(`leagues/${NET.mt}/fixtures/${NET.fx}`);
+      const ac=ref.acquire?await ref.acquire({holder:L.uid,ttlMs:10000}):{acquired:true};if(!ac.acquired)return;
+      const s=await ref.get();if(!s.exists)return;const f=s.data();
+      if(f.st==='d')return;                                   // ya registrado: no se duplica
+      await ref.set({...f,st:'d',ga:f.a===L.uid?hs:gs,gb:f.a===L.uid?gs:hs,at:Date.now(),rm:NET.code});
+      const all=(await L.db.collection(`leagues/${NET.mt}/fixtures`).get()).docs;
+      if(all.every(d=>d.data().st==='d'))await L.db.doc('leagues/'+NET.mt).update({st:'f'});
+      recMsg(' · ✅ Resultado oficial guardado en la liga');
+    }else{
+      await L.db.doc(`casual/c${NET.code}-${NET.t0||Date.now()}`).set({p:[L.uid,gu],a:L.uid,b:gu,ga:hs,gb:gs,at:Date.now(),g:'pen'});
+      recMsg(' · ✅ Partida casual guardada');
+    }
+  }catch(e){console.error(e);recMsg(' · ⚠️ No se pudo guardar el resultado')}
+}
+
+/* ---------- pantallas ---------- */
+const stTxt={o:'🟢 Abierta',r:'🔵 En juego',f:'🏆 Finalizada'};
+function ligaRender(){
+  const el=$('liga');if(!el||el.classList.contains('hidden'))return;
+  const a=document.activeElement;
+  if(a&&el.contains(a)&&(a.tagName==='INPUT'||a.tagName==='SELECT')){L.dirty=true;return}
+  L.dirty=false;let h='';
+  if(!L.ready)h=`<h2>🏆 Ligas en línea</h2><div class="note" style="text-align:center">${esc(L.fail||'Conectando…')}</div><div class="row"><button data-a="menu" class="grey">🏠 Menú</button></div>`;
+  else if(!L.me||!L.me.n||L.view==='nick')h=nickView();
+  else if(L.view==='create')h=createView();
+  else if(L.view==='league')h=leagueView();
+  else if(L.view==='profile')h=profileView();
+  else h=homeView();
+  el.innerHTML=h;
+}
+$('liga').addEventListener('focusout',()=>{if(L.dirty)setTimeout(ligaRender,60)});
+const msgBox=()=>L.msg?`<div class="msg" style="color:var(--gold)">${esc(L.msg)}</div>`:'';
+function nickView(){
+  return `<h2>👤 Tu perfil</h2><div class="note" style="text-align:center">Elige el nombre con el que aparecerás en las ligas. ${L.fb?'Tu progreso queda guardado en este aparato y navegador.':'Tu progreso queda ligado a tu cuenta de Claude, así que al volver desde cualquier aparato lo recuperas.'}</div>
+  <div class="row"><input id="nickIn" type="text" maxlength="12" placeholder="Tu nombre" value="${esc((L.me&&L.me.n)||'')}" style="width:200px"><button data-a="nick-save">Guardar</button></div>${msgBox()}
+  <div class="row">${L.me&&L.me.n?'<button data-a="home" class="grey">⬅ Volver</button>':'<button data-a="menu" class="grey">🏠 Menú</button>'}</div>`;
+}
+function homeView(){
+  const inv=L.inv.map(i=>{const lg=i.mt&&i.mt!=='c'?(L.lg[i.mt]&&L.lg[i.mt].doc&&L.lg[i.mt].doc.name)||'una liga':'';
+    return `<div class="prow"><span>📨 <b>${esc(nickOf(i.from))}</b> te invita a ${lg?'un partido <b>oficial</b> de '+esc(lg):'una partida <b>casual</b>'} (penales 1 vs 1)</span>
+    <span><button data-a="inv-yes" data-i="${esc(i.id)}">Aceptar</button><button class="red" data-a="inv-no" data-i="${esc(i.id)}">Rechazar</button></span></div>`}).join('');
+  const onl=new Set(L.online.map(p=>p.presence.u));
+  const ids=Object.keys(L.players).filter(u=>u!==L.uid).sort((a,b)=>(onl.has(b)-onl.has(a))||nickOf(a).localeCompare(nickOf(b)));
+  const pls=ids.map(u=>`<div class="prow"><span>${onl.has(u)?'🟢':'⚪'} ${esc(nickOf(u))}</span><span><button class="alt" data-a="invite" data-u="${esc(u)}">Invitar (casual)</button><button class="grey" data-a="profile" data-u="${esc(u)}">Perfil</button></span></div>`).join('')
+    ||'<div class="note">Todavía no hay otros jugadores registrados. Comparte el enlace del juego con tus amigos.</div>';
+  const lgs=myLeagues().map(id=>{const o=L.lg[id],st=standings(o),pos=st.findIndex(r=>r.u===L.uid)+1;
+    return `<div class="prow"><span>🏆 <b>${esc(o.doc.name)}</b> <span class="chip">${stTxt[o.doc.st]||''}</span> <span class="chip">${st.length}/${o.doc.max}</span>${pos&&o.doc.st!=='o'?`<span class="chip">Puesto ${pos}</span>`:''}</span><button data-a="open" data-l="${esc(id)}">Abrir</button></div>`}).join('')
+    ||'<div class="note">Aún no estás en ninguna liga. Crea una o únete con un código.</div>';
+  const w=L.casual.filter(c=>(c.a===L.uid?c.ga>c.gb:c.gb>c.ga)).length;
+  return `<h2>🏆 Ligas en línea</h2>
+  <div class="row"><span class="chosen">👤 ${esc(L.me.n)}</span><button class="grey" data-a="profile" data-u="${esc(L.uid)}">Mi perfil</button><button class="grey" data-a="nick">Cambiar nombre</button></div>${msgBox()}
+  ${inv?`<div class="sec"><h3>📨 Invitaciones</h3>${inv}</div>`:''}
+  <div class="sec"><h3>Mis ligas</h3>${lgs}
+    <div class="row"><button data-a="create">➕ Crear liga</button>
+    <input id="joinIn" type="text" maxlength="6" placeholder="CÓDIGO" style="width:130px;text-transform:uppercase;letter-spacing:3px"><button class="alt" data-a="join-go">Unirme con código</button></div></div>
+  <div class="sec"><h3>Jugadores</h3><div class="note">🟢 conectado ahora · ⚪ desconectado (la invitación le llegará cuando entre)</div>${pls}</div>
+  <div class="sec"><h3>Partida privada con código</h3><div class="note" style="text-align:center">Crea o entra a una sala con número. Antes de empezar se elige si es casual o de liga.</div>
+    <div class="row"><button class="red" data-a="private">👥 Ir a salas privadas</button></div></div>
+  <div class="note" style="text-align:center">Casuales jugadas: ${L.casual.length} · ganadas: ${w} (no afectan ninguna tabla)</div>
+  <div class="row"><button data-a="menu" class="grey">🏠 Menú</button></div>`;
+}
+function createView(){
+  return `<h2>➕ Crear liga</h2>${msgBox()}
+  <div class="row"><label>Nombre<input id="lgName" type="text" maxlength="24" value="Liga de amigos" style="width:200px"></label>
+  <label>Jugadores (2-16)<input id="lgMax" type="number" min="2" max="16" value="8"></label>
+  <label>Formato<select id="lgLegs"><option value="1">Solo ida</option><option value="2">Ida y vuelta</option></select></label></div>
+  <div class="row"><label>Puntos por victoria<input id="lgPw" type="number" min="0" max="20" value="3"></label>
+  <label>Puntos por empate<input id="lgPd" type="number" min="0" max="20" value="1"></label>
+  <label>Puntos por derrota<input id="lgPl" type="number" min="0" max="20" value="0"></label></div>
+  <div class="note" style="text-align:center">Los partidos de liga son penales 1 contra 1, donde no hay empates (hay muerte súbita).</div>
+  <div class="row"><button data-a="create-go">Crear liga</button><button class="grey" data-a="home">⬅ Cancelar</button></div>`;
+}
+function leagueView(){
+  const o=L.lg[L.lid];
+  if(!o||!o.doc)return `<div class="note" style="text-align:center">Cargando liga…</div><div class="row"><button data-a="home" class="grey">⬅ Volver</button></div>`;
+  const d=o.doc,adm=isAdm(o),n=Object.keys(o.mem).length,fin=o.fx.length>0&&o.fx.every(f=>f.st==='d'),st=standings(o);
+  const status=fin?'f':d.st;
+  const tabs=[['tabla','📊 Tabla'],['cal','📅 Calendario'],['res','✅ Resultados']].concat(adm?[['adm','⚙️ Admin']]:[]);
+  let body='';
+  if(L.tab==='tabla'){
+    body=(fin?`<div class="champ"><div style="font-size:1.4rem">🏆 ¡Campeón: <b>${esc(nickOf(st[0].u))}</b>!</div><div class="podium"><div>🥇 ${esc(nickOf(st[0].u))}</div>${st[1]?`<div>🥈 ${esc(nickOf(st[1].u))}</div>`:''}${st[2]?`<div>🥉 ${esc(nickOf(st[2].u))}</div>`:''}</div></div>`:'')+
+    `<div class="tblw"><table class="tbl"><tr><th>#</th><th>Jugador</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DG</th><th>Pts</th></tr>
+    ${st.map((r,i)=>`<tr class="${r.u===L.uid?'me':''}"><td>${fin&&i<3?['🥇','🥈','🥉'][i]:i+1}</td><td>${esc(nickOf(r.u))}</td><td>${r.pj}</td><td>${r.g}</td><td>${r.e}</td><td>${r.p}</td><td>${r.gf}</td><td>${r.gc}</td><td>${r.gf-r.gc}</td><td><b>${r.pts}</b></td></tr>`).join('')}</table></div>
+    <div class="note">Victoria ${d.pw} pts · Empate ${d.pd} · Derrota ${d.pl} · ${d.legs===2?'Ida y vuelta':'Solo ida'}. Desempate: diferencia de goles, goles a favor.</div>`;
+  }else if(L.tab==='cal'){
+    const pend=o.fx.filter(f=>f.st==='p');
+    if(!o.fx.length)body='<div class="note" style="text-align:center">El calendario se genera cuando el administrador inicia la liga.</div>';
+    else if(!pend.length)body='<div class="note" style="text-align:center">No quedan partidos pendientes.</div>';
+    else{let r=0;body=pend.map(f=>{const head=f.r!==r?`<h3 style="text-align:left;margin:10px 0 4px">Jornada ${f.r}</h3>`:'';r=f.r;
+      const mine=f.a===L.uid||f.b===L.uid,opp=f.a===L.uid?f.b:f.a;
+      return head+`<div class="prow"><span>${esc(nickOf(f.a))} <b>vs</b> ${esc(nickOf(f.b))}</span>${mine?`<button class="alt" data-a="invite-off" data-u="${esc(opp)}" data-l="${esc(L.lid)}">⚽ Jugar oficial</button>`:''}</div>`}).join('')}
+  }else if(L.tab==='res'){
+    const dn=o.fx.filter(f=>f.st==='d').sort((a,b)=>(b.at||0)-(a.at||0));
+    body=dn.length?dn.map(f=>{
+      if(L.editFx===f.id)return `<div class="prow"><span>${esc(nickOf(f.a))} <input id="eA" type="number" min="0" value="${f.ga}" style="width:70px"> - <input id="eB" type="number" min="0" value="${f.gb}" style="width:70px"> ${esc(nickOf(f.b))}</span><span><button data-a="fix-save" data-f="${esc(f.id)}">Guardar</button><button class="grey" data-a="fix-cancel">Cancelar</button></span></div>`;
+      return `<div class="prow"><span>J${f.r}: ${esc(nickOf(f.a))} <b>${f.ga} - ${f.gb}</b> ${esc(nickOf(f.b))}<br><small style="opacity:.7">${fmtD(f.at||0)}${f.corr?' · corregido':''}</small></span>${adm?`<button class="grey" data-a="fix-edit" data-f="${esc(f.id)}">Corregir</button>`:''}</div>`}).join('')
+      :'<div class="note" style="text-align:center">Aún no hay resultados.</div>';
+  }else if(L.tab==='adm'&&adm){
+    body=`<div class="sec"><h3>Código de la liga</h3><div class="row"><span class="code" style="font-size:2rem;letter-spacing:6px">${esc(L.lid)}</span></div>
+      <div class="note" style="text-align:center">Enlace: ${esc(ART)}#${esc(L.lid)}</div><div class="row"><button class="alt" data-a="copy">📋 Copiar enlace</button></div></div>
+    <div class="sec"><h3>Participantes (${n}/${d.max})</h3>${Object.keys(o.mem).map(u=>`<div class="prow"><span>${esc(nickOf(u))}${(d.adm||[]).includes(u)?' 👑':''}</span></div>`).join('')}</div>
+    ${d.st==='o'?`<div class="row"><button data-a="start-l" ${n<2?'disabled':''}>▶ Iniciar liga y generar calendario</button></div>`:''}
+    <div class="row"><button class="red" data-a="reset-l">${L.conf==='reset'?'¿Seguro? Toca otra vez':'♻️ Reiniciar liga (borra resultados)'}</button>
+    <button class="red" data-a="del-l">${L.conf==='del'?'¿Seguro? Toca otra vez':'🗑 Eliminar liga'}</button></div>`;
+  }
+  return `<h2>🏆 ${esc(d.name)} <span class="chip">${stTxt[status]||''}</span></h2>${msgBox()}
+  <div class="row"><span class="chip">Código ${esc(L.lid)}</span><span class="chip">${n}/${d.max} jugadores</span>${d.st==='o'?`<span class="chip">Para unirse: código o enlace</span>`:''}</div>
+  ${!(d.adm||[]).length&&o.mem[L.uid]?'<div class="champ">Esta liga aún no tiene administrador.<div class="row"><button data-a="claim">👑 Ser el administrador</button></div></div>':''}
+  <div class="tabs" style="justify-content:center">${tabs.map(t=>`<button class="tab${L.tab===t[0]?' on':''}" data-a="tab" data-t="${t[0]}">${t[1]}</button>`).join('')}</div>
+  <div style="margin-top:8px">${body}</div>
+  <div class="row"><button data-a="home" class="grey">⬅ Mis ligas</button></div>`;
+}
+function profileView(){
+  const u=L.pf&&L.pf.u||L.uid,casual=(u===L.uid?L.casual:(L.pf&&L.pf.casual))||[];
+  let w=0,l=0,gf=0,gc=0;
+  casual.forEach(c=>{const mine=c.a===u?c.ga:c.gb,opp=c.a===u?c.gb:c.ga;gf+=mine;gc+=opp;if(mine>opp)w++;else l++});
+  const lgs=u===L.uid?myLeagues().map(id=>{const o=L.lg[id],st=standings(o);return{name:o.doc.name,pos:st.findIndex(r=>r.u===u)+1,n:st.length,row:st.find(r=>r.u===u)}}):((L.pf&&L.pf.lg)||[]);
+  const hist=casual.slice(0,8).map(c=>{const opp=c.a===u?c.b:c.a;return `<div class="prow"><span>vs ${esc(nickOf(opp))}: <b>${c.a===u?c.ga:c.gb} - ${c.a===u?c.gb:c.ga}</b></span><small style="opacity:.7">${fmtD(c.at)}</small></div>`}).join('')||'<div class="note">Sin partidas casuales.</div>';
+  return `<h2>👤 ${esc(nickOf(u))}${u===L.uid?' (tú)':''}</h2>
+  <div class="sec"><h3>Estadísticas casuales</h3><div class="row"><span class="chip">PJ ${casual.length}</span><span class="chip">G ${w}</span><span class="chip">P ${l}</span><span class="chip">GF ${gf}</span><span class="chip">GC ${gc}</span></div>
+    <div class="note" style="text-align:center">Las casuales nunca modifican ninguna liga.</div>${hist}</div>
+  <div class="sec"><h3>Ligas (oficial)</h3>${lgs.length?lgs.map(g=>`<div class="prow"><span><b>${esc(g.name)}</b> ${g.row?`· Puesto ${g.pos||'-'}/${g.n} · PJ ${g.row.pj} · G ${g.row.g} · E ${g.row.e} · P ${g.row.p} · Pts ${g.row.pts}`:''}</span></div>`).join(''):'<div class="note">No pertenece a ninguna liga.</div>'}</div>
+  ${u!==L.uid?`<div class="row"><button class="alt" data-a="invite" data-u="${esc(u)}">Invitar a jugar</button></div>`:''}
+  <div class="row"><button data-a="home" class="grey">⬅ Volver</button></div>`;
+}
+$('liga').addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;sfx.click();const a=b.dataset.a;
+  if(a==='menu')return showMenu();
+  if(a==='home'){L.view='home';L.msg='';L.editFx=null;return ligaRender()}
+  if(a==='nick'){L.view='nick';return ligaRender()}
+  if(a==='nick-save')return saveNick();
+  if(a==='create'){L.view='create';L.msg='';return ligaRender()}
+  if(a==='create-go')return createLeague();
+  if(a==='join-go')return joinLeague($('joinIn').value);
+  if(a==='open'){L.lid=b.dataset.l;L.view='league';L.tab='tabla';L.msg='';return ligaRender()}
+  if(a==='tab'){L.tab=b.dataset.t;L.msg='';L.conf=null;L.editFx=null;return ligaRender()}
+  if(a==='profile')return loadProfile(b.dataset.u);
+  if(a==='invite')return sendInvite(b.dataset.u,'c');
+  if(a==='invite-off')return sendInvite(b.dataset.u,b.dataset.l);
+  if(a==='inv-yes')return acceptInvite(b.dataset.i);
+  if(a==='inv-no')return declineInvite(b.dataset.i);
+  if(a==='private'){go('net');return netHome()}
+  if(a==='claim')return claimAdmin();
+  if(a==='start-l')return startLeague();
+  if(a==='reset-l')return conf('reset',resetLeague);
+  if(a==='del-l')return conf('del',deleteLeague);
+  if(a==='fix-edit'){L.editFx=b.dataset.f;return ligaRender()}
+  if(a==='fix-cancel'){L.editFx=null;return ligaRender()}
+  if(a==='fix-save')return saveFix(b.dataset.f);
+  if(a==='copy'){const t=ART+'#'+L.lid;try{navigator.clipboard.writeText(t).then(()=>{L.msg='Enlace copiado.';ligaRender()},()=>{L.msg='Copia el enlace manualmente.';ligaRender()})}catch(x){L.msg='Copia el enlace manualmente.';ligaRender()}}
+});
+go('menu');
+(function(){const h=(location.hash||'').slice(1).toUpperCase();if(/^[A-Z0-9]{6}$/.test(h)){L.joinPre=h;setTimeout(()=>wantGame('liga'),300)}})();
+</script>
+
+
+</body></html>
