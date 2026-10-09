@@ -195,6 +195,26 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
 .jc-txt span{font-size:14px;color:var(--tenue);line-height:1.3}
 .jc-txt em{font-style:normal;font-family:var(--f-num);font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--amarillo)}
 
+/* ---------- Perfil, ranking y tutorial ---------- */
+.hub-perfil{display:grid;grid-template-columns:1.4fr 1fr;gap:10px;width:100%;max-width:460px;margin-top:16px}
+.perfil-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--panel);border:1px solid rgba(255,255,255,.08);text-align:left;min-width:0}
+.perfil-btn svg{width:36px;height:36px;flex:none}
+.perfil-btn span{min-width:0}
+.perfil-btn b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.perfil-btn small{display:block;font-size:12px;color:var(--amarillo);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.rk-ico{font-size:28px;line-height:1}
+.tipos3{grid-template-columns:repeat(3,1fr)}
+.tipos3 button{font-size:15px;padding:9px 4px}
+.rk-lista li.yo{outline:2px solid var(--amarillo)}
+.rk-lista svg{width:28px;height:28px;flex:none}
+.rk-pos{font-family:var(--f-disp);font-weight:400;font-size:20px;color:var(--amarillo);min-width:22px;text-align:center}
+.tuto{gap:10px}
+.tuto-ilu svg{width:100%;height:auto;display:block;border-radius:12px}
+.tuto-txt{margin:0;font-size:16px;line-height:1.45;color:var(--tinta)}
+.tuto-puntos{display:flex;gap:6px;justify-content:center}
+.tuto-puntos i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.25)}
+.tuto-puntos i.on{background:var(--amarillo)}
+
 /* ---------- Fichas Gol ---------- */
 #fxModos button{font-size:16px}
 #fxJuego{justify-content:flex-start;touch-action:none;overflow:hidden}
@@ -310,6 +330,10 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
     <div class="etq">Elige tu juego</div>
     <h1 class="logo">Fútbol<br><b>Arcade</b></h1>
   </div>
+  <div class="hub-perfil">
+    <button class="perfil-btn" id="hPerfil"></button>
+    <button class="perfil-btn rk" id="hRanking"><span class="rk-ico">🏆</span><span><b>Ranking</b><small>Los mejores</small></span></button>
+  </div>
   <div class="hub-lista">
     <button class="juego-card" id="hBlock">
       <span class="jc-ilu"><svg viewBox="0 0 84 84" aria-hidden="true"><g stroke="rgba(0,0,0,.25)" stroke-width="1"><rect x="10" y="10" width="20" height="20" rx="4" fill="#e5383b"/><rect x="32" y="10" width="20" height="20" rx="4" fill="#e5383b"/><rect x="32" y="32" width="20" height="20" rx="4" fill="#ffd23f"/><rect x="54" y="32" width="20" height="20" rx="4" fill="#ffd23f"/><rect x="10" y="54" width="20" height="20" rx="4" fill="#f1efe4"/><rect x="32" y="54" width="20" height="20" rx="4" fill="#2f6fe4"/><rect x="54" y="54" width="20" height="20" rx="4" fill="#2f6fe4"/></g></svg></span>
@@ -373,6 +397,7 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
   </div>
   <button class="miequipo" id="bEquipo"></button>
   <div class="record">Récord: <strong id="recMenu">0</strong></div>
+  <button class="copiar" id="bTuto" style="margin-top:12px">¿Cómo se juega?</button>
   <button class="volver" id="bHub">← Juegos</button>
 </section>
 
@@ -443,6 +468,34 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
   <div class="bandeja" id="bandeja"></div>
 </section>
 
+<!-- PERFIL -->
+<section id="perfil" class="screen" hidden>
+  <h2 class="titulo">Mi perfil</h2>
+  <div class="card">
+    <label class="etq" for="pfNombre">Tu nombre</label>
+    <input id="pfNombre" class="campo" maxlength="14" autocomplete="off">
+    <div class="etq">Tu equipo</div>
+    <button class="miequipo" id="pfEq" style="margin:0"></button>
+    <div class="etq">Tu personaje de Yaniv</div>
+    <button class="miequipo" id="pfPj" style="margin:0"></button>
+    <div class="etq">Tus números en este celular</div>
+    <div class="stats"><div><b id="pfBlock">0</b><span class="etq">Récord Block</span></div><div><b id="pfYv">0</b><span class="etq">Yaniv ganados</span></div><div><b id="pfFx">0</b><span class="etq">Fichas ganados</span></div></div>
+    <button class="btn btn-1" id="pfGuardar">Guardar</button>
+  </div>
+  <button class="volver" id="pfVolver">← Juegos</button>
+</section>
+
+<!-- RANKING -->
+<section id="ranking" class="screen" hidden>
+  <h2 class="titulo">Ranking</h2>
+  <div class="card">
+    <div class="tipos tipos3" id="rkTabs"><button data-t="block">Block Gol</button><button data-t="yv">Yaniv</button><button data-t="fx">Fichas</button></div>
+    <p class="ayuda" id="rkEstado"></p>
+    <ol class="jugadores rk-lista" id="rkLista"></ol>
+  </div>
+  <button class="volver" id="rkVolver">← Juegos</button>
+</section>
+
 <!-- FICHAS: MENÚ -->
 <section id="fxMenu" class="screen" hidden>
   <h2 class="titulo">Fichas Gol</h2>
@@ -455,7 +508,36 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
     <button class="btn btn-1" id="fxJugar">Jugar</button>
     <p class="ayuda">En tu turno, arrastra una de tus fichas hacia atrás, apunta y suelta para disparar. Gana quien llegue primero a los goles.</p>
   </div>
+  <div class="card">
+    <div class="etq">En línea con un amigo · cada quien en su celular</div>
+    <button class="btn btn-1" id="foCrear">Crear sala</button>
+    <div class="sep">o entra con un código</div>
+    <input id="foCodigo" class="campo codigo" maxlength="4" placeholder="ABCD" autocomplete="off" autocapitalize="characters">
+    <button class="btn btn-2" id="foUnir">Entrar a la sala</button>
+    <div class="estado" id="foEstado"></div>
+  </div>
+  <button class="copiar" id="fxTuto" style="margin-top:12px">¿Cómo se juega?</button>
   <button class="volver" id="fxVolver">← Juegos</button>
+</section>
+
+<!-- FICHAS: SALA EN LÍNEA -->
+<section id="foLobby" class="screen" hidden>
+  <h2 class="titulo">Sala de Fichas</h2>
+  <div class="card">
+    <div class="etq" style="text-align:center">Código de la sala</div>
+    <div class="codigo-grande" id="foCodigoSala">----</div>
+    <button class="copiar" id="foCopiar">Copiar código</button>
+    <p class="ayuda">Pásale este código a tu amigo. Juegan 1 contra 1.</p>
+    <div class="etq">Jugadores <span id="foCuantos"></span></div>
+    <ul class="jugadores" id="foLista"></ul>
+    <div id="foHostOpc">
+      <div class="etq" style="margin-bottom:8px">Goles para ganar</div>
+      <div class="metas" id="foGoles"><button data-g="1">1</button><button data-g="2">2</button><button data-g="3">3</button></div>
+    </div>
+    <button class="btn btn-1" id="foEmpezar">Empezar partido</button>
+    <div class="estado" id="foEstadoL"></div>
+  </div>
+  <button class="volver" id="foSalirSala">Salir de la sala</button>
 </section>
 
 <!-- FICHAS: PARTIDO -->
@@ -505,6 +587,7 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
       <li>Si llegas exacto a <b>50 o 100</b>, te quitan 50. Si pasas el límite, te <b>expulsan</b>. Gana el último en la cancha.</li>
     </ul>
   </details>
+  <button class="copiar" id="yvTuto" style="margin-top:12px">¿Cómo se juega? (con dibujos)</button>
   <button class="volver" id="yvVolver">← Juegos</button>
 </section>
 
@@ -647,6 +730,7 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
     <p class="grande" id="fxFinTit">¡Ganaste!</p>
     <div class="cifra" id="fxFinSc">2-0</div>
     <button class="btn btn-1" id="fxOtra">Revancha</button>
+    <p class="ayuda" id="fxFinEspera" hidden>Esperando al anfitrión…</p>
     <button class="btn btn-2" id="fxMenuFin">Menú de Fichas</button>
   </div>
 </div>
@@ -664,6 +748,18 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
   </div>
 </div>
 
+<!-- TUTORIAL -->
+<div class="capa" id="capaTuto" hidden>
+  <div class="caja tuto">
+    <div class="etq" id="tutoPaso">Paso 1 de 3</div>
+    <div class="tuto-ilu" id="tutoIlu"></div>
+    <p class="grande" id="tutoTit" style="font-size:30px"></p>
+    <p class="tuto-txt" id="tutoTxt"></p>
+    <div class="tuto-puntos" id="tutoPuntos"></div>
+    <button class="btn btn-1" id="tutoSig">Siguiente</button>
+    <button class="volver" id="tutoSaltar" style="margin:0">Saltar</button>
+  </div>
+</div>
 <canvas id="confeti" hidden></canvas>
 <div class="toast" id="toast" hidden></div>
 
@@ -866,7 +962,7 @@ function confeti(cols){try{if(matchMedia('(prefers-reduced-motion: reduce)').mat
 
 /* ================= SOLO ================= */
 function jugarSolo(){modo='solo';puntos=0;$('marcador').hidden=true;pantalla('juego');nuevoTablero()}
-function finSolo(){silbato(true);$('finLin').textContent=lineasTot;$('finTar').textContent=tarjetasTot;$('finMin').textContent=$('minuto').textContent;narra('Final del partido');if(puntos>record){record=puntos;ls.set('blockgol_record',record)}$('recMenu').textContent=record;
+function finSolo(){silbato(true);$('finLin').textContent=lineasTot;$('finTar').textContent=tarjetasTot;$('finMin').textContent=$('minuto').textContent;narra('Final del partido');if(puntos>record){record=puntos;ls.set('blockgol_record',record);rankRecord(record)}$('recMenu').textContent=record;
   $('finPts').textContent=puntos;$('finRec').textContent=record;$('capaFin').hidden=false}
 let trasEquipo=null;
 let verTipo=null,verGrupo=null;
@@ -999,7 +1095,7 @@ $('bASala').onclick=()=>online.meRef.update({estado:'sala'});
 function salirOnline(){const o=online;pausa=false;$('capaMedio').hidden=true;if(o.salaRef)o.salaRef.off('value',alCambiar);if(o.meRef){try{o.meRef.onDisconnect().cancel()}catch(e){}o.meRef.remove()}
   online={};modo='solo';$('capaCamp').hidden=true;$('capaPenal').hidden=true;enPenal=false;pantalla('menu')}
 $('bSalirSala').onclick=salirOnline;$('bSalirCamp').onclick=salirOnline;
-$('bSalirJuego').onclick=()=>{if(modo==='online')salirOnline();else{if(puntos>record){record=puntos;ls.set('blockgol_record',record)}$('recMenu').textContent=record;pantalla('menu')}};
+$('bSalirJuego').onclick=()=>{if(modo==='online')salirOnline();else{if(puntos>record){record=puntos;ls.set('blockgol_record',record);rankRecord(record)}$('recMenu').textContent=record;pantalla('menu')}};
 $('bAmigos').onclick=()=>conEquipo(()=>{estadoA('');pantalla('amigos')});
 $('bVolver1').onclick=()=>pantalla('menu');
 addEventListener('pagehide',()=>{if(online.meRef)online.meRef.remove()});
@@ -1073,6 +1169,7 @@ function fxEmpezar(){if(fx)fx.activo=false;
   $('fxE0').innerHTML=camiseta(fx.eq[0])+`<span>${esc(fx.eq[0].n)}</span>`;$('fxE1').innerHTML=camiseta(fx.eq[1])+`<span>${esc(fx.eq[1].n)}</span>`;
   $('fxS').textContent='0-0';$('capaFx').hidden=true;$('fxGol').hidden=true;pantalla('fxJuego');fxMedir();silbato(false);fxTurnoUI();requestAnimationFrame(fxLoop)}
 function fxTurnoUI(){const t=$('fxTurno');
+  if(fx.online){t.textContent=fx.turno===fx.yo?'Tu turno: arrastra una ficha hacia atrás y suelta':`Turno de ${fx.nombres[fx.turno]}…`;return}
   if(fxCfg.modo==='cpu')t.textContent=fx.turno===0?'Tu turno: arrastra una ficha hacia atrás y suelta':'Turno de la compu…';
   else t.textContent=`Turno de ${fx.eq[fx.turno].n}`+(fx.turno===1?' (arriba)':' (abajo)');
   if(fxCfg.modo==='cpu'&&fx.turno===1)fxCpuJugar()}
@@ -1084,7 +1181,9 @@ function fxLoop(){if(!fx||!fx.activo)return;requestAnimationFrame(fxLoop);fx.t++
   if(fx.mov&&!fx.pausa){let golpe=false;for(let s=0;s<4;s++)if(fxPaso(fx.B,4))golpe=true;fxFriccion(fx.B);
     const bl=fx.B[10];bl.rot+=Math.hypot(bl.vx,bl.vy)/bl.r;
     if(golpe&&!fx.sonoBalon){fx.sonoBalon=true;patada()}
-    const g=fxGolDe(bl);if(g>=0)fxGol(g);else if(fxQuieto(fx.B)){fx.mov=false;fx.sonoBalon=false;fx.turno=1-fx.turno;fxTurnoUI()}}
+    const g=fxGolDe(bl);
+    if(fx.online){if(g>=0||fxQuieto(fx.B)){fx.mov=false;fx.sonoBalon=false;if(fx.autor){fx.autor=false;foFinTiro(g)}else{fx.esperando=true;foPendiente()}}}
+    else if(g>=0)fxGol(g);else if(fxQuieto(fx.B)){fx.mov=false;fx.sonoBalon=false;fx.turno=1-fx.turno;fxTurnoUI()}}
   fxDibujar()}
 function fxGol(t){fx.pausa=true;fx.sc[t]++;$('fxS').textContent=fx.sc[0]+'-'+fx.sc[1];ovacion(5);vibra([60,40,120]);
   const g=$('fxGol');g.innerHTML=`<div>¡GOOOL!<small>${esc(fx.eq[t].n)}</small></div>`;g.hidden=false;
@@ -1093,12 +1192,13 @@ function fxGol(t){fx.pausa=true;fx.sc[t]++;$('fxS').textContent=fx.sc[0]+'-'+fx.
     if(f.sc[t]>=fxCfg.goles){fxFinal(t);return}
     f.B=fxCuerpos();f.mov=false;f.pausa=false;f.sonoBalon=false;f.turno=1-t;silbato(false);fxTurnoUI()},1900)}
 function fxFinal(t){fx.fin=true;silbato(true);
-  $('fxFinTit').textContent=fxCfg.modo==='cpu'?(t===0?'¡Ganaste!':'Ganó la compu'):`¡Gana ${fx.eq[t].n}!`;
+  if(fx.online){$('fxFinTit').textContent=t===fx.yo?'¡Ganaste!':`Ganó ${fx.nombres[t]}`;$('fxOtra').hidden=!FO.host;$('fxFinEspera').hidden=FO.host;$('fxMenuFin').textContent='Salir de la sala';if(t===fx.yo)rankGanar('fx')}
+  else{$('fxFinTit').textContent=fxCfg.modo==='cpu'?(t===0?'¡Ganaste!':'Ganó la compu'):`¡Gana ${fx.eq[t].n}!`;$('fxOtra').hidden=false;$('fxFinEspera').hidden=true;$('fxMenuFin').textContent='Menú de Fichas';if(fxCfg.modo==='cpu'&&t===0)rankGanar('fx')}
   $('fxFinSc').textContent=fx.sc[0]+'-'+fx.sc[1];$('capaFx').hidden=false;if(t===0||fxCfg.modo==='2p')confeti([fx.eq[t].a,fx.eq[t].b,'#ffffff'])}
 
 /* ----- dibujo ----- */
 function fxDibujar(){const c=fxCtx,s=fx.s*fx.dpr;c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,fxCv.width,fxCv.height);
-  c.setTransform(s,0,0,s,s*FOX,s*FOY);
+  c.setTransform(s,0,0,s,s*FOX,s*FOY);if(fx.flip){c.translate(FW,FH);c.rotate(Math.PI)}
   c.fillStyle='#123f24';c.fillRect(-FOX,-FOY,FLW,FLH);
   for(let i=0;i<8;i++){c.fillStyle=i%2?'#22713f':'#1d6337';c.fillRect(0,i*FH/8,FW,FH/8)}
   // porterías
@@ -1114,7 +1214,7 @@ function fxDibujar(){const c=fxCtx,s=fx.s*fx.dpr;c.setTransform(1,0,0,1,0,0);c.c
   c.fillStyle='rgba(255,255,255,.7)';c.beginPath();c.arc(FW/2,FH/2,5,0,7);c.fill();
   for(const[px,py]of POSTES){c.fillStyle='#f6f4ea';c.beginPath();c.arc(px,py,7,0,7);c.fill()}
   // fichas
-  const puede=!fx.mov&&!fx.pausa&&!fx.fin&&!(fxCfg.modo==='cpu'&&fx.turno===1),pulso=.5+.5*Math.sin(fx.t/8);
+  const puede=!fx.mov&&!fx.pausa&&!fx.fin&&!fx.esperando&&(fx.online?fx.turno===fx.yo:!(fxCfg.modo==='cpu'&&fx.turno===1)),pulso=.5+.5*Math.sin(fx.t/8);
   for(const b of fx.B){c.fillStyle='rgba(0,0,0,.35)';c.beginPath();c.arc(b.x+3,b.y+5,b.r,0,7);c.fill();
     if(b.t<0){fxBalon(c,b);continue}
     const e=fx.eq[b.t];
@@ -1122,7 +1222,7 @@ function fxDibujar(){const c=fxCtx,s=fx.s*fx.dpr;c.setTransform(1,0,0,1,0,0);c.c
     c.fillStyle=e.a;c.beginPath();c.arc(b.x,b.y,b.r,0,7);c.fill();
     c.strokeStyle=e.b;c.lineWidth=6;c.beginPath();c.arc(b.x,b.y,b.r-3,0,7);c.stroke();
     const g=c.createRadialGradient(b.x-8,b.y-10,2,b.x,b.y,b.r);g.addColorStop(0,'rgba(255,255,255,.35)');g.addColorStop(1,'rgba(255,255,255,0)');c.fillStyle=g;c.beginPath();c.arc(b.x,b.y,b.r-6,0,7);c.fill();
-    c.fillStyle=lum(e.a)>150?'#111':'#fff';c.font='700 26px "Barlow Condensed",Arial,sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(b.n,b.x,b.y+1)}
+    c.fillStyle=lum(e.a)>150?'#111':'#fff';c.font='700 26px "Barlow Condensed",Arial,sans-serif';c.textAlign='center';c.textBaseline='middle';if(fx.flip){c.save();c.translate(b.x,b.y);c.rotate(Math.PI);c.fillText(b.n,0,-1);c.restore()}else c.fillText(b.n,b.x,b.y+1)}
   // mira
   let m=null;
   if(fx.drag){const b=fx.B[fx.drag.i],dx=b.x-fx.drag.x,dy=b.y-fx.drag.y,l=Math.hypot(dx,dy);if(l>4)m={b,ang:Math.atan2(dy,dx),pow:Math.min(l,190)/190,px:fx.drag.x,py:fx.drag.y}}
@@ -1138,14 +1238,14 @@ function fxBalon(c,b){c.save();c.translate(b.x,b.y);c.rotate(b.rot||0);c.fillSty
   c.restore();c.strokeStyle='rgba(0,0,0,.4)';c.lineWidth=1.5;c.beginPath();c.arc(b.x,b.y,b.r,0,7);c.stroke()}
 
 /* ----- controles ----- */
-function fxPunto(e){const r=fxCv.getBoundingClientRect();return{x:(e.clientX-r.left)/fx.s-FOX,y:(e.clientY-r.top)/fx.s-FOY}}
-fxCv.addEventListener('pointerdown',e=>{if(!fx||fx.mov||fx.pausa||fx.fin||fx.apunta)return;if(fxCfg.modo==='cpu'&&fx.turno===1)return;
+function fxPunto(e){const r=fxCv.getBoundingClientRect(),x=(e.clientX-r.left)/fx.s-FOX,y=(e.clientY-r.top)/fx.s-FOY;return fx.flip?{x:FW-x,y:FH-y}:{x,y}}
+fxCv.addEventListener('pointerdown',e=>{if(!fx||fx.mov||fx.pausa||fx.fin||fx.apunta||fx.esperando)return;if(fx.online?fx.turno!==fx.yo:(fxCfg.modo==='cpu'&&fx.turno===1))return;
   const p=fxPunto(e);let best=-1,bd=1e9;fx.B.forEach((b,i)=>{if(b.t!==fx.turno)return;const d=Math.hypot(b.x-p.x,b.y-p.y);if(d<b.r*1.5&&d<bd){bd=d;best=i}});
   if(best<0)return;e.preventDefault();fxCv.setPointerCapture(e.pointerId);fx.drag={i:best,x:p.x,y:p.y}});
 fxCv.addEventListener('pointermove',e=>{if(!fx||!fx.drag)return;const p=fxPunto(e);fx.drag.x=p.x;fx.drag.y=p.y});
 function fxSuelta(e){if(!fx||!fx.drag)return;const d=fx.drag;fx.drag=null;if(e.type==='pointercancel')return;
   const b=fx.B[d.i],dx=b.x-d.x,dy=b.y-d.y,l=Math.hypot(dx,dy),pow=Math.min(l,190)/190;
-  if(pow<.08)return;fxDisparar(d.i,dx/l*FMAXV*pow,dy/l*FMAXV*pow)}
+  if(pow<.08)return;const vx=dx/l*FMAXV*pow,vy=dy/l*FMAXV*pow;if(fx.online)foTirar(d.i,vx,vy);else fxDisparar(d.i,vx,vy)}
 fxCv.addEventListener('pointerup',fxSuelta);fxCv.addEventListener('pointercancel',fxSuelta);
 
 /* ----- menú de fichas ----- */
@@ -1158,9 +1258,9 @@ const irFxMenu=()=>{fxPintarMenu();pantalla('fxMenu')};
 $('fxEq').onclick=()=>abrirEquipos(irFxMenu);
 $('fxJugar').onclick=fxEmpezar;
 $('fxVolver').onclick=()=>pantalla('hub');
-$('fxSalir').onclick=()=>{if(fx)fx.activo=false;irFxMenu()};
-$('fxOtra').onclick=fxEmpezar;
-$('fxMenuFin').onclick=()=>{$('capaFx').hidden=true;if(fx)fx.activo=false;irFxMenu()};
+$('fxSalir').onclick=()=>{if(fx)fx.activo=false;if(FO)foSalir();irFxMenu()};
+$('fxOtra').onclick=()=>{if(FO)foEmpezar();else fxEmpezar()};
+$('fxMenuFin').onclick=()=>{$('capaFx').hidden=true;if(fx)fx.activo=false;if(FO)foSalir();irFxMenu()};
 
 /* ================= YANIV FUTBOLERO ================= */
 const PERSONAJES=[
@@ -1343,7 +1443,7 @@ function yvMostrarRes(){const st=Y.st,r=st.res;if(!r)return;const fin=st.fase===
   $('yvResSala').hidden=!(fin&&Y.modo==='online'&&Y.host);$('yvResEspera').hidden=manda;
   $('yvResSalir').textContent=Y.modo==='local'?'Menú de Yaniv':'Salir de la sala';
   $('capaYv').hidden=false;
-  const yoGano=fin?st.ganador===Y.yo:(r.asaf||r.quien)===Y.yo;
+  const yoGano=fin?st.ganador===Y.yo:(r.asaf||r.quien)===Y.yo;if(fin&&st.ganador===Y.yo)rankGanar('yv');
   if(yoGano){ovacion(fin?6:3);confeti([pjId(Y.yo).a,pjId(Y.yo).b,'#ffffff'])}else if(r.asaf)uuuh();
   if(r.fuera.includes(Y.yo))vibra([100,60,100])}
 $('yvResSig').onclick=()=>{const st=Y.st;if(!st)return;
@@ -1421,6 +1521,153 @@ $('yvVolver').onclick=()=>pantalla('hub');
 document.querySelectorAll('.btn-son').forEach(b=>b.onclick=()=>{sonido=!sonido;ls.set('blockgol_son',sonido?'1':'0');pintarSon();if(sonido)patada()});
 pintarSon();
 pantalla('hub');
+/* ================= FICHAS GOL EN LÍNEA ================= */
+let FO=null;
+const ser=B=>B.map(b=>[Math.round(b.x*100)/100,Math.round(b.y*100)/100]);
+function deser(arr){const B=fxCuerpos();(arr||[]).forEach((p,i)=>{if(B[i]&&p){B[i].x=p[0];B[i].y=p[1]}});return B}
+function foEstado(t,err){const e=$('foEstado');e.textContent=t;e.classList.toggle('err',!!err)}
+async function foConectar(){foEstado('Conectando…');$('foCrear').disabled=$('foUnir').disabled=true;const fb=await fbInit();
+  $('foCrear').disabled=$('foUnir').disabled=false;if(!fb){foEstado(ERR_CONEXION,true);return null}return fb}
+async function foEntrar(fb,code,crear){if(FO)foSalir();
+  FO={fb,code,yo:fb.uid,salaRef:fb.db.ref('salas/fx_'+code),host:false,J:{},sala:{}};FO.juegoRef=FO.salaRef.child('juego');FO.meRef=FO.salaRef.child(fb.uid);
+  if(crear)await FO.juegoRef.set({estado:'sala',meta:fxCfg.goles,ronda:0});
+  await FO.meRef.set({nombre:miNombre(),equipo:miEq.id,t:Date.now()});FO.meRef.onDisconnect().remove();
+  FO.salaRef.on('value',foValor);$('foCodigoSala').textContent=code;foEstado('');pantalla('foLobby')}
+$('foCrear').onclick=async()=>{const fb=await foConectar();if(!fb)return;const L='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let code;
+  for(let k=0;k<6;k++){code=Array.from({length:4},()=>L[Math.floor(Math.random()*L.length)]).join('');const s=await fb.db.ref('salas/fx_'+code).get();if(!s.exists())break}
+  foEntrar(fb,code,true)};
+$('foUnir').onclick=async()=>{const code=$('foCodigo').value.trim().toUpperCase();if(code.length!==4){foEstado('Escribe el código de 4 letras.',true);return}
+  const fb=await foConectar();if(!fb)return;const s=await fb.db.ref('salas/fx_'+code).get();
+  if(!s.exists()||!s.val().juego){foEstado('No existe una sala con ese código.',true);return}
+  if(Object.keys(s.val()).filter(k=>k!=='juego').length>=2){foEstado('Esa sala ya tiene 2 jugadores.',true);return}
+  foEntrar(fb,code,false)};
+$('foCodigo').addEventListener('input',e=>e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,''));
+function foValor(snap){const sala=snap.val()||{};if(!FO)return;
+  if(!sala[FO.yo]){FO.meRef.set({nombre:miNombre(),equipo:miEq.id,t:Date.now()});return}
+  const J=sala.juego||{estado:'sala',meta:2};
+  const hum=Object.keys(sala).filter(k=>k!=='juego'&&sala[k]&&sala[k].nombre).sort((a,b)=>(sala[a].t||0)-(sala[b].t||0)||(a<b?-1:1));
+  FO.sala=sala;FO.J=J;FO.hum=hum;FO.host=hum[0]===FO.yo;
+  if(J.estado==='sala'){if(fx&&fx.online){fx.activo=false;fx=null}$('capaFx').hidden=true;pantalla('foLobby');foPintarLobby();return}
+  const jug=J.jug||[];if(!jug.includes(FO.yo)){foPintarLobby('Hay un partido en curso.');pantalla('foLobby');return}
+  if(!fx||!fx.online||fx.ronda!==J.ronda)foIniciar(J);
+  const rival=jug.find(id=>id!==FO.yo);
+  if(rival&&!sala[rival]&&!fx.fin){fx.fin=true;$('fxFinTit').textContent='Tu rival se salió';$('fxFinSc').textContent=fx.sc[0]+'-'+fx.sc[1];$('fxOtra').hidden=true;$('fxFinEspera').hidden=true;$('fxMenuFin').textContent='Salir de la sala';$('capaFx').hidden=false;return}
+  const t=J.tiro;
+  if(t&&t.n>fx.tiroVisto){fx.tiroVisto=t.n;if(t.por!==FO.yo){fx.B=deser(t.B0);fx.B[t.i].vx=t.vx;fx.B[t.i].vy=t.vy;fx.autor=false;fx.esperando=false;fx.mov=true;patada()}}
+  if((J.seq||0)>fx.seqVisto){fx.pend=J;if(!fx.mov&&!fx.pausa)foAplicar()}}
+function foIniciar(J){if(fx)fx.activo=false;const e0=eqDe(J.eq[0]);let e1=eqDe(J.eq[1]);
+  if(colDist(e0.a,e1.a)<130)e1={...e1,a:e1.b,b:e1.a};
+  fx={online:true,ronda:J.ronda,yo:J.jug.indexOf(FO.yo),flip:J.jug.indexOf(FO.yo)===1,nombres:J.nombres,B:deser(J.B),eq:[e0,e1],sc:(J.sc||[0,0]).slice(),turno:J.turno||0,
+    mov:false,pausa:false,fin:false,drag:null,apunta:null,activo:true,t:0,tiroVisto:J.tiro?J.tiro.n:0,seqVisto:J.seq||0,golVisto:J.gol?J.gol.n:0,pend:null,esperando:false};
+  $('fxE0').innerHTML=camiseta(e0)+`<span>${esc(J.nombres[0])}</span>`;$('fxE1').innerHTML=camiseta(e1)+`<span>${esc(J.nombres[1])}</span>`;
+  $('fxS').textContent=fx.sc[0]+'-'+fx.sc[1];$('capaFx').hidden=true;$('fxGol').hidden=true;pantalla('fxJuego');fxMedir();silbato(false);fxTurnoUI();requestAnimationFrame(fxLoop);
+  if(J.estado==='fin')fxFinal(J.ganador)}
+function foPendiente(){if(fx.pend)foAplicar()}
+function foAplicar(){const J=fx.pend;if(!J)return;fx.pend=null;fx.seqVisto=J.seq||0;fx.esperando=false;
+  const fin=()=>{fx.B=deser(J.B);fx.sc=(J.sc||[0,0]).slice();fx.turno=J.turno||0;$('fxS').textContent=fx.sc[0]+'-'+fx.sc[1];fx.pausa=false;
+    if(J.estado==='fin'){fxFinal(J.ganador);return}fxTurnoUI();if(fx.pend)foAplicar()};
+  if(J.gol&&J.gol.n>fx.golVisto){fx.golVisto=J.gol.n;const t=J.gol.t;fx.pausa=true;ovacion(5);vibra([60,40,120]);
+    const g=$('fxGol');g.innerHTML=`<div>¡GOOOL!<small>${esc(fx.nombres[t])}</small></div>`;g.hidden=false;
+    if(t===fx.yo)confeti([fx.eq[t].a,fx.eq[t].b,'#ffffff']);else uuuh();
+    const f=fx;setTimeout(()=>{if(fx!==f)return;g.hidden=true;silbato(false);fin()},1900)}
+  else fin()}
+function foTirar(i,vx,vy){const J=FO.J,n=((J.tiro&&J.tiro.n)||0)+1;fx.tiroVisto=n;fx.autor=true;
+  FO.juegoRef.update({tiro:{n,i,vx,vy,por:FO.yo,B0:ser(fx.B)}});fxDisparar(i,vx,vy)}
+function foFinTiro(g){const J=FO.J,n={seq:(J.seq||0)+1};
+  if(g>=0){const sc=(J.sc||[0,0]).slice();sc[g]++;n.sc=sc;n.gol={n:J.tiro?J.tiro.n:0,t:g};n.B=ser(fxCuerpos());n.turno=1-g;
+    if(sc[g]>=(J.meta||2)){n.estado='fin';n.ganador=g}fx.pausa=true}
+  else{n.B=ser(fx.B);n.turno=1-(J.turno||0)}
+  FO.juegoRef.update(n).catch(()=>toast('No se pudo enviar la jugada. Revisa tu internet.'))}
+function foPintarLobby(aviso){if(!FO||!FO.sala)return;const s=FO.sala,meta=FO.J.meta||2;
+  $('foCuantos').textContent=`(${FO.hum.length}/2)`;
+  $('foLista').innerHTML=FO.hum.map((id,k)=>`<li><span class="li-izq">${camiseta(eqDe(s[id].equipo))}<span>${esc(s[id].nombre)}${id===FO.yo?' (tú)':''}</span></span>${k===0?'<span class="tag">Anfitrión</span>':''}</li>`).join('');
+  $('foLista').querySelectorAll('svg').forEach(v=>{v.style.width='30px';v.style.height='30px'});
+  $('foHostOpc').hidden=!FO.host;$('foEmpezar').hidden=!FO.host;$('foEmpezar').disabled=FO.hum.length<2||!!aviso;
+  document.querySelectorAll('#foGoles button').forEach(b=>b.classList.toggle('on',+b.dataset.g===meta));
+  $('foEstadoL').textContent=aviso||(FO.host?(FO.hum.length<2?'Esperando a que entre tu amigo…':''):`Esperando a que el anfitrión empiece… Se juega a ${meta} gol${meta>1?'es':''}.`)}
+document.querySelectorAll('#foGoles button').forEach(b=>b.onclick=()=>FO&&FO.juegoRef.update({meta:+b.dataset.g}));
+function foEmpezar(){if(!FO||!FO.host||FO.hum.length<2)return;const jug=FO.hum.slice(0,2),s=FO.sala;
+  FO.juegoRef.update({estado:'jugando',ronda:(FO.J.ronda||0)+1,jug,nombres:jug.map(id=>s[id].nombre),eq:jug.map(id=>s[id].equipo||'liga-america'),
+    meta:FO.J.meta||2,sc:[0,0],turno:0,B:ser(fxCuerpos()),seq:1,tiro:null,gol:null,ganador:null})}
+$('foEmpezar').onclick=foEmpezar;
+$('foCopiar').onclick=()=>{const t=FO&&FO.code;try{navigator.clipboard.writeText(t).then(()=>toast('Código copiado'),()=>toast('Código: '+t))}catch(e){toast('Código: '+t)}};
+function foSalir(){if(!FO)return;FO.salaRef.off('value',foValor);try{FO.meRef.onDisconnect().cancel()}catch(e){}FO.meRef.remove();
+  if((FO.hum||[]).length<=1)FO.juegoRef.remove();FO=null;if(fx&&fx.online){fx.activo=false;fx=null}}
+$('foSalirSala').onclick=()=>{foSalir();irFxMenu()};
+addEventListener('pagehide',()=>{if(FO&&FO.meRef)FO.meRef.remove()});
+
+/* ================= PERFIL Y RANKING ================= */
+const lsN=(k)=>+ls.get(k,0)||0;
+async function rankActualizar(c){try{const fb=await fbInit();if(!fb)return;const r=fb.db.ref('salas/ranking/'+fb.uid);
+  const v=(await r.get()).val()||{},n={nombre:miNombre(),equipo:miEq.id,pj:yvPj.id,t:Date.now()};
+  if(c.block!=null)n.block=Math.max(v.block||0,c.block);if(c.yv)n.yv=(v.yv||0)+1;if(c.fx)n.fx=(v.fx||0)+1;await r.update(n)}catch(e){console.error('ranking',e)}}
+function rankGanar(j){ls.set('st_'+j,lsN('st_'+j)+1);rankActualizar({[j]:1})}
+function rankRecord(v){rankActualizar({block:v})}
+
+function pintarPerfilHub(){const b=$('hPerfil');if(b)b.innerHTML=camiseta(miEq)+`<span><b>${esc(miNombre())}</b><small>Mi perfil</small></span>`}
+function abrirPerfil(){$('pfNombre').value=miNombre();$('pfEq').innerHTML=camiseta(miEq)+'<span>'+esc(miEq.n)+' · cambiar</span>';
+  $('pfPj').innerHTML=avatar(yvPj,30)+'<span>'+esc(yvPj.n)+' · cambiar</span>';
+  $('pfBlock').textContent=lsN('blockgol_record');$('pfYv').textContent=lsN('st_yv');$('pfFx').textContent=lsN('st_fx');pantalla('perfil')}
+function guardarNombre(n){n=(n||'').trim().slice(0,14)||'Jugador';ls.set('blockgol_nombre',n);$('nombre').value=n;$('yvNombre').value=n;return n}
+$('pfNombre').addEventListener('change',()=>guardarNombre($('pfNombre').value));
+$('pfEq').onclick=()=>{guardarNombre($('pfNombre').value);abrirEquipos(abrirPerfil)};
+$('pfPj').onclick=()=>{guardarNombre($('pfNombre').value);abrirPj(abrirPerfil)};
+$('pfGuardar').onclick=()=>{guardarNombre($('pfNombre').value);pintarPerfilHub();rankActualizar({});toast('Perfil guardado');pantalla('hub')};
+$('hPerfil').onclick=abrirPerfil;
+
+let rkTab='block';
+const RK={block:{k:'block',t:'Récord en Block Gol',u:'pts'},yv:{k:'yv',t:'Partidas ganadas de Yaniv',u:'ganadas'},fx:{k:'fx',t:'Partidos ganados de Fichas Gol',u:'ganados'}};
+async function abrirRanking(){pantalla('ranking');pintarTabsRk();$('rkLista').innerHTML='';$('rkEstado').textContent='Cargando…';
+  const fb=await fbInit();if(!fb){$('rkEstado').textContent='No se pudo conectar al servidor. El ranking solo funciona en tu liga de GitHub.';return}
+  try{const v=(await fb.db.ref('salas/ranking').get()).val()||{};RKdatos=Object.entries(v).map(([id,x])=>({id,...x}));RKyo=fb.uid;pintarRanking()}
+  catch(e){$('rkEstado').textContent='No se pudo leer el ranking. Revisa tu internet.'}}
+let RKdatos=[],RKyo=null;
+function pintarTabsRk(){document.querySelectorAll('#rkTabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===rkTab))}
+function pintarRanking(){const r=RK[rkTab],lista=RKdatos.filter(x=>(x[r.k]||0)>0).sort((a,b)=>b[r.k]-a[r.k]).slice(0,30);
+  $('rkEstado').textContent=lista.length?r.t:'Todavía nadie tiene puntos aquí. ¡Sé el primero!';
+  $('rkLista').innerHTML=lista.map((x,i)=>`<li class="${x.id===RKyo?'yo':''}"><span class="li-izq"><b class="rk-pos">${i+1}</b>${camiseta(eqDe(x.equipo))}<span>${esc(x.nombre||'Jugador')}${x.id===RKyo?' (tú)':''}</span></span><span class="tag">${x[r.k]} ${r.u}</span></li>`).join('')}
+document.querySelectorAll('#rkTabs button').forEach(b=>b.onclick=()=>{rkTab=b.dataset.t;pintarTabsRk();pintarRanking()});
+$('hRanking').onclick=abrirRanking;
+$('rkVolver').onclick=()=>pantalla('hub');$('pfVolver').onclick=()=>pantalla('hub');
+
+/* ================= TUTORIALES ================= */
+const IL={
+ cel:(x,y,w,h,c)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${c}"/>`,
+ balon:(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff" stroke="#111"/><circle cx="${x}" cy="${y}" r="${r*.38}" fill="#111"/>`,
+ dedo:(x,y)=>`<g transform="translate(${x} ${y})"><path d="M0 0c0-5 7-5 7 0v10c0-4 6-4 6 0v2c0-4 6-4 6 0v2c0-4 6-4 6 0v10c0 8-5 13-12 13h-3c-5 0-8-3-10-7L-6 21c-2-4 3-7 6-4z" fill="#ffe0bd" stroke="#111" stroke-width="1.5"/></g>`,
+ carta:(x,y,t,rojo,rot=0,sel)=>`<g transform="rotate(${rot} ${x+18} ${y+25})"><rect x="${x}" y="${y}" width="36" height="50" rx="5" fill="#fdfbf3" stroke="${sel?'#ffd23f':'#999'}" stroke-width="${sel?3:1}"/><text x="${x+6}" y="${y+15}" font-size="12" font-weight="700" fill="${rojo?'#c8102e':'#111'}" font-family="Arial">${t}</text></g>`};
+function grid(ox,oy,n,m,llenas,col){let s='';for(let r=0;r<n;r++)for(let c=0;c<m;c++){const k=r*m+c;s+=IL.cel(ox+c*19,oy+r*19,17,17,llenas.includes(k)?col:'rgba(0,0,0,.25)')}return s}
+const CANCHA='<rect width="240" height="140" rx="12" fill="#1d6337"/><rect y="35" width="240" height="35" fill="#22713f"/><rect y="105" width="240" height="35" fill="#22713f"/>';
+const TUTOS={
+ block:[
+  {t:'Arrastra las piezas',x:'Toca una pieza de abajo y arrástrala al tablero. Si cabe, se queda.',s:CANCHA+grid(30,22,5,5,[0,1,5,10,11,15],'#e5383b')+`<g transform="translate(160 40)">${IL.cel(0,0,17,17,'#ffd23f')}${IL.cel(19,0,17,17,'#ffd23f')}${IL.cel(19,19,17,17,'#ffd23f')}</g><path d="M155 70 Q130 90 120 80" stroke="#fff" stroke-width="3" fill="none" stroke-dasharray="5 5" marker-end="url(#fl)"/>`+IL.dedo(170,72)},
+  {t:'Completa líneas',x:'Llena una fila o una columna completa y desaparece: cada línea vale 50 puntos.',s:CANCHA+grid(30,22,5,5,[10,11,12,13,14,0,6,21],'#2f6fe4')+`<rect x="27" y="57" width="99" height="23" rx="5" fill="none" stroke="#ffd23f" stroke-width="3"/><text x="180" y="78" text-anchor="middle" font-size="34" font-family="Impact,Arial" fill="#ffd23f" stroke="#111" stroke-width="1">+50</text>`},
+  {t:'Tira penales',x:'Con amigos: al llegar a los puntos que eligió el anfitrión tiras un penal. Gana quien meta los goles primero. Solo: aguanta hasta que ya no quepan piezas.',s:CANCHA+`<path d="M60 20h120v55H60z" fill="rgba(255,255,255,.12)" stroke="#fff" stroke-width="4"/>`+IL.balon(150,40,10)+IL.balon(120,120,9)+`<path d="M120 110 Q135 70 148 48" stroke="#ffd23f" stroke-width="3" fill="none" stroke-dasharray="4 5"/><text x="120" y="100" text-anchor="middle" font-size="22" font-family="Impact,Arial" fill="#ffd23f" stroke="#111" stroke-width=".8">¡GOL!</text>`}],
+ fx:[
+  {t:'Elige una ficha',x:'En tu turno brillan tus fichas. Toca una y, sin soltar, arrastra el dedo hacia atrás.',s:CANCHA+`<circle cx="120" cy="60" r="22" fill="#e5383b" stroke="#fff" stroke-width="5"/><text x="120" y="67" text-anchor="middle" font-size="18" font-weight="700" fill="#fff" font-family="Arial">10</text><circle cx="120" cy="60" r="28" fill="none" stroke="#ffd23f" stroke-width="3"/><path d="M120 85 L120 118" stroke="#fff" stroke-width="3" stroke-dasharray="5 5"/>`+IL.dedo(112,112)},
+  {t:'Apunta y suelta',x:'La línea de puntos marca hacia dónde sale. Mientras más arrastras, más fuerte tiras. Suelta para disparar.',s:CANCHA+`<circle cx="120" cy="95" r="22" fill="#e5383b" stroke="#fff" stroke-width="5"/>`+[1,2,3,4,5,6].map(k=>`<circle cx="${120+k*4}" cy="${68-k*10}" r="${5-k*.5}" fill="hsl(${40-k*7},100%,55%)"/>`).join('')+`<path d="M120 95 m0 -30 a30 30 0 1 1 -21 9" fill="none" stroke="#ff8c1a" stroke-width="5"/>`},
+  {t:'Mete gol',x:'Pega al balón para meterlo en la portería de enfrente. Los turnos se alternan y gana quien llegue primero a los goles.',s:CANCHA+`<path d="M80 2h80v18H80z" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="4"/>`+IL.balon(125,30,9)+`<circle cx="105" cy="100" r="18" fill="#2f6fe4" stroke="#ffd23f" stroke-width="4"/><path d="M110 85 Q118 55 124 40" stroke="#ffd23f" stroke-width="3" fill="none" stroke-dasharray="4 5"/>`}],
+ yv:[
+  {t:'Tira cartas',x:'En tu turno elige qué tirar: una carta, varias del mismo número (par, tercia) o una escalera de 3 o más del mismo palo.',s:CANCHA+IL.carta(50,45,'7♥',1,-12,1)+IL.carta(90,40,'7♣',0,0,1)+IL.carta(130,45,'K♠',0,12)+`<text x="185" y="72" font-size="16" font-family="Arial" font-weight="700" fill="#ffd23f">¡Par!</text>`},
+  {t:'Toma una carta',x:'Después toma una carta: del mazo (no sabes cuál sale) o de lo que tiró el jugador anterior.',s:CANCHA+`<rect x="45" y="40" width="40" height="56" rx="6" fill="#1d6337" stroke="#fff" stroke-width="3"/><circle cx="65" cy="68" r="9" fill="none" stroke="#fff" stroke-width="2"/>`+IL.carta(150,42,'2♦',1,0,1)+`<text x="65" y="115" text-anchor="middle" font-size="12" fill="#fff" font-family="Arial">Mazo</text><text x="168" y="115" text-anchor="middle" font-size="12" fill="#fff" font-family="Arial">Pila</text><path d="M100 68h40" stroke="#ffd23f" stroke-width="3" stroke-dasharray="4 4"/>`},
+  {t:'¡Grita Yaniv!',x:'Si al empezar tu turno sumas 7 o menos, grita ¡Yaniv! Si alguien tiene igual o menos que tú, es ¡Asaf! y te suman 30. Pasar el límite = expulsado.',s:CANCHA+IL.carta(55,48,'A♠',0,-10)+IL.carta(85,44,'2♥',1,0)+IL.carta(115,48,'3♣',0,10)+`<text x="190" y="62" text-anchor="middle" font-size="26" font-family="Impact,Arial" fill="#ffd23f" stroke="#111" stroke-width="1">¡YANIV!</text><text x="190" y="88" text-anchor="middle" font-size="14" font-family="Arial" font-weight="700" fill="#5ee08a">Suma 6</text>`}]};
+let tutoJ=null,tutoI=0,tutoTras=null;
+function abrirTuto(j,tras){tutoJ=j;tutoI=0;tutoTras=tras||null;pintarTuto();$('capaTuto').hidden=false}
+function pintarTuto(){const p=TUTOS[tutoJ][tutoI],n=TUTOS[tutoJ].length;
+  $('tutoIlu').innerHTML=`<svg viewBox="0 0 240 140"><defs><marker id="fl" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#fff"/></marker></defs>${p.s}</svg>`;
+  $('tutoTit').textContent=p.t;$('tutoTxt').textContent=p.x;$('tutoPaso').textContent=`Paso ${tutoI+1} de ${n}`;
+  $('tutoPuntos').innerHTML=Array.from({length:n},(_,k)=>`<i class="${k===tutoI?'on':''}"></i>`).join('');
+  $('tutoSig').textContent=tutoI<n-1?'Siguiente':'¡A jugar!';$('tutoSaltar').hidden=tutoI===n-1}
+function cerrarTuto(){$('capaTuto').hidden=true;ls.set('tuto_'+tutoJ,'1');const f=tutoTras;tutoTras=null;if(f)f()}
+$('tutoSig').onclick=()=>{if(tutoI<TUTOS[tutoJ].length-1){tutoI++;pintarTuto()}else cerrarTuto()};
+$('tutoSaltar').onclick=cerrarTuto;
+const conTuto=(j)=>{if(!ls.get('tuto_'+j,''))abrirTuto(j)};
+$('hBlock').onclick=()=>{pantalla('menu');conTuto('block')};
+$('hFichas').onclick=()=>conEquipo(()=>{irFxMenu();conTuto('fx')});
+$('hYaniv').onclick=()=>{irYvMenu();conTuto('yv')};
+$('fxTuto').onclick=()=>abrirTuto('fx');$('yvTuto').onclick=()=>abrirTuto('yv');$('bTuto').onclick=()=>abrirTuto('block');
+pintarPerfilHub();
+
 /* ================= PORTADA ANIMADA ================= */
 (function(){const cv=$('portadaHub');if(!cv)return;const c=cv.getContext('2d'),W=360,H=210,CICLO=5200;
   const quieto=(()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}})();
