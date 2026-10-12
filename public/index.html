@@ -2072,5 +2072,13 @@ pintarPerfilHub();
 
 </script>
 
+<div id="avisoVersion" hidden style="position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);transform:translateX(-50%);z-index:90;background:#ffd23f;color:#1a1400;font:700 17px Barlow,system-ui,sans-serif;padding:12px 20px;border-radius:99px;box-shadow:0 6px 20px rgba(0,0,0,.5);cursor:pointer;text-align:center;max-width:90vw">⚽ ¡Hay versión nueva! Toca aquí para actualizar</div>
+<script>
+const FA_VERSION='2026-10-12c';
+(function(){if(!/github\.io$/.test(location.hostname))return;const av=document.getElementById('avisoVersion');
+  av.onclick=()=>location.replace(location.pathname+'?v='+Date.now());
+  const revisar=()=>fetch(location.pathname+'?nc='+Date.now(),{cache:'no-store'}).then(r=>r.text()).then(t=>{const m=t.match(/FA_VERSION='([^']+)'/);if(m&&m[1]!==FA_VERSION)av.hidden=false}).catch(()=>{});
+  revisar();setInterval(revisar,120000);document.addEventListener('visibilitychange',()=>{if(!document.hidden)revisar()})})();
+</script>
 </body>
 </html>
