@@ -308,7 +308,7 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
 .riv .nm{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .riv .info{font-family:var(--f-num);color:var(--tenue);font-size:17px;font-variant-numeric:tabular-nums}
 .riv .info b{color:var(--tinta)}
-.yv-mesa{position:relative;width:100%;max-width:760px;min-height:calc(var(--cw)*1.4 + 80px);display:flex;align-items:center;justify-content:center;gap:30px;border-radius:22px;padding:18px 10px 30px;box-sizing:border-box;
+.yv-mesa{position:relative;width:100%;max-width:760px;min-height:calc(var(--cw)*1.4 + 80px);display:flex;align-items:center;justify-content:center;gap:14px;border-radius:22px;padding:18px 8px 34px;box-sizing:border-box;
   background:
     radial-gradient(circle at 50% 50%,transparent 0 78px,var(--linea) 78px 80px,transparent 80px),
     linear-gradient(to right,transparent calc(50% - 1px),var(--linea) calc(50% - 1px) calc(50% + 1px),transparent calc(50% + 1px)),
@@ -323,7 +323,7 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
 .dorsos{display:flex;justify-content:center;min-height:20px}
 .dorsos .dorso+.dorso{margin-left:-7px}
 .yv-pila{display:flex;align-items:center}
-.yv-pila .carta+.carta{margin-left:calc(var(--cw) * -.42)}
+.yv-pila .carta+.carta{margin-left:calc(var(--cw) * -.66)}
 .yv-pila-tit{position:absolute;bottom:8px;left:0;right:0;text-align:center;font:600 16px var(--f-num);letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.8)}
 .carta{position:relative;flex:none;width:var(--cw);aspect-ratio:5/7;border-radius:9px;background:#fdfbf3;color:#14161a;box-shadow:0 3px 8px rgba(0,0,0,.35);font-family:var(--f-num);font-weight:700;font-size:calc(var(--cw) * .32);display:grid;place-items:center;box-sizing:border-box;border:1px solid rgba(0,0,0,.12);transition:transform .15s}
 .carta.roja{color:#c8102e}
@@ -346,8 +346,10 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
 .yv-yo .quien{display:flex;align-items:center;gap:8px;min-width:0}
 .yv-yo .pts2{font-family:var(--f-num);color:var(--tenue);font-size:19px}
 .yv-yo .pts2 b{color:var(--tinta);font-size:24px}
-.yv-mano{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;padding-block:20px 10px;min-height:calc(var(--cw) * 1.4 + 30px);width:100%;max-width:760px}
-.yv-mano .carta{cursor:pointer}
+.yv-mano{display:flex;justify-content:center;gap:0;flex-wrap:nowrap;padding-block:26px 10px;min-height:calc(var(--cw) * 1.4 + 30px);width:100%;max-width:760px}
+.yv-mano .carta{cursor:pointer;box-shadow:-4px 3px 10px rgba(0,0,0,.4)}
+.yv-mano .carta+.carta{margin-left:var(--solape,8px)}
+.yv-mano .carta.sel{z-index:2}
 .yv-mano .carta.sel{transform:translateY(-14px);outline:3px solid var(--amarillo);outline-offset:1px}
 .yv-mano.espera .carta{cursor:default;filter:saturate(.85)}
 .yv-abajo{display:flex;align-items:center;gap:12px;width:100%;max-width:760px;justify-content:space-between}
@@ -361,7 +363,12 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
 #yvJuego .pts .l{font-size:17px}
 #yvJuego .top .x{width:48px;height:48px;font-size:24px}
 .yv-mano .carta.slap{transform:translateY(-16px);outline:4px solid var(--verde-ok);outline-offset:2px;animation:pulsoV .7s ease-in-out infinite alternate}
-@keyframes pulsoV{to{outline-color:rgba(94,224,138,.3);transform:translateY(-22px)}}
+@keyframes pulsoV{to{outline-color:rgba(94,224,138,.3)}}
+.yv-slap{position:fixed;inset:0;z-index:58;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(4,10,6,.6)}
+.yv-slap .caja{max-width:360px;--cw:120px;justify-items:center;border:3px solid var(--verde-ok);box-shadow:0 0 30px rgba(94,224,138,.45)}
+.yv-slap .grande{font-size:36px}
+.yv-slap .btns{display:grid;gap:10px;width:100%}
+.yv-slap .seg{font:600 15px var(--f-num);letter-spacing:.06em;color:var(--tenue);text-transform:uppercase}
 .res-fila{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:center;padding:8px 10px;border-radius:12px;background:var(--noche);text-align:left}
 .res-fila .nm{font-weight:700;font-size:15px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .res-fila .mano{grid-column:2/4;display:flex;gap:3px;flex-wrap:wrap}
@@ -741,6 +748,7 @@ input.codigo{text-align:center;font:700 30px var(--f-num);letter-spacing:.3em;te
   <div class="yv-yo" id="yvYo"></div>
   <div class="yv-mano" id="yvMano"></div>
   <div class="yv-abajo"><span class="yv-suma" id="yvSuma"></span><button class="btn btn-1 yv-btn" id="yvYaniv">¡Yaniv!</button><button class="btn btn-2 yv-btn" id="yvPasar" hidden>Pasar</button></div>
+  <div class="yv-slap" id="yvSlap" hidden><div class="caja"><p class="grande">¡Te salió otra igual!</p><div id="yvSlapCarta"></div><div class="btns"><button class="btn btn-1" id="yvSlapSi">¡Tirarla también!</button><button class="btn btn-2" id="yvSlapNo">No, quedármela</button></div><span class="seg">Si no eliges, te la quedas</span></div></div>
   <p class="ayuda" id="yvAyuda"></p>
 </section>
 
@@ -1640,7 +1648,7 @@ function yvProgramar(){clearTimeout(Y.timer);if(!Y.host||!Y.st)return;const st=Y
   if(st.fase==='jugando'){const cur=st.orden[st.turno],info=Y.jug[cur]||{},ausente=Y.modo==='online'&&!info.bot&&!(Y.humanos||[]).includes(cur);
     if(info.bot||ausente)Y.timer=setTimeout(()=>{if(!Y.st||Y.st.seq!==seq)return;const s2=clonar(Y.st);let a=yvBot(s2,cur);
       if(yvAplicar(s2,cur,a))yvAplicar(s2,cur,{tipo:'jugar',cartas:[s2.manos[cur][0]],toma:'mazo'});yvPublicar(s2)},ausente?2500:900+Math.random()*800);
-    else if(st.slap)Y.timer=setTimeout(()=>{if(!Y.st||Y.st.seq!==seq)return;const s2=clonar(Y.st);if(!yvAplicar(s2,cur,{tipo:'pasar'}))yvPublicar(s2)},7000)}
+    else if(st.slap)Y.timer=setTimeout(()=>{if(!Y.st||Y.st.seq!==seq)return;const s2=clonar(Y.st);if(!yvAplicar(s2,cur,{tipo:'pasar'}))yvPublicar(s2)},15000)}
   else if(st.fase==='ronda')Y.timer=setTimeout(()=>{if(Y.st&&Y.st.seq===seq)yvSiguiente()},12000)}
 function yvSiguiente(){if(!Y.host||!Y.st||Y.st.fase!=='ronda')return;const s2=clonar(Y.st);yvNuevaRonda(s2,s2.inicia);silbato(false);yvPublicar(s2)}
 function yvAccion(acc){const st=Y.st;if(!st)return;const prueba=clonar(st),err=yvAplicar(prueba,Y.yo,acc);if(err){toast(err);return}
@@ -1649,7 +1657,7 @@ function yvAccion(acc){const st=Y.st;if(!st)return;const prueba=clonar(st),err=y
   else{Y.n=Math.max(Y.n||0,st.proc[Y.yo]||0)+1;Y.pend=Y.n;Y.meRef.update({accion:{n:Y.n,...acc}});yvRender()}}
 
 /* ----- pantalla de juego ----- */
-function yvMedir(){const w=Math.min(innerWidth,760)-32,h=innerHeight;$('yvJuego').style.setProperty('--cw',Math.max(56,Math.min(124,Math.floor((w-34)/5.05),Math.floor(h/7.2)))+'px')}
+function yvMedir(){const w=Math.min(innerWidth,760)-32,h=innerHeight;$('yvJuego').style.setProperty('--cw',Math.max(64,Math.min(176,Math.floor(w/3.5),Math.floor(h/5.3)))+'px')}
 addEventListener('resize',yvMedir);
 function yvRender(){const st=Y.st;if(!st)return;yvMedir();const yo=Y.yo,mano=st.manos[yo]||[],cur=st.orden[st.turno];
   const pend=Y.modo==='online'&&!Y.host&&Y.pend&&(st.proc[yo]||0)<Y.pend;
@@ -1672,6 +1680,9 @@ function yvRender(){const st=Y.st;if(!st)return;yvMedir();const yo=Y.yo,mano=st.
   const slapMio=mio&&!!st.slap;
   if(slapMio)m.querySelectorAll('.carta').forEach(el=>{if(el.dataset.c===st.slap.c)el.classList.add('slap')});
   $('yvYaniv').hidden=slapMio;$('yvPasar').hidden=!slapMio;
+  $('yvSlap').hidden=!slapMio;if(slapMio)$('yvSlapCarta').innerHTML=cartaHTML(st.slap.c);
+  {const n=m.querySelectorAll('.carta').length,cw=parseFloat(getComputedStyle($('yvJuego')).getPropertyValue('--cw'))||60,av=Math.min(innerWidth,760)-24;
+   m.style.setProperty('--solape',(n>1&&n*cw+(n-1)*8>av?Math.floor((av-n*cw)/(n-1)):8)+'px')}
   $('yvYaniv').disabled=!(mio&&s<=7&&!st.slap);
   $('yvAyuda').textContent=st.fase!=='jugando'?'':!st.vivos[yo]?'':pend?'Enviando tu jugada…':slapMio?'¡Jalaste una carta igual! Tócala para tirarla también, o toca Pasar.':!mio?(st.slap?`${nomDe(cur)} jaló una carta igual… ¿la tirará?`:`Turno de ${nomDe(cur)}…`):
     !sel.length?(s<=7?'¡Puedes gritar Yaniv! O elige cartas para tirar.':'Tu turno: elige las cartas que vas a tirar.'):
@@ -1684,6 +1695,7 @@ $('yvPila').addEventListener('click',e=>{const c=e.target.closest('.carta.tomabl
 $('yvMazo').onclick=()=>{if(Y.st&&Y.st.slap)return;if(!$('yvMazo').classList.contains('tomable')){if(Y.st&&Y.st.orden[Y.st.turno]===Y.yo&&!Y.sel.size)toast('Primero elige las cartas que vas a tirar');return}yvAccion({tipo:'jugar',cartas:[...Y.sel],toma:'mazo'})};
 $('yvYaniv').onclick=()=>yvAccion({tipo:'yaniv'});
 $('yvPasar').onclick=()=>yvAccion({tipo:'pasar'});
+$('yvSlapSi').onclick=()=>yvAccion({tipo:'slap'});$('yvSlapNo').onclick=()=>yvAccion({tipo:'pasar'});
 
 /* ----- resultado ----- */
 function yvMostrarRes(){const st=Y.st,r=st.res;if(!r)return;const fin=st.fase==='fin';
